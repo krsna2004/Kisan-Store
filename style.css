@@ -206,3 +206,61 @@ a:focus-visible,button:focus-visible{outline:3px solid #2563eb;outline-offset:3p
     font-size: 11px;
   }
 }
+
+
+/* Fix mobile navigation header shifting */
+@media (max-width: 800px) {
+  .site-header {
+    position: relative;
+    z-index: 1000;
+  }
+
+  .header-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .brand {
+    order: 1;
+    margin-right: auto;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .header-actions {
+    order: 2;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .menu-toggle {
+    order: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: 0;
+  }
+
+  .nav-links {
+    order: 4;
+    flex: 0 0 100%;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 12px 0 18px;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links a {
+    padding: 12px 8px;
+  }
+}
