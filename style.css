@@ -1563,3 +1563,57 @@ textarea:focus-visible {
     height: 68px;
   }
 }
+
+/* Fix product images overflowing their cards */
+.catalog-product-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.catalog-image-wrap {
+  flex: 0 0 76px !important;
+  width: 76px !important;
+  min-width: 0;
+  max-width: 76px;
+  overflow: hidden;
+}
+
+.catalog-product-card img.catalog-product-image {
+  display: block;
+  width: 76px !important;
+  min-width: 0 !important;
+  max-width: 76px !important;
+  height: 76px !important;
+  max-height: 76px;
+  object-fit: contain;
+  box-sizing: border-box;
+}
+
+.catalog-product-card .product-content {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .catalog-product-card {
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .catalog-image-wrap {
+    flex-basis: 60px !important;
+    width: 60px !important;
+    max-width: 60px;
+  }
+
+  .catalog-product-card img.catalog-product-image {
+    width: 60px !important;
+    max-width: 60px !important;
+    height: 60px !important;
+    max-height: 60px;
+  }
+}
