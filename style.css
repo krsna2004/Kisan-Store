@@ -1882,3 +1882,59 @@ textarea:focus-visible {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+
+/* FIX: Keep owner photo and text side by side */
+.ks-owner-section .ks-owner-hero {
+  display: grid !important;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr) !important;
+  align-items: center !important;
+  gap: 36px !important;
+}
+
+.ks-owner-section .ks-owner-visual {
+  position: relative !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 420px !important;
+  aspect-ratio: auto !important;
+  overflow: hidden !important;
+}
+
+.ks-owner-section .ks-owner-photo {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 460px !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  margin-top: 45px !important;
+}
+
+.ks-owner-section .ks-owner-copy {
+  min-width: 0 !important;
+  width: auto !important;
+}
+
+/* Mobile: photo first, text underneath */
+@media (max-width: 760px) {
+  .ks-owner-section .ks-owner-hero {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 24px !important;
+  }
+
+  .ks-owner-section .ks-owner-visual {
+    width: 100% !important;
+    min-height: 0 !important;
+    aspect-ratio: 0.94 !important;
+    max-height: 440px !important;
+  }
+
+  .ks-owner-section .ks-owner-photo {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    margin-top: 42px !important;
+  }
+}
