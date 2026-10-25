@@ -1,0 +1,96 @@
+media:
+  - name: store_media
+    label: Store Images
+    input: assets/images
+    output: assets/images
+
+content:
+  - name: products
+    label: Products
+    type: collection
+    path: content/products
+    format: json
+    filename: "{primary}.json"
+    fields:
+      - name: name
+        label: Product Name
+        type: string
+        required: true
+      - name: category
+        label: Category
+        type: string
+      - name: price
+        label: Price (₹)
+        type: number
+      - name: stock
+        label: Stock Quantity
+        type: number
+      - name: available
+        label: Available for Sale
+        type: boolean
+      - name: image
+        label: Product Image Path
+        type: string
+      - name: description
+        label: Description
+        type: text
+
+  - name: blogs
+    label: Blog Posts
+    type: collection
+    path: content/blogs
+    format: json
+    filename: "{primary}.json"
+    fields:
+      - name: title
+        label: Blog Title
+        type: string
+        required: true
+      - name: date
+        label: Publication Date
+        type: date
+      - name: image
+        label: Cover Image Path
+        type: string
+      - name: content
+        label: Article Content
+        type: text
+
+  - name: updates
+    label: News & Updates
+    type: collection
+    path: content/updates
+    format: json
+    filename: "{primary}.json"
+    fields:
+      - name: title
+        label: Announcement
+        type: string
+        required: true
+      - name: date
+        label: Date
+        type: date
+      - name: status
+        label: Status
+        type: select
+        options:
+          values:
+            - Published
+            - Draft
+
+  - name: settings
+    label: Store Contact Details
+    type: file
+    path: content/settings.json
+    format: json
+    fields:
+      - name: phone
+        label: Phone Number
+        type: string
+      - name: address
+        label: Store Address
+        type: text
+      - name: hours
+        label: Opening Hours
+        type: string
+        
