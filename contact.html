@@ -136,7 +136,54 @@
   flex:0 0 auto; width:17px; height:17px; margin-top:2px;
   accent-color:#b91c1c;
 }
-#ks-contact-form .ks-submit { margin-top:8px; }
+
+#ks-contact-form .ks-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 54px;
+  padding: 15px 24px;
+  margin-top: 12px;
+  border: 0;
+  border-bottom: 4px solid #e4ae16;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #c81e1e, #991b1b);
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 850;
+  letter-spacing: .02em;
+  cursor: pointer;
+  box-shadow: 0 7px 18px rgba(185, 28, 28, .18);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+#ks-contact-form .ks-submit:hover {
+  background: linear-gradient(135deg, #b91c1c, #7f1717);
+  box-shadow: 0 10px 24px rgba(185, 28, 28, .25);
+  transform: translateY(-2px);
+}
+
+#ks-contact-form .ks-submit:active {
+  transform: translateY(0);
+}
+
+#ks-contact-form .ks-submit:disabled {
+  opacity: .7;
+  cursor: wait;
+  transform: none;
+}
+
+#ks-contact-form .ks-submit span[aria-hidden="true"] {
+  font-size: 21px;
+  transition: transform .2s ease;
+}
+
+#ks-contact-form .ks-submit:hover span[aria-hidden="true"] {
+  transform: translateX(4px);
+}
 #ks-contact-form .ks-honeypot {
   position:absolute!important; left:-10000px!important;
   width:1px!important; height:1px!important; overflow:hidden!important;
