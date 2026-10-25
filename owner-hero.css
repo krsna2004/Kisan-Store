@@ -1,0 +1,26 @@
+/* Responsive owner-led homepage hero. Keep style.css unchanged. */
+.owner-hero{background:linear-gradient(115deg,#fff9e9 0%,#fffdf8 48%,#fff 100%);border-bottom:1px solid #f2ead4}
+.owner-hero-layout{grid-template-columns:1fr .92fr;gap:clamp(32px,5vw,68px);padding-block:clamp(46px,6vw,76px)}
+.owner-hero-copy{position:relative;z-index:2}
+.owner-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#fff0ef;letter-spacing:.1em}
+.owner-eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--red)}
+.owner-hero h1{max-width:630px}
+.owner-trust-line{display:flex;align-items:center;gap:10px;margin-top:20px;color:#353535;font-size:13px;font-weight:800}
+.owner-check{display:grid;place-items:center;width:25px;height:25px;flex:0 0 25px;border-radius:50%;background:var(--yellow);color:#332600;font-size:14px}
+.owner-visual{position:relative;isolation:isolate;min-width:0;min-height:490px;display:flex;align-items:flex-end;justify-content:center;padding:10px 18px 74px}
+.owner-visual-shape{position:absolute;z-index:-2;pointer-events:none}
+.owner-shape-red{width:min(88%,390px);height:390px;right:7%;top:32px;background:var(--red);border-radius:48% 48% 24px 24px;transform:rotate(3deg)}
+.owner-shape-yellow{width:min(88%,390px);height:390px;right:3%;top:48px;background:var(--yellow);border-radius:48% 48% 24px 24px;transform:rotate(-4deg)}
+.owner-photo-frame{position:relative;z-index:-1;width:min(100%,420px);height:420px;display:flex;align-items:flex-end;justify-content:center}
+.owner-photo-frame img{display:block;max-width:100%;width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 14px 12px rgba(30,20,20,.12))}
+.owner-float-card{position:absolute;z-index:3;display:flex;align-items:center;gap:9px;padding:12px 14px;border:1px solid rgba(0,0,0,.06);border-radius:12px;background:#fff;box-shadow:0 10px 28px rgba(30,20,20,.10);color:#292929;font-size:11px;font-weight:850}
+.owner-float-top{top:54px;left:0}
+.owner-float-icon{display:grid;place-items:center;width:23px;height:23px;border-radius:50%;background:#fff0ef;color:var(--red);font-size:13px}
+.owner-float-bottom{right:0;bottom:98px}
+.owner-float-bottom>span:first-child{color:#269653;font-size:10px}
+.owner-name-card{position:absolute;z-index:4;left:5%;right:5%;bottom:5px;display:flex;flex-direction:column;gap:4px;padding:16px 18px;border-left:4px solid var(--yellow);border-radius:10px;background:#fff;box-shadow:0 12px 32px rgba(30,20,20,.11)}
+.owner-name-kicker{color:var(--red);font-size:9px;font-weight:950;letter-spacing:.12em}
+.owner-name-card strong{color:#242424;font-size:14px;line-height:1.35}
+.owner-name-location{color:#777;font-size:11px}
+@media(max-width:800px){.owner-hero-layout{grid-template-columns:1fr;gap:20px;padding-block:42px 36px}.owner-hero-copy{max-width:650px}.owner-visual{width:min(100%,520px);min-height:430px;margin:0 auto;padding:8px 12px 78px}.owner-shape-red,.owner-shape-yellow{width:min(82%,350px);height:335px;top:22px}.owner-photo-frame{height:365px;width:min(100%,380px)}.owner-float-top{top:36px;left:0}.owner-float-bottom{right:0;bottom:100px}.owner-name-card{left:4%;right:4%;bottom:4px}}
+@media(max-width:540px){.owner-hero-layout{padding-block:34px 28px;gap:12px}.owner-hero h1{font-size:clamp(35px,10.5vw,46px)}.owner-hero .hero-intro{font-size:14px;line-height:1.75}.owner-trust-line{align-items:flex-start;font-size:12px}.owner-hero .hero-actions{flex-direction:column;align-items:stretch}.owner-hero .hero-actions .button{width:100%}.owner-visual{min-height:365px;padding:0 5px 78px}.owner-shape-red,.owner-shape-yellow{width:79%;height:285px;top:17px;border-radius:48% 48% 18px 18px}.owner-photo-frame{height:315px;width:min(100%,330px)}.owner-float-card{padding:9px 10px;gap:6px;font-size:9px;border-radius:10px}.owner-float-top{top:28px;left:0}.owner-float-icon{width:19px;height:19px;flex-basis:19px}.owner-float-bottom{right:0;bottom:96px}.owner-name-card{padding:12px 13px}.owner-name-card strong{font-size:12px}.owner-name-kicker{font-size:8px}.owner-name-location{font-size:10px}}
