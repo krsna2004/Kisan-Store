@@ -141,11 +141,11 @@ a:focus-visible,button:focus-visible{outline:3px solid #2563eb;outline-offset:3p
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
 
 
-/* Mobile header: keep language switch beside menu */
+/* Mobile header alignment fix */
 @media (max-width: 800px) {
   .header-inner {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     justify-content: space-between;
     gap: 8px;
   }
@@ -160,13 +160,13 @@ a:focus-visible,button:focus-visible{outline:3px solid #2563eb;outline-offset:3p
   }
 
   .header-actions {
-    order: 3;
+    order: 2;
     margin-left: auto;
     flex: 0 0 auto;
   }
 
   .menu-toggle {
-    order: 4;
+    order: 3;
     margin-left: 0;
     flex: 0 0 42px;
   }
@@ -176,10 +176,12 @@ a:focus-visible,button:focus-visible{outline:3px solid #2563eb;outline-offset:3p
   }
 
   .nav-links {
-    order: 5;
+    order: 4;
+    width: 100%;
   }
 }
 
+/* Extra-small mobile screens */
 @media (max-width: 360px) {
   .brand-mark {
     width: 34px;
@@ -192,7 +194,7 @@ a:focus-visible,button:focus-visible{outline:3px solid #2563eb;outline-offset:3p
 
   .brand-name span {
     font-size: 7px;
-    letter-spacing: .1em;
+    letter-spacing: 0.1em;
   }
 
   .header-inner {
@@ -204,4 +206,3 @@ a:focus-visible,button:focus-visible{outline:3px solid #2563eb;outline-offset:3p
     font-size: 11px;
   }
 }
-
