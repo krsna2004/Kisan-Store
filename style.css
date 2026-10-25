@@ -1433,3 +1433,133 @@ textarea:focus-visible {
     animation: none !important;
   }
 }
+
+/* CMS-managed product catalogue */
+.section-heading {
+  max-width: 720px;
+  margin: 0 0 26px;
+}
+
+.section-heading h2 {
+  font-size: clamp(25px, 3vw, 34px);
+  margin: 8px 0;
+  letter-spacing: -0.035em;
+}
+
+.section-heading > p:last-child {
+  color: var(--muted);
+  margin: 0;
+}
+
+.catalog-loading,
+.catalog-status {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.catalog-status {
+  margin: 14px 0 0;
+}
+
+.catalog-product-card {
+  align-items: flex-start;
+}
+
+.catalog-image-wrap {
+  flex: 0 0 88px;
+  width: 88px;
+}
+
+.catalog-product-image {
+  display: block;
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid var(--line);
+}
+
+.catalog-image-wrap .product-symbol {
+  width: 88px;
+  height: 88px;
+}
+
+.catalog-product-card .product-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.catalog-product-card .product-content h3 {
+  font-size: 17px;
+  line-height: 1.3;
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+
+.catalog-product-card .product-content > p:not(.product-kicker) {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+
+.catalog-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-bottom: 10px;
+}
+
+.catalog-meta {
+  margin: 0;
+  color: #29292f;
+  font-size: 12px;
+}
+
+.stock-pill {
+  display: inline-flex;
+  width: fit-content;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 750;
+  margin: 0 0 12px;
+}
+
+.in-stock {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.out-stock {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+.ask-stock {
+  color: #755b00;
+  background: #fff2bd;
+}
+
+.catalog-product-card .inline-link {
+  display: block;
+  font-size: 12px;
+}
+
+@media (max-width: 640px) {
+  .catalog-product-card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .catalog-image-wrap,
+  .catalog-product-image {
+    flex-basis: 68px;
+    width: 68px;
+  }
+
+  .catalog-product-image,
+  .catalog-image-wrap .product-symbol {
+    height: 68px;
+  }
+}
