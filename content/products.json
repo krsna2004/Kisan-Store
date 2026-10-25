@@ -5,6 +5,9 @@
     "price": 150,
     "stock": 10,
     "available": true,
-    "description": "Bathroom tap for testing the product catalogue."
+    "description": "Bathroom tap for testing the product catalogue.",
+    "name_hi": "टेस्ट नल",
+    "category_hi": "प्लंबिंग",
+    "description_hi": "परीक्षण के लिए बाथरूम का नल"
   }
 ]
