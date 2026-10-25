@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Test Tap",
+    "category": "Plumbing",
+    "price": 150,
+    "stock": 10,
+    "available": true,
+    "description": "Bathroom tap for testing the product catalogue."
+  }
+]
