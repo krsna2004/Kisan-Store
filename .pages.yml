@@ -7,10 +7,10 @@ media:
 content:
   - name: products
     label: Products
-    type: collection
-    path: content/products
+    type: file
+    path: content/products.json
     format: json
-    filename: "{primary}.json"
+    list: true
     fields:
       - name: name
         label: Product Name
