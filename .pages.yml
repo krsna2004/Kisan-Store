@@ -34,6 +34,16 @@ content:
       - name: description
         label: Description
         type: text
+      - name: name_hi
+        label: Product Name (Hindi)
+        type: string
+      - name: category_hi
+        label: Category (Hindi)
+        type: string
+      - name: description_hi
+        label: Description (Hindi)
+        type: text
+
 
   - name: blogs
     label: Blog Posts
