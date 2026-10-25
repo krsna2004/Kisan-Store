@@ -153,22 +153,10 @@
     }
   }
 
-  // Re-render product cards whenever the site language changes.
-  const languageObserver = new MutationObserver(() => {
-    if (products.length) {
-      renderProducts();
-    } else {
-      status.textContent = text(
-        "Loading products…",
-        "उत्पाद लोड हो रहे हैं…"
-      );
-    }
-  });
-
-  languageObserver.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["lang"]
-  });
+  // Re-render cards whenever the language button is used.
+document.getElementById("langBtn")?.addEventListener("click", () => {
+  renderProducts();
+});
 
   loadProducts();
 })();
