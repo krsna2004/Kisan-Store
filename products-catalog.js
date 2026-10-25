@@ -9,10 +9,11 @@
   if (!grid || !status) return;
 
   const isHindi = () => document.documentElement.lang === "hi";
+
   const text = (en, hi) => isHindi() ? hi : en;
 
   const escapeHtml = (value) =>
-    String(value ?? "").replace(/[&<>"']/g, (char) => ({
+    String(value ?? "").replace(/[&<>"']/g, char => ({
       "&": "&amp;",
       "<": "&lt;",
       ">": "&gt;",
@@ -21,9 +22,21 @@
     })[char]);
 
   function makeCard(product) {
-    const name = String(product.name || "Product").trim();
-    const category = String(product.category || "Hardware").trim();
-    const description = String(product.description || "").trim();
+    const name = String(
+      isHindi() ? product.name_hi || product.name : product.name
+    ).trim();
+
+    const category = String(
+      isHindi()
+        ? product.category_hi || product.category || "हार्डवेयर"
+        : product.category || "Hardware"
+    ).trim();
+
+    const description = String(
+      isHindi()
+        ? product.description_hi || product.description || ""
+        : product.description || ""
+    ).trim();
 
     const hasPrice =
       product.price !== "" &&
@@ -53,6 +66,7 @@
       : `<span class="stock-pill out-stock">${text("Unavailable", "अनुपलब्ध")}</span>`;
 
     const rawImage = String(product.image || "").trim();
+
     const safeImage =
       rawImage &&
       !/^(?:[a-z]+:|\/\/|\/)/i.test(rawImage) &&
@@ -85,62 +99,76 @@
       </article>`;
   }
 
+  let products = [];
+
+  function renderProducts() {
+    const visibleProducts = products.filter(product =>
+      product &&
+      product.name &&
+      (product.available === true || product.available === "true")
+    );
+
+    grid.innerHTML = visibleProducts.map(makeCard).join("");
+
+    if (!visibleProducts.length) {
+      status.textContent = text(
+        "No available products yet. Add a product in Pages CMS.",
+        "अभी कोई उपलब्ध उत्पाद नहीं है। Pages CMS में उत्पाद जोड़ें।"
+      );
+    } else {
+      status.textContent = text(
+        `${visibleProducts.length} product(s) loaded.`,
+        `${visibleProducts.length} उत्पाद लोड हुए।`
+      );
+    }
+  }
+
   async function loadProducts() {
-    grid.innerHTML = "";
     status.textContent = text(
       "Loading products…",
       "उत्पाद लोड हो रहे हैं…"
     );
 
     try {
-      const response = await fetch(
-        `${catalogueUrl}?v=${Date.now()}`
-      );
-
-      if (response.status === 404) {
-        status.textContent = text(
-          "No catalogue file found yet. Add products in Pages CMS and publish the changes.",
-          "अभी उत्पाद सूची की फ़ाइल नहीं मिली। Pages CMS में उत्पाद जोड़ें और बदलाव प्रकाशित करें।"
-        );
-        return;
-      }
+      const response = await fetch(`${catalogueUrl}?v=${Date.now()}`);
 
       if (!response.ok) {
-        throw new Error("Catalogue could not be loaded");
+        throw new Error("Could not load product catalogue");
       }
 
       const data = await response.json();
+
       if (!Array.isArray(data)) {
-        throw new Error("Catalogue must contain a JSON list");
+        throw new Error("Expected a JSON array");
       }
 
-      const products = data.filter(product =>
-        product &&
-        product.name &&
-        (product.available === true || product.available === "true")
-      );
-
-      if (!products.length) {
-        status.textContent = text(
-          "No available products yet. Add a product in Pages CMS and mark it available.",
-          "अभी कोई उपलब्ध उत्पाद नहीं है। Pages CMS में उत्पाद जोड़ें और उपलब्ध के रूप में चिह्नित करें।"
-        );
-        return;
-      }
-
-      grid.innerHTML = products.map(makeCard).join("");
-      status.textContent = text(
-        `${products.length} product(s) loaded.`,
-        `${products.length} उत्पाद लोड हुए।`
-      );
+      products = data;
+      renderProducts();
     } catch (error) {
       status.textContent = text(
-        "Products could not load. Check that content/products.json exists and contains valid JSON.",
-        "उत्पाद लोड नहीं हुए। जाँचें कि content/products.json मौजूद है और उसमें सही JSON है।"
+        "Products could not load. Please try again later.",
+        "उत्पाद लोड नहीं हो सके। कृपया बाद में फिर प्रयास करें।"
       );
       console.error("Product catalogue error:", error);
     }
   }
+
+  // Re-render product cards whenever the site language changes.
+  const languageObserver = new MutationObserver(() => {
+    if (products.length) {
+      renderProducts();
+    } else {
+      status.textContent = text(
+        "Loading products…",
+        "उत्पाद लोड हो रहे हैं…"
+      );
+    }
+  });
+
+  languageObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["lang"]
+  });
 
   loadProducts();
 })();
