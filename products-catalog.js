@@ -2,10 +2,7 @@
 (() => {
   "use strict";
 
-  const repo = "krsna2004/Kisan-Store";
-  const api =
-    `https://api.github.com/repos/${repo}/contents/content/products`;
-
+  const catalogueUrl = "content/products.json";
   const grid = document.getElementById("cms-products-grid");
   const status = document.getElementById("catalog-status");
 
@@ -43,9 +40,6 @@
     const available =
       product.available === true || product.available === "true";
 
-    const unavailable =
-      product.available === false || product.available === "false";
-
     const price = hasPrice
       ? `<p class="catalog-meta"><strong>${text("Price:", "कीमत:")}</strong> ₹${escapeHtml(Number(product.price).toLocaleString("en-IN"))}</p>`
       : "";
@@ -56,9 +50,7 @@
 
     const availability = available
       ? `<span class="stock-pill in-stock">${text("Available", "उपलब्ध")}</span>`
-      : unavailable
-        ? `<span class="stock-pill out-stock">${text("Unavailable", "अनुपलब्ध")}</span>`
-        : `<span class="stock-pill ask-stock">${text("Ask about stock", "स्टॉक पूछें")}</span>`;
+      : `<span class="stock-pill out-stock">${text("Unavailable", "अनुपलब्ध")}</span>`;
 
     const rawImage = String(product.image || "").trim();
     const safeImage =
@@ -94,68 +86,61 @@
   }
 
   async function loadProducts() {
+    grid.innerHTML = "";
+    status.textContent = text(
+      "Loading products…",
+      "उत्पाद लोड हो रहे हैं…"
+    );
+
     try {
-      const response = await fetch(api, {
-        headers: { Accept: "application/vnd.github+json" }
-      });
+      const response = await fetch(
+        `${catalogueUrl}?v=${Date.now()}`
+      );
 
       if (response.status === 404) {
         status.textContent = text(
-          "No products yet. Add your first item in Pages CMS → Products.",
-          "अभी कोई उत्पाद नहीं है। Pages CMS → Products में पहला उत्पाद जोड़ें।"
+          "No catalogue file found yet. Add products in Pages CMS and publish the changes.",
+          "अभी उत्पाद सूची की फ़ाइल नहीं मिली। Pages CMS में उत्पाद जोड़ें और बदलाव प्रकाशित करें।"
         );
         return;
       }
 
-      if (!response.ok) throw new Error("Product list unavailable");
+      if (!response.ok) {
+        throw new Error("Catalogue could not be loaded");
+      }
 
-      const files = await response.json();
-      const jsonFiles = files.filter(
-        file => file.type === "file" && file.name.endsWith(".json")
-      );
+      const data = await response.json();
+      if (!Array.isArray(data)) {
+        throw new Error("Catalogue must contain a JSON list");
+      }
 
-      const results = await Promise.all(
-        jsonFiles.map(async file => {
-          try {
-            const result = await fetch(file.download_url);
-            if (!result.ok) return null;
-            return await result.json();
-          } catch {
-            return null;
-          }
-        })
-      );
-
-      const products = results.filter(product =>
+      const products = data.filter(product =>
         product &&
         product.name &&
-        product.available !== false &&
-        product.available !== "false"
+        (product.available === true || product.available === "true")
       );
-
-      grid.innerHTML = "";
 
       if (!products.length) {
         status.textContent = text(
-          "No available products listed yet. Add products in Pages CMS.",
-          "अभी उपलब्ध उत्पाद सूचीबद्ध नहीं हैं। Pages CMS में उत्पाद जोड़ें।"
+          "No available products yet. Add a product in Pages CMS and mark it available.",
+          "अभी कोई उपलब्ध उत्पाद नहीं है। Pages CMS में उत्पाद जोड़ें और उपलब्ध के रूप में चिह्नित करें।"
         );
         return;
       }
 
       grid.innerHTML = products.map(makeCard).join("");
       status.textContent = text(
-        "Products loaded from the store catalogue.",
-        "दुकान की उत्पाद सूची लोड हो गई है।"
+        `${products.length} product(s) loaded.`,
+        `${products.length} उत्पाद लोड हुए।`
       );
-    } catch {
+    } catch (error) {
       status.textContent = text(
-        "Products could not load right now. Please contact the store.",
-        "अभी उत्पाद लोड नहीं हो सके। कृपया दुकान से संपर्क करें।"
+        "Products could not load. Check that content/products.json exists and contains valid JSON.",
+        "उत्पाद लोड नहीं हुए। जाँचें कि content/products.json मौजूद है और उसमें सही JSON है।"
       );
+      console.error("Product catalogue error:", error);
     }
   }
 
   loadProducts();
 })();
-              
