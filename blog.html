@@ -11,9 +11,27 @@
         placeholder="Search articles..."
         aria-label="Search articles"
       />
-      <select id="blogCategory" aria-label="Filter by category">
-        <option value="">All categories</option>
-      </select>
+      
+<div class="blog-category-filter">
+  <button
+    id="blogCategoryButton"
+    class="blog-category-trigger"
+    type="button"
+    aria-expanded="false"
+    aria-controls="blogCategoryMenu">
+    <span id="blogCategoryLabel">All categories</span>
+    <span class="blog-category-arrow" aria-hidden="true">⌄</span>
+  </button>
+
+  <div
+    id="blogCategoryMenu"
+    class="blog-category-menu"
+    role="listbox"
+    aria-label="Article categories"
+    hidden>
+  </div>
+</div>
+      
     </div>
 
     <div id="featuredBlog"></div>
