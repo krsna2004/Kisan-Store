@@ -44,6 +44,20 @@
         menuButton.setAttribute("aria-label", "Open navigation");
       });
     });
+    
+    // Close the mobile navigation when tapping outside it.
+    document.addEventListener("click", (event) => {
+      const isOpen = nav.classList.contains("open");
+      const clickedInsideNav = nav.contains(event.target);
+      const clickedMenuButton = menuButton.contains(event.target);
+
+      if (isOpen && !clickedInsideNav && !clickedMenuButton) {
+        nav.classList.remove("open");
+        menuButton.setAttribute("aria-expanded", "false");
+        menuButton.setAttribute("aria-label", "Open navigation");
+      }
+    });
+    
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && nav.classList.contains("open")) {
         nav.classList.remove("open");
