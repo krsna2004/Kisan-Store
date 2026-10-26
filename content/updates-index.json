@@ -1,1 +1,15 @@
-[]
+[
+  {
+    "title": "Diwali Shop Timing ",
+    "slug": "diwali-shop-timing",
+    "message": "Shop will open from 7am to 2pm from 7 nov. to 9 nov.",
+    "date": "2026-10-27",
+    "category": "Store Timings",
+    "featured": false,
+    "expiry_date": "2026-10-27",
+    "status": "Published",
+    "title_hi": "दिवाली के दौरान दुकानों के खुलने का समय ",
+    "message_hi": "दुकान 7 नवंबर से 9 नवंबर तक सुबह 7 बजे से दोपहर 2 बजे तक खुली रहेगी।",
+    "sourceFile": "diwali-shop-timing.json"
+  }
+]
