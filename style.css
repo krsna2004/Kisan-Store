@@ -2143,7 +2143,8 @@ body.media-lightbox-active {
 }
 
 .ks-search-overlay.is-open {
-  display: block;
+  display: flex !important;
+  /* Keep your other existing properties */
 }
 
 body.ks-search-open {
