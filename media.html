@@ -4,12 +4,27 @@
 <main><section class="page-hero"><div class="container"><p class="eyebrow" data-en="Store gallery" data-hi="दुकान की गैलरी">Store gallery</p><h1 data-en="A closer look at the store." data-hi="दुकान की एक झलक।">A closer look at the store.</h1><p data-en="Photos and videos from our store, products and activities." data-hi="यह पेज दुकान और सामान की असली तस्वीरों के लिए तैयार है। नीचे दिए गए हिस्से केवल नमूने हैं, दुकान की असली तस्वीरें नहीं।">Photos and videos from our store, products and activities.</p></div></section>
 <section class="section">
   <div class="container">
-    <div class="gallery-toolbar">
-      <label class="visually-hidden" for="mediaCategory">Filter gallery by category</label>
-      <select id="mediaCategory">
-        <option value="">All media</option>
-      </select>
+<div class="gallery-toolbar">
+  <div class="blog-category-filter">
+    <button
+      id="mediaCategoryButton"
+      class="blog-category-trigger"
+      type="button"
+      aria-expanded="false"
+      aria-controls="mediaCategoryMenu">
+      <span id="mediaCategoryLabel">All media</span>
+      <span class="blog-category-arrow" aria-hidden="true">⌄</span>
+    </button>
+
+    <div
+      id="mediaCategoryMenu"
+      class="blog-category-menu"
+      role="listbox"
+      aria-label="Filter gallery by category"
+      hidden>
     </div>
+  </div>
+</div>
     <div id="mediaGallery" class="gallery-grid" aria-live="polite">
       <p>Loading photos and videos...</p>
     </div>
