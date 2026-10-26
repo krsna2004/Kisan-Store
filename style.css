@@ -2411,3 +2411,20 @@ body.ks-search-open {
     padding-inline: 14px;
   }
 }
+
+/* Fix alignment of the search submit arrow */
+.ks-mobile-form button[type="submit"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1;
+  padding: 0;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.ks-mobile-form button[type="submit"] {
+  font-family: Arial, sans-serif;
+  font-size: 28px;
+}
