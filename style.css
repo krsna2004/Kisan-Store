@@ -180,12 +180,15 @@ textarea:focus-visible {
   border-radius: 3px;
 }
 
-/* Glass blur effect for the existing sticky header */
+/* Strong Liquid Glass effect */
 header,
 .site-header,
 .header {
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  backdrop-filter: blur(30px) saturate(180%);
+  background-color: rgba(255, 255, 255, 0.72);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
 /* Buttons */
