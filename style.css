@@ -191,15 +191,6 @@ header,
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* Liquid Glass effect for the page navigation menu */
-#navlinks {
-  -webkit-backdrop-filter: blur(30px) saturate(180%);
-  backdrop-filter: blur(30px) saturate(180%);
-  background-color: rgba(255, 255, 255, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-}
-
 /* Buttons */
 .button {
   display: inline-flex;
