@@ -43,6 +43,7 @@
 
   const headerActions = document.querySelector(".site-header .header-actions");
   if (headerActions) headerActions.prepend(root.querySelector(".ks-header-search"));
+  document.body.appendChild(root.querySelector("#ksSearchOverlay"));
 
   const desktopInput = root.querySelector("#ksDesktopInput");
   const mobileInput = root.querySelector("#ksMobileInput");
