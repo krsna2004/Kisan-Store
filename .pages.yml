@@ -156,28 +156,151 @@ content:
           path: blog
           format: markdown
           
-
+  
   - name: updates
     label: News & Updates
     type: collection
     path: content/updates
     format: json
     filename: "{primary}.json"
+    view:
+      primary: title
+      fields: [date, category, featured, status]
+      sort: [date, title]
+      order: desc
     fields:
       - name: title
-        label: Announcement
+        label: Update Title
         type: string
         required: true
+
+      - name: slug
+        label: URL Slug
+        type: string
+        required: true
+        pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+
+      - name: message
+        label: Update Message
+        type: text
+        required: true
+
       - name: date
-        label: Date
+        label: Publication Date
         type: date
-      - name: status
-        label: Status
+        required: true
+
+      - name: category
+        label: Category
         type: select
         options:
           values:
-            - Published
+            - Store Announcement
+            - New Arrivals
+            - Store Timings
+            - Offers
+            - General
+
+      - name: featured
+        label: Feature This Update
+        type: boolean
+
+      - name: expiry_date
+        label: Expiry Date (Optional)
+        type: date
+
+      - name: status
+        label: Publication Status
+        type: select
+        required: true
+        options:
+          values:
             - Draft
+            - Published
+
+      - name: title_hi
+        label: Update Title (Hindi)
+        type: string
+
+      - name: message_hi
+        label: Update Message (Hindi)
+        type: text
+
+  - name: gallery
+    label: Media Gallery
+    type: collection
+    path: content/media
+    format: json
+    filename: "{primary}.json"
+    view:
+      primary: title
+      fields: [media_type, category, date, status]
+      sort: [date, title]
+      order: desc
+    fields:
+      - name: title
+        label: Media Title (Internal)
+        type: string
+        required: true
+
+      - name: media_type
+        label: Media Type
+        type: select
+        required: true
+        options:
+          values:
+            - Image
+            - Video URL
+
+      - name: image
+        label: Photo
+        type: image
+        options:
+          media: store_media
+          path: gallery
+
+      - name: video_url
+        label: Video URL (YouTube or other hosted video)
+        type: string
+
+      - name: caption
+        label: Caption (Optional)
+        type: text
+
+      - name: caption_hi
+        label: Caption (Hindi)
+        type: text
+
+      - name: category
+        label: Category
+        type: select
+        options:
+          values:
+            - Store
+            - Products
+            - Hardware
+            - Sanitaryware
+            - Plumbing
+            - Other
+
+      - name: image_alt
+        label: Image Alt Text
+        type: string
+
+      - name: date
+        label: Publication Date
+        type: date
+        required: true
+
+      - name: status
+        label: Publication Status
+        type: select
+        required: true
+        options:
+          values:
+            - Draft
+            - Published
+
 
   - name: settings
     label: Store Contact Details
