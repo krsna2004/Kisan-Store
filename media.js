@@ -3,7 +3,11 @@
 
   const INDEX_URL = "content/media-index.json";
   const gallery = document.getElementById("mediaGallery");
-  const categorySelect = document.getElementById("mediaCategory");
+  const categoryButton = document.getElementById("mediaCategoryButton");
+const categoryMenu = document.getElementById("mediaCategoryMenu");
+const categoryLabel = document.getElementById("mediaCategoryLabel");
+
+let selectedCategory = "";
   const status = document.getElementById("mediaStatus");
   if (!gallery) return;
 
@@ -19,7 +23,7 @@
   }
 
   function render() {
-    const chosen = categorySelect?.value || "";
+    const chosen = selectedCategory;
     const filtered = items.filter(item => !chosen || item.category === chosen);
 
     if (!filtered.length) {
