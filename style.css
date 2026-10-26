@@ -180,6 +180,14 @@ textarea:focus-visible {
   border-radius: 3px;
 }
 
+/* Glass blur effect for the existing sticky header */
+header,
+.site-header,
+.header {
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
 /* Buttons */
 .button {
   display: inline-flex;
