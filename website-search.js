@@ -43,7 +43,6 @@
 
   const headerActions = document.querySelector(".site-header .header-actions");
   if (headerActions) headerActions.prepend(root.querySelector(".ks-header-search"));
-  document.body.appendChild(root.querySelector("#ksSearchOverlay"));
 
   const desktopInput = root.querySelector("#ksDesktopInput");
   const mobileInput = root.querySelector("#ksMobileInput");
@@ -351,8 +350,14 @@
     }
   });
   document.addEventListener("click", event => {
-    if (!root.querySelector(".ks-header-search").contains(event.target)) desktopResults.hidden = true;
-  });
+  const headerSearch = document.querySelector(
+    ".site-header .header-actions .ks-header-search"
+  );
+
+  if (headerSearch && !headerSearch.contains(event.target)) {
+    desktopResults.hidden = true;
+  }
+});
 
   document.getElementById("langBtn")?.addEventListener("click", () => {
     window.setTimeout(updateLanguageText, 0);
