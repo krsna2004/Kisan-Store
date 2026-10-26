@@ -43,17 +43,17 @@
 
   const headerActions = document.querySelector(".site-header .header-actions");
   if (headerActions) headerActions.prepend(root.querySelector(".ks-header-search"));
-
-  const desktopInput = root.querySelector("#ksDesktopInput");
-  const mobileInput = root.querySelector("#ksMobileInput");
-  const desktopResults = root.querySelector("#ksDesktopResults");
-  const overlay = root.querySelector("#ksSearchOverlay");
-  const overlayResults = root.querySelector("#ksOverlayResults");
-  const hint = root.querySelector("#ksSearchHint");
-  const mobileTrigger = root.querySelector(".ks-mobile-trigger");
-  const closeButton = root.querySelector(".ks-close");
-  const desktopForm = root.querySelector(".ks-desktop-form");
-  const mobileForm = root.querySelector(".ks-mobile-form");
+  
+  const desktopInput = document.getElementById("ksDesktopInput");
+  const mobileInput = document.getElementById("ksMobileInput");
+  const desktopResults = document.getElementById("ksDesktopResults");
+  const overlay = document.getElementById("ksSearchOverlay");
+  const overlayResults = document.getElementById("ksOverlayResults");
+  const hint = document.getElementById("ksSearchHint");
+  const mobileTrigger = document.querySelector(".ks-mobile-trigger");
+  const closeButton = document.querySelector(".ks-close");
+  const desktopForm = document.querySelector(".ks-desktop-form");
+  const mobileForm = document.querySelector(".ks-mobile-form");
 
   let searchItems = [];
   let lastFocus = null;
