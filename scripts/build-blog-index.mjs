@@ -1,36 +1,57 @@
+
 import fs from "node:fs";
 import path from "node:path";
 
-const BLOG_DIR = "content/blogs";
-const OUTPUT_FILE = "content/blog-index.json";
+function readCollection(directory, options = {}) {
+  const {
+    requirePublished = true,
+    excludeExpired = false,
+    dateField = "date",
+  } = options;
 
-function readBlogs() {
-  if (!fs.existsSync(BLOG_DIR)) {
-    console.log("No blog directory found; generating an empty index.");
+  if (!fs.existsSync(directory)) {
+    fs.mkdirSync(directory, { recursive: true });
     return [];
   }
 
-  return fs
-    .readdirSync(BLOG_DIR)
+  return fs.readdirSync(directory)
     .filter((file) => file.endsWith(".json"))
     .map((file) => {
-      const fullPath = path.join(BLOG_DIR, file);
-      const blog = JSON.parse(fs.readFileSync(fullPath, "utf8"));
+      const fullPath = path.join(directory, file);
+      const item = JSON.parse(fs.readFileSync(fullPath, "utf8"));
 
-      return {
-        ...blog,
-        sourceFile: file,
-      };
+      return { ...item, sourceFile: file };
     })
-    .filter((blog) => blog.status === "Published")
-    .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+    .filter((item) => !requirePublished || item.status === "Published")
+    .filter((item) => {
+      if (!excludeExpired || !item.expiry_date) return true;
+      return item.expiry_date >= new Date().toISOString().slice(0, 10);
+    })
+    .sort((a, b) =>
+      (b[dateField] || "").localeCompare(a[dateField] || "") ||
+      (b.title || "").localeCompare(a.title || "")
+    );
 }
 
-fs.mkdirSync(path.dirname(OUTPUT_FILE), { recursive: true });
-fs.writeFileSync(
-  OUTPUT_FILE,
-  JSON.stringify(readBlogs(), null, 2) + "\n",
-  "utf8"
+function writeIndex(file, data) {
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", "utf8");
+  console.log(`Generated ${file}: ${data.length} entries`);
+}
+
+writeIndex(
+  "content/blog-index.json",
+  readCollection("content/blogs")
 );
 
-console.log(`Generated ${OUTPUT_FILE}`);
+writeIndex(
+  "content/updates-index.json",
+  readCollection("content/updates", {
+    excludeExpired: true,
+  })
+);
+
+writeIndex(
+  "content/media-index.json",
+  readCollection("content/media")
+);
