@@ -51,20 +51,111 @@ content:
     path: content/blogs
     format: json
     filename: "{primary}.json"
+    view:
+      primary: title
+      fields: [title, date, category, status, featured]
+      sort: [date, title]
+      order: desc
     fields:
       - name: title
         label: Blog Title
         type: string
         required: true
+
+      - name: slug
+        label: URL Slug
+        type: string
+        required: true
+        description: "Lowercase words separated by hyphens, e.g. choose-right-water-pipes"
+        pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+
+      - name: description
+        label: Short Description
+        type: text
+        required: true
+
       - name: date
         label: Publication Date
         type: date
-      - name: image
-        label: Cover Image Path
+        required: true
+
+      - name: author
+        label: Author
         type: string
+
+      - name: category
+        label: Category
+        type: select
+        options:
+          values:
+            - Buying Guides
+            - Plumbing
+            - Sanitaryware
+            - Hardware
+            - Home Improvement
+            - Store News
+
+      - name: tags
+        label: Tags
+        type: string
+
+      - name: image
+        label: Cover Image
+        type: image
+        options:
+          media: store_media
+          path: blog
+
+      - name: image_alt
+        label: Cover Image Alt Text
+        type: string
+        description: Describe the image for accessibility and image search.
+
       - name: content
         label: Article Content
+        type: rich-text
+        options:
+          media: store_media
+          path: blog
+          format: markdown
+
+      - name: seo_title
+        label: SEO Title
+        type: string
+
+      - name: meta_description
+        label: Meta Description
         type: text
+
+      - name: featured
+        label: Featured Article
+        type: boolean
+
+      - name: status
+        label: Publication Status
+        type: select
+        required: true
+        options:
+          values:
+            - Draft
+            - Published
+
+      - name: title_hi
+        label: Blog Title (Hindi)
+        type: string
+
+      - name: description_hi
+        label: Short Description (Hindi)
+        type: text
+
+      - name: content_hi
+        label: Article Content (Hindi)
+        type: rich-text
+        options:
+          media: store_media
+          path: blog
+          format: markdown
+          
 
   - name: updates
     label: News & Updates
