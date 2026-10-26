@@ -260,6 +260,51 @@ main > section.page-hero {
   .tp-owner-caption small { font-size: .76rem; }
 }
 
+/* Hero background — match the homepage's light, warm look */
+.tp-hero {
+  background: linear-gradient(
+    115deg,
+    #fff9e9 0%,
+    #fffdf7 55%,
+    #ffffff 100%
+  );
+  border-bottom: 1px solid #f1e8d4;
+  padding-top: clamp(48px, 7vw, 76px);
+  padding-bottom: clamp(46px, 6vw, 70px);
+}
+
+/* Keep the owner portrait in front */
+.tp-owner-photo {
+  position: relative;
+  z-index: 1;
+}
+
+/* Put the "Local shop. Personal care." box behind the portrait */
+.tp-owner-float-top {
+  z-index: 0;
+}
+
+/* Keep the opening-hours box and owner details above the portrait */
+.tp-owner-float-bottom,
+.tp-owner-caption {
+  z-index: 2;
+}
+
+/* Mobile spacing */
+@media (max-width: 800px) {
+  .tp-hero {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+}
+
+@media (max-width: 420px) {
+  .tp-hero {
+    padding-top: 54px;
+    padding-bottom: 52px;
+  }
+}
+  
 </style>
 </head>
 <body>
