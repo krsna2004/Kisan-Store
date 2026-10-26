@@ -191,6 +191,14 @@ header,
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
+/* Liquid Glass navigation */
+.navbar,
+nav,
+.nav-links {
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  backdrop-filter: blur(30px) saturate(180%);
+}
+
 /* Buttons */
 .button {
   display: inline-flex;
