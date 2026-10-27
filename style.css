@@ -2542,3 +2542,44 @@ body.ks-search-open {
   border-radius: inherit !important;
 }
 
+/* Gallery cards: full-bleed image with overlays */
+.media-card {
+  position: relative !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  aspect-ratio: 4 / 3;
+  border-radius: 20px !important;
+  background: #fceeee;
+}
+
+.media-card img,
+.media-card .media-image,
+.media-card .media-photo {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+/* Put the category label over the bottom of the image */
+.media-card .media-category,
+.media-card .media-badge,
+.media-card .media-info {
+  position: absolute !important;
+  bottom: 12px !important;
+  left: 12px !important;
+  z-index: 2;
+}
+
+/* Keep the full-screen control over the image */
+.media-card button,
+.media-card .fullscreen-button,
+.media-card .media-fullscreen {
+  position: absolute !important;
+  right: 12px !important;
+  bottom: 12px !important;
+  z-index: 3;
+}
