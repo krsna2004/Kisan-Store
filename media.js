@@ -184,10 +184,22 @@
         }
 
         return `<article class="gallery-item">
-          <div class="gallery-item-media">${media || `<div class="gallery-media-missing">${language === "hi" ? "मीडिया उपलब्ध नहीं है" : "Media unavailable"}</div>`}</div>
-          ${text ? `<div class="gallery-item-caption">${esc(text)}</div>` : ""}
-          ${item.category ? `<span class="gallery-item-category">${esc(item.category)}</span>` : ""}
-        </article>`;
+  <div class="gallery-item-media${item.image && !item.video_url ? " has-gallery-image" : ""}">
+    ${media || `<div class="gallery-media-missing">${language === "hi" ? "मीडिया उपलब्ध नहीं है" : "Media unavailable"}</div>`}
+    ${item.category && item.image && !item.video_url
+      ? `<span class="gallery-item-category">${esc(item.category)}</span>`
+      : ""}
+    ${text && item.image && !item.video_url
+      ? `<span class="gallery-item-caption">${esc(text)}</span>`
+      : ""}
+  </div>
+  ${text && (!item.image || item.video_url)
+    ? `<div class="gallery-item-caption">${esc(text)}</div>`
+    : ""}
+  ${item.category && (!item.image || item.video_url)
+    ? `<span class="gallery-item-category">${esc(item.category)}</span>`
+    : ""}
+</article>`;
       }).join("");
     }
 
