@@ -5,6 +5,7 @@
     "price": 150,
     "stock": 10,
     "available": true,
+    "image": "assets/images/1000057271-1.jpg",
     "description": "Bathroom tap for testing the product catalogue.",
     "name_hi": "टेस्ट नल",
     "category_hi": "प्लंबिंग",
