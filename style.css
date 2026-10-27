@@ -2630,8 +2630,8 @@ body.ks-search-open {
   left: auto !important;
   z-index: 10 !important;
 
-  width: 36px !important;
-  height: 36px !important;
+  width: 34px !important;
+  height: 34px !important;
   box-sizing: border-box !important;
   display: flex !important;
   align-items: center !important;
