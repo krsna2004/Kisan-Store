@@ -2620,3 +2620,31 @@ body.ks-search-open {
   z-index: 3;
     }
     
+/* Final alignment fix for gallery image overlays */
+.gallery-item-media.has-gallery-image {
+  position: absolute !important;
+  inset: 0 !important;
+  overflow: hidden !important;
+}
+
+.gallery-item-media.has-gallery-image .gallery-item-category {
+  position: absolute !important;
+  left: 12px !important;
+  bottom: 12px !important;
+  top: auto !important;
+  right: auto !important;
+  margin: 0 !important;
+  transform: none !important;
+  z-index: 5 !important;
+}
+
+.gallery-item-media.has-gallery-image .gallery-image-expand {
+  position: absolute !important;
+  right: 12px !important;
+  bottom: 12px !important;
+  left: auto !important;
+  top: auto !important;
+  margin: 0 !important;
+  transform: none !important;
+  z-index: 6 !important;
+}
