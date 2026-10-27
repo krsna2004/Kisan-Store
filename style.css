@@ -2630,8 +2630,8 @@ body.ks-search-open {
   left: auto !important;
   z-index: 10 !important;
 
-  width: 44px !important;
-  height: 44px !important;
+  width: 36px !important;
+  height: 36px !important;
   box-sizing: border-box !important;
   display: flex !important;
   align-items: center !important;
@@ -2643,7 +2643,7 @@ body.ks-search-open {
   border-radius: 50% !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
 
-  font-size: 23px !important;
+  font-size: 18px !important;
   line-height: 1 !important;
   cursor: pointer !important;
 }
