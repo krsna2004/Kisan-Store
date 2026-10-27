@@ -2619,7 +2619,7 @@ body.ks-search-open {
 }
 
 
-/* Full-screen button — Kisan Store theme */
+/* Simple white and red gallery fullscreen button */
 
 .gallery-item-media.has-gallery-image .gallery-image-expand {
   position: absolute !important;
@@ -2628,21 +2628,26 @@ body.ks-search-open {
   top: auto !important;
   left: auto !important;
   z-index: 6 !important;
+
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+
   width: 44px !important;
   height: 44px !important;
   margin: 0 !important;
   padding: 0 !important;
   box-sizing: border-box !important;
-  border: 2px solid #ffd43b !important;
+
+  background: #fff !important;
+  color: #b91c1c !important;
+  border: 1px solid rgba(185, 28, 28, 0.2) !important;
   border-radius: 50% !important;
-  background: #b91c1c !important;
-  color: #fff !important;
-  font-size: 25px !important;
+
+  font-size: 23px !important;
   line-height: 1 !important;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
   cursor: pointer;
 }
+
 
