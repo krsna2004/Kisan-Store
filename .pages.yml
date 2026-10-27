@@ -16,30 +16,60 @@ content:
         label: Product Name
         type: string
         required: true
+
       - name: category
         label: Category
-        type: string
+        type: select
+        options:
+          values:
+            - Hardware
+            - Sanitary
+            - Plumbing
+            - Electrical
+            - Paint
+            - Tools
+            - Other
+
       - name: price
         label: Price (₹)
         type: number
+
       - name: stock
         label: Stock Quantity
         type: number
+
       - name: available
         label: Available for Sale
         type: boolean
+
       - name: image
-        label: Product Image Path
-        type: string
+        label: Product Image
+        type: image
+        options:
+          media: store_media
+          path: products
+
       - name: description
         label: Description
         type: text
+
       - name: name_hi
         label: Product Name (Hindi)
         type: string
+
       - name: category_hi
         label: Category (Hindi)
-        type: string
+        type: select
+        options:
+          values:
+            - हार्डवेयर
+            - सैनिटरी
+            - प्लंबिंग
+            - इलेक्ट्रिकल
+            - पेंट
+            - औज़ार
+            - अन्य
+
       - name: description_hi
         label: Description (Hindi)
         type: text
