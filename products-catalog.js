@@ -38,29 +38,6 @@
         : product.description || ""
     ).trim();
 
-    const hasPrice =
-      product.price !== "" &&
-      product.price !== null &&
-      product.price !== undefined &&
-      Number.isFinite(Number(product.price));
-
-    const hasStock =
-      product.stock !== "" &&
-      product.stock !== null &&
-      product.stock !== undefined &&
-      Number.isFinite(Number(product.stock));
-
-    const available =
-      product.available === true || product.available === "true";
-
-    const price = hasPrice
-      ? `<p class="catalog-meta"><strong>${text("Price:", "कीमत:")}</strong> ₹${escapeHtml(Number(product.price).toLocaleString("en-IN"))}</p>`
-      : "";
-
-    const stock = hasStock
-      ? `<p class="catalog-meta"><strong>${text("Stock:", "स्टॉक:")}</strong> ${escapeHtml(product.stock)}</p>`
-      : "";
-
     const availability = available
       ? `<span class="stock-pill in-stock">${text("Available", "उपलब्ध")}</span>`
       : `<span class="stock-pill out-stock">${text("Unavailable", "अनुपलब्ध")}</span>`;
@@ -77,7 +54,7 @@
       : `<div class="product-symbol symbol-red" aria-hidden="true">▦</div>`;
 
     const message = encodeURIComponent(
-      `Namaste, please tell me about ${name}.`
+      `Namaste, please share the price and details for ${name}.`
     );
 
     return `
@@ -87,13 +64,12 @@
           <p class="product-kicker">${escapeHtml(category)}</p>
           <h3>${escapeHtml(name)}</h3>
           ${description ? `<p>${escapeHtml(description)}</p>` : ""}
-          <div class="catalog-details">${price}${stock}</div>
           ${availability}
           <a class="inline-link"
              target="_blank"
              rel="noopener noreferrer"
              href="https://wa.me/919667540112?text=${message}">
-            ${text("Ask on WhatsApp ↗", "WhatsApp पर पूछें ↗")}
+            ${text("Ask for Price ↗", "कीमत पूछें ↗")}
           </a>
         </div>
       </article>`;
