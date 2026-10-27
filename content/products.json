@@ -13,7 +13,7 @@
   {
     "name": "valve",
     "stock": 10,
-    "available": false,
+    "available": true,
     "description": "Bathroom valve for testing the product catalogue."
   }
 ]
