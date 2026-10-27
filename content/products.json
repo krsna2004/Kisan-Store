@@ -9,5 +9,11 @@
     "name_hi": "टेस्ट नल",
     "category_hi": "प्लंबिंग",
     "description_hi": "परीक्षण के लिए बाथरूम का नल"
+  },
+  {
+    "name": "valve",
+    "category": "plumbing ",
+    "available": false,
+    "description": "Bathroom valve for testing the product catalogue."
   }
 ]
