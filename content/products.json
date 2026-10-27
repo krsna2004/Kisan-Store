@@ -13,6 +13,7 @@
   },
   {
     "name": "valve",
+    "category": "Plumbing",
     "stock": 10,
     "available": true,
     "description": "Bathroom valve for testing the product catalogue."
