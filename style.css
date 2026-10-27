@@ -2619,35 +2619,38 @@ body.ks-search-open {
 }
 
 
-/* Simple white and red gallery fullscreen button */
+/* Gallery fullscreen button — match category badge */
 
 .gallery-item-media.has-gallery-image .gallery-image-expand {
+  all: unset !important;
   position: absolute !important;
   right: 12px !important;
   bottom: 12px !important;
   top: auto !important;
   left: auto !important;
-  z-index: 6 !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  z-index: 10 !important;
 
   width: 44px !important;
   height: 44px !important;
-  margin: 0 !important;
-  padding: 0 !important;
   box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 
   background: #fff !important;
   color: #b91c1c !important;
   border: 1px solid rgba(185, 28, 28, 0.2) !important;
   border-radius: 50% !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
 
   font-size: 23px !important;
   line-height: 1 !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
-  cursor: pointer;
+  cursor: pointer !important;
+}
+
+.gallery-item-media.has-gallery-image .gallery-image-expand:focus-visible {
+  outline: 2px solid #b91c1c !important;
+  outline-offset: 3px !important;
 }
 
 
