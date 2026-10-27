@@ -35,8 +35,8 @@
 
     const rawImage = String(product.image || "").trim();
     const safeImage = rawImage &&
-      !/^(?:[a-z]+:|\\/\\/|\\/)/i.test(rawImage) &&
-      !rawImage.split("/").includes("..");
+  !/^(?:[a-z]+:|\/\/|\/)/i.test(rawImage) &&
+  !rawImage.split("/").includes("..");
     const image = safeImage
       ? `<img class="catalog-product-image" src="${escapeHtml(rawImage)}" alt="${escapeHtml(name)}" loading="lazy" onerror="this.hidden=true">`
       : `<div class="product-symbol symbol-red" aria-hidden="true">▦</div>`;
