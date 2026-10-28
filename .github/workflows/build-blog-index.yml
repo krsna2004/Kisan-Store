@@ -1,4 +1,3 @@
-
 name: Build Content Indexes, Product Pages and Sitemap
 
 on:
@@ -11,9 +10,12 @@ on:
       - "content/media/**"
       - "content/products.json"
       - "products.html"
+      - "products-catalog.js"
       - "scripts/build-blog-index.mjs"
+      - "scripts/build-product-catalog.mjs"
       - "scripts/build-product-pages.mjs"
       - ".github/workflows/build-blog-index.yml"
+
   workflow_dispatch:
 
 permissions:
@@ -35,6 +37,9 @@ jobs:
       - name: Generate blog, update and media indexes
         run: node scripts/build-blog-index.mjs
 
+      - name: Generate paginated product catalogue data
+        run: node scripts/build-product-catalog.mjs
+
       - name: Generate product pages and update sitemap
         run: node scripts/build-product-pages.mjs
 
@@ -43,6 +48,8 @@ jobs:
           git add -f content/blog-index.json
           git add -f content/updates-index.json
           git add -f content/media-index.json
+          git add -f content/products-index.json
+          git add -f content/product-pages/
           git add -f sitemap.xml
           git add -f products/
 
@@ -53,6 +60,6 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git commit -m "Build content indexes and product pages"
           git push
-          
