@@ -18,5 +18,10 @@
     "name_hi": "हाई-प्रेशर शावर",
     "category_hi": "सैनिटरी",
     "description_hi": "अपने बाथरूम को बेहतरीन हाई-प्रेशर रेन शावर हेड के साथ अपग्रेड करें। टिकाऊ स्टेनलेस स्टील से निर्मित, जो घर पर ही शानदार स्पा जैसा अनुभव देता है।"
+  },
+  {
+    "name": "Water Tank",
+    "available": true,
+    "image": "assets/images/home-water-tank.jpg"
   }
 ]
