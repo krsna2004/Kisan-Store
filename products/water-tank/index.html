@@ -20,6 +20,8 @@
 
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" type="image/png" href="/favicon.png">
+<script src="/script.js" defer></script>
+<script src="/website-search.js" defer></script>
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Water Tank","description":"Premium-quality, UV-stabilised plastic water tanks designed for durable, leak-proof, and safe domestic and commercial water storage.","url":"https://thekisanstore.in/products/water-tank/","image":["https://thekisanstore.in/assets/images/home-water-tank.jpg"],"category":"Sanitary","sku":"water-tank","offers":{"@type":"Offer","url":"https://thekisanstore.in/products/water-tank/","priceCurrency":"INR","availability":"https://schema.org/InStock","seller":{"@type":"LocalBusiness","name":"Kisan Hardware & Sanitary Store","url":"https://thekisanstore.in"}}}</script>
 
@@ -241,6 +243,29 @@
 </head>
 
 <body>
+<header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/index.html aria-label="Kisan Hardware & Sanitary Store home">
+        <span class="brand-mark" aria-hidden="true">KH</span>
+        <span class="brand-name">KISAN HARDWARE<span>&amp; SANITARY STORE</span></span>
+      </a>
+      <button class="menu-toggle" id="menuBtn" type="button" aria-expanded="false" aria-controls="navlinks" aria-label="Open navigation"><span></span><span></span><span></span></button>
+      <nav class="nav-links" id="navlinks" aria-label="Main navigation">
+        <a class="active" href="/index.html aria-current="page" data-en="Home" data-hi="होम">Home</a>
+        <a href="/products.html data-en="Products" data-hi="उत्पाद">Products</a>
+        <a href="/trade-partners.html data-en="Trade Partners" data-hi="ट्रेड पार्टनर्स">Trade Partners</a>
+        <a href="/blog.html data-en="Buying Guides" data-hi="खरीदारी गाइड">Buying Guides</a>
+        <a href="/media.html data-en="Gallery" data-hi="गैलरी">Gallery</a>
+        <a href="/updates.html data-en="Updates" data-hi="अपडेट">Updates</a>
+        <a href="/contact.html data-en="Contact" data-hi="संपर्क">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="language-toggle" id="langBtn" type="button" aria-label="Switch website to Hindi">हिन्दी</button>
+        <a class="button button-primary header-cta" href="/contact.html data-en="Contact us" data-hi="संपर्क करें">Contact us</a>
+      </div>
+    </div>
+  </header>
+
 <main class="product-detail">
 
 <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -332,9 +357,24 @@
 </div>
 </main>
 
-<footer class="product-footer">
-  Kisan Hardware &amp; Sanitary Store · Astawan, Bharatpur, Rajasthan · Open daily, 7 AM–7 PM
-</footer>
+<footer class="site-footer">
+    <div class="container footer-main">
+      <a class="brand footer-brand" href="/index.html aria-label="Kisan Hardware & Sanitary Store home"><span class="brand-mark" aria-hidden="true">KH</span><span class="brand-name">KISAN HARDWARE<span>&amp; SANITARY STORE</span></span></a>
+      <p data-en="Hardware, plumbing and sanitary products in Astawan, Kumher, Bharatpur, Rajasthan 321201." data-hi="अस्तावन, कुम्हेर, भरतपुर, राजस्थान 321201 में हार्डवेयर, प्लंबिंग और सैनिटरी उत्पाद।">Hardware, plumbing and sanitary products in Astawan, Kumher, Bharatpur, Rajasthan 321201.</p>
+      <div class="footer-links">
+        <a href="/products.html data-en="Products" data-hi="उत्पाद">Products</a>
+        <a href="/trade-partners.html data-en="Trade Partners" data-hi="ट्रेड पार्टनर्स">Trade Partners</a>
+        <a href="/blog.html data-en="Buying Guides" data-hi="खरीदारी गाइड">Buying Guides</a>
+        <a href="/media.html data-en="Gallery" data-hi="गैलरी">Gallery</a>
+        <a href="/updates.html data-en="Updates" data-hi="अपडेट">Updates</a>
+        <a href="/contact.html data-en="Contact" data-hi="संपर्क">Contact</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© <span id="year"></span> Kisan Hardware &amp; Sanitary Store</span>
+      <span data-en="RJ SH 44 · Astawan · Bharatpur 321201" data-hi="RJ SH 44 · अस्तावन · भरतपुर 321201">RJ SH 44 · Astawan · Bharatpur 321201</span>
+    </div>
+  </footer>
 
 <script>
 (() => {
