@@ -1,5 +1,5 @@
 
-name: Build Content Indexes and Sitemap
+name: Build Content Indexes, Product Pages and Sitemap
 
 on:
   push:
@@ -9,7 +9,10 @@ on:
       - "content/blogs/**"
       - "content/updates/**"
       - "content/media/**"
+      - "content/products.json"
+      - "products.html"
       - "scripts/build-blog-index.mjs"
+      - "scripts/build-product-pages.mjs"
       - ".github/workflows/build-blog-index.yml"
   workflow_dispatch:
 
@@ -17,7 +20,7 @@ permissions:
   contents: write
 
 jobs:
-  build-indexes:
+  build-content:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,15 +32,19 @@ jobs:
         with:
           node-version: 20
 
-      - name: Generate content indexes and sitemap
+      - name: Generate blog, update and media indexes
         run: node scripts/build-blog-index.mjs
 
-      - name: Commit updated indexes and sitemap
+      - name: Generate product pages and update sitemap
+        run: node scripts/build-product-pages.mjs
+
+      - name: Commit generated files
         run: |
           git add -f content/blog-index.json
           git add -f content/updates-index.json
           git add -f content/media-index.json
           git add -f sitemap.xml
+          git add -f products/
 
           if git diff --cached --quiet; then
             echo "No generated changes to commit."
@@ -46,6 +53,6 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Update content indexes and sitemap"
+          git commit -m "Build content indexes and product pages"
           git push
           
