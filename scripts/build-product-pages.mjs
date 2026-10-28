@@ -563,7 +563,7 @@ ${siteLayout.footer}
   const copies = document.querySelectorAll(".product-copy");
   const backLink = document.querySelector("[data-back-link]");
 
-  function setLanguage(language) {
+  function setLanguage(language, syncGlobal = true) {
     const selectedLanguage = language === "hi" ? "hi" : "en";
 
     copies.forEach(copy => {
@@ -583,19 +583,31 @@ ${siteLayout.footer}
         : "← Back to product catalogue";
     }
 
-    // Keep the shared header language button and search UI in sync.
-    if (typeof window.setKisanLanguage === "function") {
-      window.setKisanLanguage(selectedLanguage);
-    } else {
-      document.documentElement.lang = selectedLanguage;
-      try {
-        localStorage.setItem("kisan-hardware-language", selectedLanguage);
-      } catch (_) {}
-      document.dispatchEvent(new CustomEvent("kisan:language-change", {
-        detail: { language: selectedLanguage }
-      }));
+    // Product switch updates the shared site language. Header changes are
+    // received below without calling back into the global controller.
+    if (syncGlobal) {
+      if (typeof window.setKisanLanguage === "function") {
+        window.setKisanLanguage(selectedLanguage);
+      } else {
+        document.documentElement.lang = selectedLanguage;
+        try {
+          localStorage.setItem("kisan-hardware-language", selectedLanguage);
+        } catch (_) {}
+        document.dispatchEvent(new CustomEvent("kisan:language-change", {
+          detail: { language: selectedLanguage }
+        }));
+      }
     }
   }
+
+  document.addEventListener("kisan:language-change", event => {
+    const language = event.detail && event.detail.language;
+    if (language === "hi" || language === "en") setLanguage(language, false);
+  });
+
+  // Start with the language already selected by the shared site script.
+  const initialLanguage = document.documentElement.lang === "hi" ? "hi" : "en";
+  setLanguage(initialLanguage, false);
 
   buttons.forEach(button => {
     button.addEventListener("click", () => {
