@@ -11,6 +11,7 @@ const WHATSAPP_NUMBER = "919667540112";
 
 const HOMEPAGE_HTML = "index.html";
 
+
 function getSiteLayout() {
   if (!fs.existsSync(HOMEPAGE_HTML)) {
     throw new Error("index.html is required to build product pages.");
@@ -18,22 +19,41 @@ function getSiteLayout() {
 
   const html = fs.readFileSync(HOMEPAGE_HTML, "utf8");
 
-  const header = html.match(/<header class="site-header">[\s\S]*?<\/header>/i);
-  const footer = html.match(/<footer class="site-footer">[\s\S]*?<\/footer>/i);
+  const header = html.match(
+    /<header class="site-header">[\s\S]*?<\/header>/i
+  );
+
+  const footer = html.match(
+    /<footer class="site-footer">[\s\S]*?<\/footer>/i
+  );
 
   if (!header || !footer) {
-    throw new Error("Could not find the site header or footer in index.html.");
+    throw new Error(
+      "Could not find the site header or footer in index.html."
+    );
   }
 
-  const rootLinks = markup => markup
-    .replace(/(href|src)="(?!https?:|\/\/|#|mailto:|tel:|\/)([^"]+)"/gi,
-      (match, attr, value) => `${attr}="/${value.replace(/^\.\//, "")}`);
+  function fixLocalLinks(markup) {
+    return markup.replace(
+      /\b(href|src)="([^"]+)"/gi,
+      (match, attribute, value) => {
+        if (
+          /^(?:https?:|\/\/|#|mailto:|tel:|javascript:|data:)/i.test(value)
+        ) {
+          return match;
+        }
+
+        return `${attribute}="/${value.replace(/^\.?\//, "").replace(/^\/+/, "")}"`;
+      }
+    );
+  }
 
   return {
-    header: rootLinks(header[0]),
-    footer: rootLinks(footer[0])
+    header: fixLocalLinks(header[0]),
+    footer: fixLocalLinks(footer[0])
   };
 }
+
 
 function readJson(file) {
   if (!fs.existsSync(file)) {
