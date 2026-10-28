@@ -73,6 +73,39 @@ content:
       - name: description_hi
         label: Description (Hindi)
         type: text
+      
+      - name: slug
+        label: Product URL Slug
+        type: string
+        description: "Unique lowercase URL, e.g. pvc-pipe-fittings. Keep stable after publishing."
+
+      - name: seo_title
+        label: SEO Title
+        type: string
+        description: "Optional search-result title."
+
+      - name: meta_description
+        label: SEO Meta Description
+        type: text
+        description: "A clear summary of this product, ideally around 150–160 characters."
+
+      - name: search_keywords
+        label: Search Keywords / Synonyms
+        type: string
+        description: "Comma-separated alternate terms, Hindi terms, and common spellings."
+
+      - name: image_alt
+        label: Product Image Alt Text
+        type: string
+
+      - name: brand
+        label: Brand
+        type: string
+
+      - name: sku
+        label: SKU / Product Code
+        type: string
+        
 
 
   - name: blogs
