@@ -478,7 +478,7 @@
 
   async function loadProducts() {
     try {
-      const response = await fetch(PRODUCTS_URL + "?v=" + Date.now());
+      const response = await fetch(PRODUCTS_URL);
       if (!response.ok) throw new Error("Product catalogue unavailable");
       const products = await response.json();
       if (!Array.isArray(products)) throw new Error("Product catalogue must be a JSON array");
@@ -538,7 +538,7 @@
     if (!carousel) return;
 
     try {
-      const response = await fetch(BLOGS_URL + "?v=" + Date.now());
+      const response = await fetch(BLOGS_URL);
       if (!response.ok) throw new Error("Blog index unavailable");
       const posts = await response.json();
       const published = Array.isArray(posts)
