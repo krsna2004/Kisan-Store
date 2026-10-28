@@ -144,33 +144,79 @@
     } catch (_) {}
   }
 
-  function itemToSearchEntry(item, type) {
-    if (!item || typeof item !== "object") return;
-    const status = firstString(item, ["status", "publication_status"]);
-    if (status && status.toLowerCase() !== "published") return;
-    const title = firstString(item, ["title", "name", "heading", "caption", "caption_hi", "label"]);
-    if (!title) return;
-    const description = firstString(item, ["description", "excerpt", "summary", "content", "body", "text", "caption", "caption_hi", "alt"]);
-    const slug = firstString(item, ["slug", "id", "url_slug"]);
-    const explicitUrl = firstString(item, ["url", "permalink", "href", "link"]);
-    let url = "";
+  
+function itemToSearchEntry(item, type) {
+  if (!item || typeof item !== "object") return;
 
-    if (explicitUrl && !/^javascript:/i.test(explicitUrl)) {
-      url = explicitUrl;
-    } else if (type === "blog") {
-      url = slug ? `blog-post.html?slug=${encodeURIComponent(slug)}` : "blog.html";
-    } else if (type === "updates") {
-      url = "updates.html";
-    } else if (type === "media") {
-      url = "media.html";
-    } else if (type === "products") {
-      url = "products.html";
-    } else {
-      url = "index.html";
-    }
+  const status = firstString(item, ["status", "publication_status"]);
+  if (status && status.toLowerCase() !== "published") return;
 
-    addItem({ title, description, type, url, keywords: firstString(item, ["category", "tags", "brand", "author"]) });
+  if (type === "products" && item.available === false) return;
+
+  const title = type === "products"
+    ? firstString(item, ["name", "title", "heading"])
+    : firstString(item, [
+        "title", "name", "heading", "caption", "label"
+      ]);
+
+  const titleHi = firstString(item, [
+    "name_hi", "title_hi", "caption_hi"
+  ]);
+
+  if (!title && !titleHi) return;
+
+  const description = firstString(item, [
+    "description", "excerpt", "summary", "message",
+    "content", "body", "text", "caption",
+    "image_alt", "imageAlt", "alt"
+  ]);
+
+  const descriptionHi = firstString(item, [
+    "description_hi", "message_hi", "content_hi", "caption_hi"
+  ]);
+
+  const slug = firstString(item, ["slug", "id", "url_slug"]);
+  const explicitUrl = firstString(item, [
+    "url", "permalink", "href", "link"
+  ]);
+
+  let url = "";
+
+  if (explicitUrl && !/^javascript:/i.test(explicitUrl)) {
+    url = explicitUrl;
+  } else if (type === "blog") {
+    url = slug
+      ? `blog-post.html?slug=${encodeURIComponent(slug)}`
+      : "blog.html";
+  } else if (type === "updates") {
+    url = "updates.html";
+  } else if (type === "media") {
+    url = "media.html";
+  } else if (type === "products") {
+    url = "products.html";
+  } else {
+    url = "index.html";
   }
+
+  const keywords = [
+    firstString(item, ["category", "category_hi"]),
+    firstString(item, ["tags", "brand", "author"]),
+    firstString(item, ["price", "stock"])
+  ].filter(Boolean).join(" ");
+
+  addItem({
+    title: title || titleHi,
+    description: description,
+    type: type,
+    url: url,
+    keywords: [
+      keywords,
+      titleHi,
+      descriptionHi
+    ].filter(Boolean).join(" ")
+  });
+}
+
 
   function readIndex(data, type) {
     const arr = Array.isArray(data) ? data :
@@ -198,14 +244,22 @@
         } catch (_) {}
       }));
 
+      
       const indexes = [
-        ["content/blog-index.json", "blog"],
-        ["content/updates-index.json", "updates"],
-        ["content/media-index.json", "media"],
+        // Actual product data from your CMS
+        ["content/products.json", "products"],
+        
+        // Optional product indexes for future compatibility
         ["content/products-index.json", "products"],
         ["content/product-index.json", "products"],
-        ["content/catalog-index.json", "products"]
+        ["content/catalog-index.json", "products"],
+        
+        // Published content indexes
+        ["content/blog-index.json", "blog"],
+        ["content/updates-index.json", "updates"],
+        ["content/media-index.json", "media"]
       ];
+
 
       await Promise.all(indexes.map(async ([url, type]) => {
         try {
