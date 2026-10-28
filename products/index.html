@@ -21,12 +21,29 @@
     autocomplete="off"
   >
 
-  <label class="visually-hidden" for="product-category-filter">
-    Filter by category
-  </label>
-  <select id="product-category-filter">
-    <option value="">All categories</option>
-  </select>
+  
+<div class="catalog-category-picker" id="catalog-category-picker">
+  <button
+    type="button"
+    class="catalog-category-trigger"
+    id="product-category-trigger"
+    aria-haspopup="listbox"
+    aria-expanded="false"
+    aria-controls="product-category-menu"
+  >
+    <span id="product-category-label">All categories</span>
+    <span class="catalog-category-arrow" aria-hidden="true"></span>
+  </button>
+
+  <div
+    class="catalog-category-menu"
+    id="product-category-menu"
+    role="listbox"
+    aria-label="Filter by category"
+    hidden
+  ></div>
+</div>
+
 </div>
 
 <div
