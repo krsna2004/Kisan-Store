@@ -130,6 +130,44 @@
       .home-card { padding:22px; }
       .hero-location { display:grid; gap:8px; }
     }
+
+
+    /* Horizontal product and blog carousels */
+    .carousel-section { margin-top: 34px; }
+    .carousel-heading { display:flex; align-items:end; justify-content:space-between; gap:20px; margin-bottom:16px; }
+    .carousel-heading h3 { margin:4px 0 0; font-size:clamp(21px,2.6vw,28px); }
+    .carousel-heading .section-heading { margin:0; text-align:left; max-width:720px; }
+    .carousel-heading .section-heading h2 { margin-bottom:8px; }
+    .carousel-heading .section-heading > p:last-child { margin-bottom:0; }
+    .carousel-controls { display:flex; flex-shrink:0; gap:8px; }
+    .carousel-arrow { width:42px; height:42px; border:1px solid #e4d9c8; border-radius:50%; background:#fff; color:#b91c1c; font-size:28px; line-height:1; cursor:pointer; display:grid; place-items:center; }
+    .carousel-arrow:hover, .carousel-arrow:focus-visible { background:#b91c1c; color:#fff; border-color:#b91c1c; }
+    .product-carousel, .blog-carousel { display:grid; grid-auto-flow:column; grid-auto-columns:minmax(220px, 24%); gap:16px; overflow-x:auto; overscroll-behavior-inline:contain; scroll-snap-type:x mandatory; scroll-behavior:smooth; padding:2px 2px 16px; scrollbar-width:thin; scrollbar-color:#d9c8b5 transparent; }
+    .product-preview-card, .blog-preview-card { min-width:0; overflow:hidden; background:#fff; border:1px solid #eee4d8; border-radius:16px; scroll-snap-align:start; box-shadow:0 5px 18px rgba(55,35,15,.045); }
+    .product-preview-card img { display:block; width:100%; height:170px; object-fit:cover; background:#f7f1e7; }
+    .product-preview-copy { padding:15px 16px 17px; }
+    .product-preview-copy h4 { font-size:17px; margin:0 0 7px; }
+    .product-preview-copy p, .blog-preview-copy p { margin:0; color:#626262; font-size:14px; line-height:1.55; }
+    .carousel-footer { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-top:5px; }
+    .carousel-footer > span { color:#69645f; font-size:13px; }
+    .blog-carousel { grid-auto-columns:minmax(255px, 31%); }
+    .blog-preview-card img { display:block; width:100%; height:180px; object-fit:cover; background:#f7f1e7; }
+    .blog-preview-copy { padding:17px; }
+    .blog-preview-copy .card-kicker { margin:0 0 8px; font-size:11px; letter-spacing:.08em; color:#b91c1c; font-weight:700; }
+    .blog-preview-copy h3 { margin:0 0 9px; font-size:19px; line-height:1.35; }
+    .blog-preview-copy .inline-link { display:inline-block; margin-top:13px; }
+    .blog-carousel-heading { align-items:end; }
+    @media (max-width:760px) {
+      .product-carousel { grid-auto-columns:minmax(72%, 1fr); }
+      .blog-carousel { grid-auto-columns:minmax(82%, 1fr); }
+      .carousel-heading { align-items:center; }
+      .carousel-heading .section-heading { text-align:left; }
+      .carousel-footer { align-items:flex-start; flex-direction:column; }
+      .product-preview-card img { height:190px; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      .product-carousel, .blog-carousel { scroll-behavior:auto; }
+    }
   </style>
 </head>
 <body>
@@ -194,17 +232,43 @@
     </section>
 
     <!-- Product discovery section points visitors to the full catalogue. -->
+        <!-- Product discovery: two swipeable product categories. -->
     <section class="home-section" id="products">
       <div class="container">
-        <div class="section-heading centered">
-          <p class="eyebrow" data-en="Explore the store" data-hi="दुकान में उपलब्ध सामान देखें">Explore the store</p>
-          <h2 data-en="Hardware, plumbing & sanitary essentials" data-hi="हार्डवेयर, प्लंबिंग और सैनिटरी का सामान">Hardware, plumbing &amp; sanitary essentials</h2>
-          <p data-en="Start with our product catalogue, then contact us to check the right size, brand and current availability for your project." data-hi="उत्पाद सूची से शुरुआत करें और अपने काम के लिए सही साइज़, ब्रांड व उपलब्धता जानने के लिए संपर्क करें।">Start with our product catalogue, then contact us to check the right size, brand and current availability for your project.</p>
+        <div class="section-heading">
+          <p class="eyebrow" data-en="Explore the catalogue" data-hi="उत्पाद सूची देखें">Explore the catalogue</p>
+          <h2 data-en="Popular hardware & plumbing categories" data-hi="लोकप्रिय हार्डवेयर और प्लंबिंग श्रेणियाँ">Popular hardware &amp; plumbing categories</h2>
+          <p data-en="Swipe through product types to explore. Contact the shop to confirm current brands, sizes, availability and prices." data-hi="उत्पाद देखने के लिए स्लाइड करें। मौजूदा ब्रांड, साइज़, उपलब्धता और कीमत की पुष्टि के लिए दुकान से संपर्क करें।">Swipe through product types to explore. Contact the shop to confirm current brands, sizes, availability and prices.</p>
         </div>
-        <div class="home-grid">
-          <article class="home-card"><div class="feature-icon" aria-hidden="true">⌁</div><p class="card-kicker" data-en="Category 01" data-hi="श्रेणी 01">Category 01</p><h3 data-en="Hardware Products" data-hi="हार्डवेयर उत्पाद">Hardware Products</h3><p data-en="Browse the catalogue for everyday repair and building essentials. Ask us about product specifications and availability." data-hi="मरम्मत और निर्माण के ज़रूरी सामान के लिए सूची देखें। उत्पाद की जानकारी और उपलब्धता के बारे में पूछें।">Browse the catalogue for everyday repair and building essentials. Ask us about product specifications and availability.</p><a class="inline-link" href="products.html" data-en="View product catalogue" data-hi="उत्पाद सूची देखें">View product catalogue <span aria-hidden="true">→</span></a></article>
-          <article class="home-card"><div class="feature-icon" aria-hidden="true">≋</div><p class="card-kicker" data-en="Category 02" data-hi="श्रेणी 02">Category 02</p><h3 data-en="Plumbing Supplies" data-hi="प्लंबिंग का सामान">Plumbing Supplies</h3><p data-en="Explore plumbing-related items for home maintenance and building work. Confirm sizes and compatibility before purchasing." data-hi="घर के रखरखाव और निर्माण के लिए प्लंबिंग से जुड़ा सामान देखें। खरीदने से पहले साइज़ और अनुकूलता की पुष्टि करें।">Explore plumbing-related items for home maintenance and building work. Confirm sizes and compatibility before purchasing.</p><a class="inline-link" href="products.html" data-en="Explore products" data-hi="उत्पाद देखें">Explore products <span aria-hidden="true">→</span></a></article>
-          <article class="home-card"><div class="feature-icon" aria-hidden="true">◉</div><p class="card-kicker" data-en="Category 03" data-hi="श्रेणी 03">Category 03</p><h3 data-en="Sanitaryware & Water Tanks" data-hi="सैनिटरीवेयर और पानी की टंकियाँ">Sanitaryware &amp; Water Tanks</h3><p data-en="Find sanitary product and water-tank categories in our catalogue, then contact the shop to confirm the options available." data-hi="सैनिटरी उत्पाद और पानी की टंकियों की श्रेणियाँ देखें और उपलब्ध विकल्पों की पुष्टि के लिए दुकान से संपर्क करें।">Find sanitary product and water-tank categories in our catalogue, then contact the shop to confirm the options available.</p><a class="inline-link" href="products.html" data-en="Browse categories" data-hi="श्रेणियाँ देखें">Browse categories <span aria-hidden="true">→</span></a></article>
+
+        <div class="carousel-section">
+          <div class="carousel-heading">
+            <div><p class="card-kicker" data-en="CATEGORY 01" data-hi="श्रेणी 01">CATEGORY 01</p><h3 data-en="Hardware essentials" data-hi="हार्डवेयर का ज़रूरी सामान">Hardware essentials</h3></div>
+            <div class="carousel-controls"><button class="carousel-arrow" type="button" data-scroll-target="hardware-carousel" data-direction="-1" aria-label="Scroll hardware products left">‹</button><button class="carousel-arrow" type="button" data-scroll-target="hardware-carousel" data-direction="1" aria-label="Scroll hardware products right">›</button></div>
+          </div>
+          <div class="product-carousel" id="hardware-carousel" tabindex="0" aria-label="Hardware product examples">
+            <article class="product-preview-card"><img src="assets/images/home-hardware-hand-tools.jpg" alt="Hand tools displayed in an Indian hardware shop" loading="lazy"><div class="product-preview-copy"><h4 data-en="Hand tools" data-hi="हाथ के औज़ार">Hand tools</h4><p data-en="Tools for everyday repair and fitting work." data-hi="रोज़मर्रा की मरम्मत और फिटिंग के औज़ार।">Tools for everyday repair and fitting work.</p></div></article>
+            <article class="product-preview-card"><img src="assets/images/home-hardware-fasteners.jpg" alt="Nails screws nuts and bolts at a hardware shop" loading="lazy"><div class="product-preview-copy"><h4 data-en="Nails, screws & fasteners" data-hi="कील, स्क्रू और फास्टनर">Nails, screws &amp; fasteners</h4><p data-en="Small essentials for fixing and assembly." data-hi="जोड़ने और फिटिंग के लिए ज़रूरी सामान।">Small essentials for fixing and assembly.</p></div></article>
+            <article class="product-preview-card"><img src="assets/images/home-hardware-locks-hinges.jpg" alt="Door locks hinges and hardware fittings" loading="lazy"><div class="product-preview-copy"><h4 data-en="Locks & door fittings" data-hi="ताले और दरवाज़े की फिटिंग">Locks &amp; door fittings</h4><p data-en="Explore common door and fitting hardware." data-hi="दरवाज़ों और फिटिंग का सामान देखें।">Explore common door and fitting hardware.</p></div></article>
+            <article class="product-preview-card"><img src="assets/images/home-hardware-paint-brushes.jpg" alt="Paint brushes rollers and painting tools" loading="lazy"><div class="product-preview-copy"><h4 data-en="Painting tools" data-hi="पेंटिंग के औज़ार">Painting tools</h4><p data-en="Brushes and tools for finishing jobs." data-hi="फिनिशिंग के काम के लिए ब्रश और औज़ार।">Brushes and tools for finishing jobs.</p></div></article>
+            <article class="product-preview-card"><img src="assets/images/home-hardware-building-materials.jpg" alt="Common building and repair hardware supplies" loading="lazy"><div class="product-preview-copy"><h4 data-en="Repair & building essentials" data-hi="मरम्मत और निर्माण का सामान">Repair &amp; building essentials</h4><p data-en="Useful items for household and building work." data-hi="घर और निर्माण के काम की उपयोगी चीज़ें।">Useful items for household and building work.</p></div></article>
+          </div>
+          <div class="carousel-footer"><span data-en="Showing product types; stock may vary." data-hi="उत्पादों के प्रकार दिखाए गए हैं; स्टॉक बदल सकता है।">Showing product types; stock may vary.</span><a class="button button-primary" href="products.html" data-en="View all products" data-hi="सभी उत्पाद देखें">View all products <span aria-hidden="true">→</span></a></div>
+        </div>
+
+        <div class="carousel-section">
+          <div class="carousel-heading">
+            <div><p class="card-kicker" data-en="CATEGORY 02" data-hi="श्रेणी 02">CATEGORY 02</p><h3 data-en="Plumbing & sanitary products" data-hi="प्लंबिंग और सैनिटरी उत्पाद">Plumbing &amp; sanitary products</h3></div>
+            <div class="carousel-controls"><button class="carousel-arrow" type="button" data-scroll-target="plumbing-carousel" data-direction="-1" aria-label="Scroll plumbing products left">‹</button><button class="carousel-arrow" type="button" data-scroll-target="plumbing-carousel" data-direction="1" aria-label="Scroll plumbing products right">›</button></div>
+          </div>
+          <div class="product-carousel" id="plumbing-carousel" tabindex="0" aria-label="Plumbing and sanitary product examples">
+            <article class="product-preview-card"><img src="assets/images/home-plumbing-pipes-fittings.jpg" alt="PVC plumbing pipes and fittings in an Indian shop" loading="lazy"><div class="product-preview-copy"><h4 data-en="Pipes & fittings" data-hi="पाइप और फिटिंग">Pipes &amp; fittings</h4><p data-en="Plumbing parts for water supply and drainage." data-hi="पानी की सप्लाई और ड्रेनेज के लिए फिटिंग।">Plumbing parts for water supply and drainage.</p></div></article>
+            <article class="product-preview-card"><img src="assets/images/home-plumbing-taps.jpg" alt="Bathroom and kitchen taps on display" loading="lazy"><div class="product-preview-copy"><h4 data-en="Taps & faucets" data-hi="नल और टैप">Taps &amp; faucets</h4><p data-en="Options for kitchens, bathrooms and utility areas." data-hi="रसोई, बाथरूम और उपयोगी जगहों के लिए विकल्प।">Options for kitchens, bathrooms and utility areas.</p></div></article>
+            <article class="product-preview-card"><img src="assets/images/home-sanitaryware-basin.jpg" alt="Wash basin and bathroom sanitaryware display" loading="lazy"><div class="product-preview-copy"><h4 data-en="Wash basins & sanitaryware" data-hi="वॉश बेसिन और सैनिटरीवेयर">Wash basins &amp; sanitaryware</h4><p data-en="Bathroom essentials for new builds and renovation." data-hi="नए निर्माण और मरम्मत के लिए बाथरूम का सामान।">Bathroom essentials for new builds and renovation.</p></div></article>
+            <article class="product-preview-card"><img src="assets/images/home-plumbing-shower-accessories.jpg" alt="Shower heads and bathroom plumbing accessories" loading="lazy"><div class="product-preview-copy"><h4 data-en="Bathroom fittings" data-hi="बाथरूम फिटिंग">Bathroom fittings</h4><p data-en="Fittings and accessories for bathroom projects." data-hi="बाथरूम के काम के लिए फिटिंग और एक्सेसरीज़।">Fittings and accessories for bathroom projects.</p></div></article>
+            <article class="product-preview-card"><img src="assets/images/home-water-tank.jpg" alt="Water storage tank for a home in India" loading="lazy"><div class="product-preview-copy"><h4 data-en="Water storage tanks" data-hi="पानी की टंकियाँ">Water storage tanks</h4><p data-en="Ask us about available sizes and options." data-hi="उपलब्ध साइज़ और विकल्पों के बारे में पूछें।">Ask us about available sizes and options.</p></div></article>
+          </div>
+          <div class="carousel-footer"><span data-en="Please confirm product availability with the store." data-hi="कृपया दुकान से उत्पाद की उपलब्धता की पुष्टि करें।">Please confirm product availability with the store.</span><a class="button button-primary" href="products.html" data-en="Explore plumbing & sanitary" data-hi="प्लंबिंग और सैनिटरी देखें">Explore plumbing &amp; sanitary <span aria-hidden="true">→</span></a></div>
         </div>
       </div>
     </section>
@@ -245,6 +309,24 @@
           <article class="home-card resource-card red"><div class="feature-icon" aria-hidden="true">▧</div><p class="card-kicker" data-en="A look around the store" data-hi="दुकान की एक झलक">A look around the store</p><h3 data-en="Store & Product Gallery" data-hi="दुकान और उत्पादों की गैलरी">Store &amp; Product Gallery</h3><p data-en="Visit the gallery to see photos and videos published by the store. Media items will appear there as they are added." data-hi="दुकान की ओर से साझा की गई तस्वीरें और वीडियो देखने के लिए गैलरी देखें। नई सामग्री जुड़ने पर वहाँ दिखाई देगी।">Visit the gallery to see photos and videos published by the store. Media items will appear there as they are added.</p><a class="inline-link" href="media.html" data-en="View the gallery" data-hi="गैलरी देखें">View the gallery <span aria-hidden="true">→</span></a></article>
           <article class="home-card resource-card dark"><div class="feature-icon" aria-hidden="true">◷</div><p class="card-kicker" data-en="Stay informed" data-hi="अपडेट रहें">Stay informed</p><h3 data-en="Store Updates & Opening Hours" data-hi="दुकान के अपडेट और समय">Store Updates &amp; Opening Hours</h3><p data-en="Check the updates page for regular opening hours and any confirmed shop announcements." data-hi="दुकान के नियमित समय और पक्की घोषणाओं के लिए अपडेट पेज देखें।">Check the updates page for regular opening hours and any confirmed shop announcements.</p><a class="inline-link" href="updates.html" data-en="See store updates" data-hi="दुकान के अपडेट देखें">See store updates <span aria-hidden="true">→</span></a></article>
         </div>
+      </div>
+    </section>
+
+    <!-- Latest buying guides from the blog index; cards are populated from published posts. -->
+    <section class="home-section soft" id="latest-guides">
+      <div class="container">
+        <div class="carousel-heading blog-carousel-heading">
+          <div class="section-heading">
+            <p class="eyebrow" data-en="Helpful advice" data-hi="काम की जानकारी">Helpful advice</p>
+            <h2 data-en="Latest buying guides & tips" data-hi="नई खरीदारी गाइड और सुझाव">Latest buying guides &amp; tips</h2>
+            <p data-en="Practical guidance for choosing hardware, plumbing and sanitary products for your home or project." data-hi="घर या निर्माण के काम के लिए हार्डवेयर, प्लंबिंग और सैनिटरी उत्पाद चुनने की उपयोगी जानकारी।">Practical guidance for choosing hardware, plumbing and sanitary products for your home or project.</p>
+          </div>
+          <div class="carousel-controls"><button class="carousel-arrow" type="button" data-scroll-target="blog-carousel" data-direction="-1" aria-label="Scroll blog articles left">‹</button><button class="carousel-arrow" type="button" data-scroll-target="blog-carousel" data-direction="1" aria-label="Scroll blog articles right">›</button></div>
+        </div>
+        <div class="blog-carousel" id="blog-carousel" tabindex="0" aria-label="Latest published buying guides">
+          <article class="blog-preview-card"><img src="assets/images/home-blog-plumbing-guide.jpg" alt="Plumbing pipes and fittings for a home project" loading="lazy"><div class="blog-preview-copy"><p class="card-kicker">BUYING GUIDE</p><h3>Choosing plumbing supplies for your project</h3><p>Helpful tips and practical information from Kisan Store.</p><a class="inline-link" href="blog.html">Explore buying guides →</a></div></article>
+        </div>
+        <div class="carousel-footer blog-carousel-footer"><span id="blog-carousel-status" aria-live="polite" data-en="Read practical tips before choosing products." data-hi="सामान चुनने से पहले उपयोगी सुझाव पढ़ें।">Read practical tips before choosing products.</span><a class="button button-primary" href="blog.html" data-en="More blogs & guides" data-hi="और ब्लॉग व गाइड देखें">More blogs &amp; guides <span aria-hidden="true">→</span></a></div>
       </div>
     </section>
 
@@ -308,5 +390,82 @@
       <span data-en="RJ SH 44 · Astawan · Bharatpur 321201" data-hi="RJ SH 44 · अस्तावन · भरतपुर 321201">RJ SH 44 · Astawan · Bharatpur 321201</span>
     </div>
   </footer>
+
+<script>
+(function () {
+  "use strict";
+
+  document.querySelectorAll("[data-scroll-target][data-direction]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      var target = document.getElementById(button.getAttribute("data-scroll-target"));
+      if (!target) return;
+      var direction = Number(button.getAttribute("data-direction")) || 1;
+      target.scrollBy({ left: direction * Math.max(250, target.clientWidth * 0.82), behavior: "smooth" });
+    });
+  });
+
+  var carousel = document.getElementById("blog-carousel");
+  if (!carousel) return;
+
+  var fallbackImage = "assets/images/home-blog-plumbing-guide.jpg";
+  var status = document.getElementById("blog-carousel-status");
+
+  function safeText(value, maxLength) {
+    return String(value || "").trim().slice(0, maxLength || 240);
+  }
+
+  function makeBlogCard(post) {
+    var card = document.createElement("article");
+    card.className = "blog-preview-card";
+    var image = document.createElement("img");
+    var imagePath = safeText(post.image, 300);
+    image.src = imagePath || fallbackImage;
+    image.alt = safeText(post.image_alt || post.title || "Kisan Store buying guide", 180);
+    image.loading = "lazy";
+    image.onerror = function () {
+      if (image.src.indexOf(fallbackImage) === -1) image.src = fallbackImage;
+    };
+
+    var copy = document.createElement("div");
+    copy.className = "blog-preview-copy";
+    var kicker = document.createElement("p");
+    kicker.className = "card-kicker";
+    kicker.textContent = safeText(post.category || "BUYING GUIDE", 60);
+    var heading = document.createElement("h3");
+    heading.textContent = safeText(post.title || "Buying guide", 140);
+    var description = document.createElement("p");
+    description.textContent = safeText(post.description || "Read practical advice from Kisan Hardware & Sanitary Store.", 220);
+    var link = document.createElement("a");
+    link.className = "inline-link";
+    link.href = "blog-post.html?slug=" + encodeURIComponent(safeText(post.slug, 180));
+    link.textContent = "Read article →";
+    copy.append(kicker, heading, description, link);
+    card.append(image, copy);
+    return card;
+  }
+
+  fetch("content/blog-index.json", { cache: "no-cache" })
+    .then(function (response) {
+      if (!response.ok) throw new Error("Blog index is unavailable");
+      return response.json();
+    })
+    .then(function (posts) {
+      var published = Array.isArray(posts) ? posts.filter(function (post) {
+        return post && post.status === "Published" && post.slug && post.title;
+      }).slice(0, 10) : [];
+      if (!published.length) {
+        if (status) status.textContent = "New buying guides will appear here when published.";
+        return;
+      }
+      carousel.replaceChildren();
+      published.forEach(function (post) { carousel.appendChild(makeBlogCard(post)); });
+      if (status) status.textContent = "Browse our latest published buying guides.";
+    })
+    .catch(function () {
+      if (status) status.textContent = "Explore all buying guides on our blog page.";
+    });
+})();
+</script>
+
 </body>
 </html>
