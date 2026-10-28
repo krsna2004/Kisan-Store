@@ -1,25 +1,11 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://thekisanstore.in/</loc>
-  </url>
-  <url>
-    <loc>https://thekisanstore.in/products.html</loc>
-  </url>
-  <url>
-    <loc>https://thekisanstore.in/trade-partners.html</loc>
-  </url>
-  <url>
-    <loc>https://thekisanstore.in/blog.html</loc>
-  </url>
-  <url>
-    <loc>https://thekisanstore.in/media.html</loc>
-  </url>
-  <url>
-    <loc>https://thekisanstore.in/updates.html</loc>
-  </url>
-  <url>
-    <loc>https://thekisanstore.in/contact.html</loc>
-  </url>
+  <url><loc>https://thekisanstore.in/</loc></url>
+  <url><loc>https://thekisanstore.in/products.html</loc></url>
+  <url><loc>https://thekisanstore.in/trade-partners.html</loc></url>
+  <url><loc>https://thekisanstore.in/blog.html</loc></url>
+  <url><loc>https://thekisanstore.in/media.html</loc></url>
+  <url><loc>https://thekisanstore.in/updates.html</loc></url>
+  <url><loc>https://thekisanstore.in/contact.html</loc></url>
+  <url><loc>https://thekisanstore.in/blog-post.html?slug=choose-right-plumbing-path</loc></url>
 </urlset>
