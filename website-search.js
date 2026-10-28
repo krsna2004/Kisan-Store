@@ -1,4 +1,3 @@
-
 (() => {
   "use strict";
 
@@ -40,33 +39,28 @@
       </div>
     </section>
   `;
-
   document.body.appendChild(root);
 
   const headerActions = document.querySelector(".site-header .header-actions");
-  if (headerActions) {
-    headerActions.prepend(root.querySelector(".ks-header-search"));
-  }
-
+  if (headerActions) headerActions.prepend(root.querySelector(".ks-header-search"));
+  
   const desktopInput = document.getElementById("ksDesktopInput");
   const mobileInput = document.getElementById("ksMobileInput");
   const desktopResults = document.getElementById("ksDesktopResults");
   const overlay = document.getElementById("ksSearchOverlay");
   const overlayResults = document.getElementById("ksOverlayResults");
   const hint = document.getElementById("ksSearchHint");
-  const mobileTrigger = root.querySelector(".ks-mobile-trigger");
-  const closeButton = root.querySelector(".ks-close");
-  const desktopForm = root.querySelector(".ks-desktop-form");
-  const mobileForm = root.querySelector(".ks-mobile-form");
+  const mobileTrigger = document.querySelector(".ks-mobile-trigger");
+  const closeButton = document.querySelector(".ks-close");
+  const desktopForm = document.querySelector(".ks-desktop-form");
+  const mobileForm = document.querySelector(".ks-mobile-form");
 
   let searchItems = [];
   let lastFocus = null;
   let overlayOpen = false;
-  let loadPromise = null;
+  let loadPromise;
 
-  const lang = () =>
-    document.documentElement.lang === "hi" ? "hi" : "en";
-
+  const lang = () => document.documentElement.lang === "hi" ? "hi" : "en";
   const words = () => lang() === "hi" ? {
     desktop: "पूरी वेबसाइट खोजें…",
     mobile: "किसान स्टोर पर कुछ भी खोजें…",
@@ -76,11 +70,8 @@
     start: "खोजने के लिए कुछ लिखें।",
     none: "कोई परिणाम नहीं मिला। दूसरे शब्द आज़माएँ।",
     loading: "वेबसाइट खोज तैयार हो रही है…",
-    pages: "पेज",
-    blog: "जानकारी",
-    updates: "अपडेट",
-    media: "मीडिया",
-    products: "उत्पाद"
+    pages: "पेज", blog: "जानकारी", updates: "अपडेट", media: "मीडिया", products: "उत्पाद",
+    open: "खोलें"
   } : {
     desktop: "Search the whole website…",
     mobile: "Search anything on Kisan Store…",
@@ -90,19 +81,14 @@
     start: "Start typing to search the website.",
     none: "No results found. Try different words.",
     loading: "Preparing website search…",
-    pages: "Page",
-    blog: "Guide",
-    updates: "Update",
-    media: "Media",
-    products: "Product"
+    pages: "Page", blog: "Guide", updates: "Update", media: "Media", products: "Product",
+    open: "Open"
   };
 
   function updateLanguageText() {
     const w = words();
-
     desktopInput.placeholder = w.desktop;
     mobileInput.placeholder = w.mobile;
-
     root.querySelector("#ksSearchTitle").textContent = w.title;
     root.querySelector(".ks-search-brand small").textContent = w.subtitle;
     hint.textContent = w.hint;
@@ -110,139 +96,69 @@
 
   function plain(value) {
     if (value == null) return "";
-
-    if (typeof value === "string" || typeof value === "number") {
-      return String(value);
-    }
-
+    if (typeof value === "string" || typeof value === "number") return String(value);
     return "";
   }
 
   function firstString(obj, keys) {
     for (const key of keys) {
       const value = plain(obj && obj[key]);
-
       if (value.trim()) return value.trim();
     }
-
     return "";
+  }
+
+  function slugify(value) {
+    return String(value || "").toLowerCase().trim()
+      .replace(/\.json$/i, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
   }
 
   function addItem(item) {
     if (!item || !item.title || !item.url) return;
-
     const key = `${item.url}|${item.title}`.toLowerCase();
-
-    if (
-      searchItems.some(
-        existing =>
-          `${existing.url}|${existing.title}`.toLowerCase() === key
-      )
-    ) {
-      return;
-    }
-
+    if (searchItems.some(existing => `${existing.url}|${existing.title}`.toLowerCase() === key)) return;
     searchItems.push({
       title: item.title,
-      titleHi: item.titleHi || "",
       description: item.description || "",
-      descriptionHi: item.descriptionHi || "",
       type: item.type || "pages",
       url: item.url,
-      text: [
-        item.title,
-        item.titleHi,
-        item.description,
-        item.descriptionHi,
-        item.keywords
-      ].filter(Boolean).join(" ").toLowerCase()
+      text: `${item.title} ${item.description || ""} ${item.keywords || ""}`.toLowerCase()
     });
   }
 
   function addStaticPage(url, html) {
     try {
       const doc = new DOMParser().parseFromString(html, "text/html");
-
-      const title =
-        doc.querySelector("title")?.textContent?.trim() || url;
-
-      const description =
-        doc.querySelector('meta[name="description"]')?.content || "";
-
+      const title = doc.querySelector("title")?.textContent?.trim() || url;
+      const description = doc.querySelector('meta[name="description"]')?.content || "";
       const main = doc.querySelector("main") || doc.body;
-
-      const text = (main.textContent || "")
-        .replace(/\s+/g, " ")
-        .trim()
-        .slice(0, 1400);
-
+      const text = (main.textContent || "").replace(/\s+/g, " ").trim().slice(0, 1400);
       addItem({
         title,
         description: `${description} ${text}`.trim(),
         type: "pages",
         url
       });
-    } catch (_) {
-      // A page that cannot be parsed will be skipped.
-    }
+    } catch (_) {}
   }
 
   function itemToSearchEntry(item, type) {
     if (!item || typeof item !== "object") return;
-
     const status = firstString(item, ["status", "publication_status"]);
-
     if (status && status.toLowerCase() !== "published") return;
-
-    // Exclude products explicitly marked unavailable.
-    if (type === "products" && item.available === false) return;
-
-    const title = type === "products"
-      ? firstString(item, ["name", "title", "heading"])
-      : firstString(item, [
-          "title", "name", "heading", "caption", "label"
-        ]);
-
-    const titleHi = firstString(item, [
-      "name_hi", "title_hi", "caption_hi", "category_hi"
-    ]);
-
-    if (!title && !titleHi) return;
-
-    const description = firstString(item, [
-      "description",
-      "excerpt",
-      "summary",
-      "message",
-      "content",
-      "body",
-      "text",
-      "caption",
-      "image_alt",
-      "imageAlt",
-      "alt"
-    ]);
-
-    const descriptionHi = firstString(item, [
-      "description_hi",
-      "message_hi",
-      "content_hi",
-      "caption_hi"
-    ]);
-
+    const title = firstString(item, ["title", "name", "heading", "caption", "caption_hi", "label"]);
+    if (!title) return;
+    const description = firstString(item, ["description", "excerpt", "summary", "content", "body", "text", "caption", "caption_hi", "alt"]);
     const slug = firstString(item, ["slug", "id", "url_slug"]);
-    const explicitUrl = firstString(item, [
-      "url", "permalink", "href", "link"
-    ]);
-
+    const explicitUrl = firstString(item, ["url", "permalink", "href", "link"]);
     let url = "";
 
     if (explicitUrl && !/^javascript:/i.test(explicitUrl)) {
       url = explicitUrl;
     } else if (type === "blog") {
-      url = slug
-        ? `blog-post.html?slug=${encodeURIComponent(slug)}`
-        : "blog.html";
+      url = slug ? `blog-post.html?slug=${encodeURIComponent(slug)}` : "blog.html";
     } else if (type === "updates") {
       url = "updates.html";
     } else if (type === "media") {
@@ -253,167 +169,87 @@
       url = "index.html";
     }
 
-    const keywords = [
-      firstString(item, ["category", "category_hi"]),
-      firstString(item, ["tags", "brand", "author"]),
-      firstString(item, ["price", "stock"])
-    ].filter(Boolean).join(" ");
-
-    addItem({
-      title: title || titleHi,
-      titleHi,
-      description,
-      descriptionHi,
-      type,
-      url,
-      keywords
-    });
+    addItem({ title, description, type, url, keywords: firstString(item, ["category", "tags", "brand", "author"]) });
   }
 
   function readIndex(data, type) {
-    const arr = Array.isArray(data)
-      ? data
-      : Array.isArray(data.items)
-        ? data.items
-        : Array.isArray(data.posts)
-          ? data.posts
-          : Array.isArray(data.entries)
-            ? data.entries
-            : Array.isArray(data.results)
-              ? data.results
-              : [];
-
+    const arr = Array.isArray(data) ? data :
+      Array.isArray(data.items) ? data.items :
+      Array.isArray(data.posts) ? data.posts :
+      Array.isArray(data.entries) ? data.entries :
+      Array.isArray(data.results) ? data.results : [];
     arr.forEach(item => itemToSearchEntry(item, type));
   }
 
   async function loadSearchIndex() {
     if (loadPromise) return loadPromise;
-
     loadPromise = (async () => {
       const pages = [
-        "index.html",
-        "products.html",
-        "trade-partners.html",
-        "blog.html",
-        "media.html",
-        "updates.html",
-        "contact.html"
+        ["index.html", "pages"], ["products.html", "products"],
+        ["trade-partners.html", "pages"], ["blog.html", "blog"],
+        ["media.html", "media"], ["updates.html", "updates"],
+        ["contact.html", "pages"]
       ];
 
-      await Promise.all(pages.map(async url => {
+      await Promise.all(pages.map(async ([url]) => {
         try {
           const response = await fetch(url);
-
-          if (response.ok) {
-            addStaticPage(url, await response.text());
-          }
-        } catch (_) {
-          // Keep search usable if a page request fails.
-        }
+          if (response.ok) addStaticPage(url, await response.text());
+        } catch (_) {}
       }));
 
-      const sources = [
-        // Primary CMS product file.
-        ["content/products.json", "products"],
-
-        // Optional product indexes retained for future use.
-        ["content/products-index.json", "products"],
-        ["content/product-index.json", "products"],
-        ["content/catalog-index.json", "products"],
-
-        // Generated CMS indexes.
+      const indexes = [
         ["content/blog-index.json", "blog"],
         ["content/updates-index.json", "updates"],
-        ["content/media-index.json", "media"]
+        ["content/media-index.json", "media"],
+        ["content/products-index.json", "products"],
+        ["content/product-index.json", "products"],
+        ["content/catalog-index.json", "products"]
       ];
 
-      await Promise.all(sources.map(async ([url, type]) => {
+      await Promise.all(indexes.map(async ([url, type]) => {
         try {
           const response = await fetch(url);
-
           if (!response.ok) return;
-
           const data = await response.json();
           readIndex(data, type);
-        } catch (_) {
-          // Missing or invalid optional indexes are skipped.
-        }
+        } catch (_) {}
       }));
-    })();
 
+      // Ignore explicitly unpublished CMS records, if a status field is present.
+      searchItems = searchItems.filter(item => {
+        const source = item.text;
+        return Boolean(source);
+      });
+    })();
     return loadPromise;
   }
 
   function typeLabel(type) {
-    return words()[type] || words().pages;
+    const w = words();
+    return w[type] || w.pages;
   }
 
   function rank(item, query) {
-    const tokens = query
-      .toLowerCase()
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean);
-
+    const tokens = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
     if (!tokens.length) return 0;
-
     let score = 0;
     const title = item.title.toLowerCase();
     const text = item.text;
-
     for (const token of tokens) {
-      if (title === token) {
-        score += 12;
-      } else if (title.includes(token)) {
-        score += 7;
-      }
-
-      if (text.includes(token)) {
-        score += 2;
-      } else {
-        return 0;
-      }
+      if (title === token) score += 12;
+      else if (title.includes(token)) score += 7;
+      if (text.includes(token)) score += 2;
+      else return 0;
     }
-
     return score;
   }
 
-  function escapeHtml(value) {
-    return String(value).replace(/[&<>"']/g, character => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;"
-    })[character]);
-  }
-
-  function iconFor(type) {
-    return ({
-      blog: "✎",
-      updates: "↗",
-      media: "▧",
-      products: "▦",
-      pages: "⌂"
-    })[type] || "⌕";
-  }
-
   function resultMarkup(item) {
-    const displayTitle =
-      lang() === "hi" && item.titleHi
-        ? item.titleHi
-        : item.title;
-
-    const displayDescription =
-      lang() === "hi" && item.descriptionHi
-        ? item.descriptionHi
-        : item.description;
-
-    const title = escapeHtml(displayTitle);
-    const desc = escapeHtml(displayDescription.slice(0, 180));
-    const url = escapeHtml(item.url);
     const type = typeLabel(item.type);
-
+    const title = escapeHtml(item.title);
+    const desc = escapeHtml(item.description.slice(0, 180));
+    const url = escapeHtml(item.url);
     return `<a class="ks-result" href="${url}">
       <span class="ks-result-icon" aria-hidden="true">${iconFor(item.type)}</span>
       <span class="ks-result-copy"><strong>${title}</strong><small>${type}${desc ? " · " + desc : ""}</small></span>
@@ -421,13 +257,21 @@
     </a>`;
   }
 
-  function renderResults(query, target) {
+  function iconFor(type) {
+    return ({blog:"✎", updates:"↗", media:"▧", products:"▦", pages:"⌂"})[type] || "⌕";
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, c => ({
+      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+    })[c]);
+  }
+
+  function renderResults(query, target, isOverlay = false) {
     const w = words();
     const q = query.trim();
-
     if (!q) {
-      target.innerHTML =
-        `<p class="ks-result-message">${w.start}</p>`;
+      target.innerHTML = `<p class="ks-result-message">${w.start}</p>`;
       target.hidden = false;
       return;
     }
@@ -440,43 +284,27 @@
       .map(entry => entry.item);
 
     target.innerHTML = results.length
-      ? `<div class="ks-result-count">${results.length} ${
-          lang() === "hi"
-            ? "परिणाम"
-            : results.length === 1
-              ? "result"
-              : "results"
-        }</div>${results.map(resultMarkup).join("")}`
+      ? `<div class="ks-result-count">${results.length} ${lang() === "hi" ? "परिणाम" : results.length === 1 ? "result" : "results"}</div>${results.map(resultMarkup).join("")}`
       : `<p class="ks-result-message">${w.none}</p>`;
-
     target.hidden = false;
   }
 
-  async function search(query, target) {
+  async function search(query, target, isOverlay = false) {
     const w = words();
-
-    target.innerHTML =
-      `<p class="ks-result-message">${w.loading}</p>`;
-
+    target.innerHTML = `<p class="ks-result-message">${w.loading}</p>`;
     target.hidden = false;
-
     await loadSearchIndex();
-    renderResults(query, target);
+    renderResults(query, target, isOverlay);
   }
 
   function openOverlay() {
     lastFocus = document.activeElement;
-
     overlay.classList.add("is-open");
     overlay.setAttribute("aria-hidden", "false");
     overlayOpen = true;
-
     document.body.classList.add("ks-search-open");
-
     mobileInput.value = desktopInput.value;
-
-    search(mobileInput.value, overlayResults);
-
+    search(mobileInput.value, overlayResults, true);
     window.setTimeout(() => mobileInput.focus(), 30);
   }
 
@@ -484,93 +312,57 @@
     overlay.classList.remove("is-open");
     overlay.setAttribute("aria-hidden", "true");
     overlayOpen = false;
-
     document.body.classList.remove("ks-search-open");
-
-    if (lastFocus && lastFocus.focus) {
-      lastFocus.focus();
-    }
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
 
   let desktopTimer;
   let mobileTimer;
-
   desktopInput.addEventListener("input", () => {
     window.clearTimeout(desktopTimer);
-
-    desktopTimer = window.setTimeout(
-      () => search(desktopInput.value, desktopResults),
-      120
-    );
+    desktopTimer = window.setTimeout(() => search(desktopInput.value, desktopResults), 120);
   });
-
   mobileInput.addEventListener("input", () => {
     window.clearTimeout(mobileTimer);
-
-    mobileTimer = window.setTimeout(
-      () => search(mobileInput.value, overlayResults),
-      120
-    );
+    mobileTimer = window.setTimeout(() => search(mobileInput.value, overlayResults, true), 120);
   });
 
   desktopForm.addEventListener("submit", event => {
     event.preventDefault();
-
-    if (desktopInput.value.trim()) {
-      search(desktopInput.value, desktopResults);
-    } else {
-      desktopInput.focus();
-    }
+    if (desktopInput.value.trim()) search(desktopInput.value, desktopResults);
+    else desktopInput.focus();
   });
-
   mobileForm.addEventListener("submit", event => {
     event.preventDefault();
-
-    if (mobileInput.value.trim()) {
-      search(mobileInput.value, overlayResults);
-    } else {
-      mobileInput.focus();
-    }
+    if (mobileInput.value.trim()) search(mobileInput.value, overlayResults, true);
+    else mobileInput.focus();
   });
 
   mobileTrigger.addEventListener("click", openOverlay);
   closeButton.addEventListener("click", closeOverlay);
-
   overlay.addEventListener("click", event => {
     if (event.target === overlay) closeOverlay();
   });
-
   document.addEventListener("keydown", event => {
     if (event.key === "Escape") {
       if (overlayOpen) closeOverlay();
       desktopResults.hidden = true;
     }
   });
-
   document.addEventListener("click", event => {
-    const headerSearch = root.querySelector(".ks-header-search");
+  const headerSearch = document.querySelector(
+    ".site-header .header-actions .ks-header-search"
+  );
 
-    if (headerSearch && !headerSearch.contains(event.target)) {
-      desktopResults.hidden = true;
-    }
-  });
+  if (headerSearch && !headerSearch.contains(event.target)) {
+    desktopResults.hidden = true;
+  }
+});
 
   document.getElementById("langBtn")?.addEventListener("click", () => {
-    window.setTimeout(() => {
-      updateLanguageText();
-
-      if (desktopInput.value.trim()) {
-        renderResults(desktopInput.value, desktopResults);
-      }
-
-      if (overlayOpen) {
-        renderResults(mobileInput.value, overlayResults);
-      }
-    }, 0);
+    window.setTimeout(updateLanguageText, 0);
   });
 
   updateLanguageText();
-
-  // Search data is loaded only when a visitor first searches.
+  loadSearchIndex();
 })();
-      
