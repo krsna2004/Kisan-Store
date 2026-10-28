@@ -10,7 +10,10 @@ content:
     type: file
     path: content/products.json
     format: json
-    list: true
+    list:
+      collapsible:
+        collapsed: true
+        summary: "{fields.name}"
     fields:
       - name: name
         label: Product Name
