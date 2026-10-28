@@ -25,9 +25,9 @@
 
 <style>
 .product-detail {
-  max-width: 960px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 24px 20px 42px;
+  padding: 24px 20px 44px;
 }
 
 .breadcrumbs {
@@ -45,13 +45,13 @@
   color: #b91c1c;
 }
 
-/* Compact language switch */
 .product-language {
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
   align-items: center;
   gap: 3px;
   padding: 4px;
-  margin-bottom: 20px;
+  margin: 0 auto 22px;
   border: 1px solid #e5e7eb;
   border-radius: 999px;
   background: #fff;
@@ -75,18 +75,18 @@
 }
 
 .product-detail-grid {
-  display: grid;
-  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
-  gap: 30px;
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
 }
 
-/* Square, smaller product image */
 .product-image-wrap {
-  width: 100%;
+  width: min(100%, 300px);
   aspect-ratio: 1 / 1;
   background: #f8fafc;
-  border-radius: 18px;
+  border: 1px solid #f1f5f9;
+  border-radius: 22px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -97,34 +97,44 @@
   display: block;
   width: 100%;
   height: 100%;
-  padding: 12px;
+  padding: 14px;
   box-sizing: border-box;
   object-fit: contain;
+}
+
+.product-detail-grid > section {
+  width: 100%;
+  max-width: 660px;
+  text-align: center;
 }
 
 .product-category {
   color: #b91c1c;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: .06em;
-  font-size: .78rem;
-  margin: 2px 0 8px;
+  letter-spacing: .09em;
+  font-size: .8rem;
+  margin: 0 0 8px;
 }
 
 .product-detail h1 {
-  font-size: clamp(1.8rem, 4vw, 2.35rem);
-  margin: .2rem 0 .8rem;
+  font-size: clamp(1.9rem, 4vw, 2.5rem);
+  margin: 0 0 14px;
   line-height: 1.15;
+  letter-spacing: -.03em;
 }
 
 .product-stock {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 999px;
-  padding: 7px 12px;
-  background: #fef3c7;
-  color: #854d0e;
-  font-size: .88rem;
-  margin: 8px 0 14px;
+  padding: 8px 16px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-size: .9rem;
+  font-weight: 600;
+  margin: 0 0 14px;
 }
 
 .product-stock.available {
@@ -133,22 +143,26 @@
 }
 
 .product-price {
+  font-size: 1.25rem;
   font-weight: 700;
-  font-size: 1.2rem;
-  margin: 8px 0;
+  margin: 0 0 14px;
 }
 
 .product-description {
-  line-height: 1.7;
-  margin: 10px 0 0;
-  color: #374151;
+  max-width: 600px;
+  margin: 8px auto 0;
+  color: #4b5563;
+  line-height: 1.8;
+  font-size: 1rem;
 }
 
 .product-actions {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
   flex-wrap: wrap;
-  margin-top: 20px;
+  margin-top: 24px;
 }
 
 .product-actions a {
@@ -156,11 +170,12 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
+  border-radius: 12px;
+  padding: 12px 18px;
 }
 
-.product-actions .button {
-  padding: 12px 17px;
-  border-radius: 12px;
+.product-actions .button-primary {
+  box-shadow: 0 5px 14px rgba(185, 28, 28, .12);
 }
 
 .product-copy[hidden] {
@@ -169,18 +184,29 @@
 
 .back-link {
   display: inline-block;
-  margin-top: 24px;
+  margin-top: 26px;
   color: #b91c1c;
   font-weight: 600;
   text-decoration: none;
 }
 
+.back-link:hover {
+  text-decoration: underline;
+}
+
 .product-footer {
   border-top: 1px solid #e5e7eb;
-  padding: 18px 20px;
+  padding: 20px;
   text-align: center;
   color: #64748b;
   font-size: .88rem;
+  line-height: 1.7;
+}
+
+@media (min-width: 701px) {
+  .product-image-wrap {
+    width: 320px;
+  }
 }
 
 @media (max-width: 700px) {
@@ -188,28 +214,27 @@
     padding: 20px 16px 34px;
   }
 
-  .product-detail-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 20px;
-  }
-
   .product-image-wrap {
     width: min(100%, 270px);
-    aspect-ratio: 1 / 1;
-    margin: 0 auto;
-    border-radius: 16px;
+    border-radius: 18px;
   }
 
   .product-detail h1 {
     font-size: 2rem;
   }
 
+  .product-description {
+    font-size: .98rem;
+  }
+
   .product-actions {
-    gap: 9px;
+    flex-direction: column;
+    gap: 10px;
   }
 
   .product-actions a {
-    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 </style>
@@ -256,7 +281,7 @@
     <h1>High Pressure Shower</h1>
 
     <p class="product-stock available">
-      Available — confirm current stock
+      Available
     </p>
 
     
@@ -280,7 +305,7 @@
     <h1>हाई-प्रेशर शावर</h1>
 
     <p class="product-stock available">
-      उपलब्ध — मौजूदा स्टॉक की पुष्टि करें
+      उपलब्ध है
     </p>
 
     
