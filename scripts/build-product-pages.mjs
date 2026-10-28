@@ -564,23 +564,36 @@ ${siteLayout.footer}
   const backLink = document.querySelector("[data-back-link]");
 
   function setLanguage(language) {
-    document.documentElement.lang = language;
+    const selectedLanguage = language === "hi" ? "hi" : "en";
 
     copies.forEach(copy => {
-      copy.hidden = copy.dataset.copy !== language;
+      copy.hidden = copy.dataset.copy !== selectedLanguage;
     });
 
     buttons.forEach(button => {
       button.setAttribute(
         "aria-pressed",
-        String(button.dataset.language === language)
+        String(button.dataset.language === selectedLanguage)
       );
     });
 
     if (backLink) {
-      backLink.textContent = language === "hi"
+      backLink.textContent = selectedLanguage === "hi"
         ? "← सभी उत्पादों की सूची"
         : "← Back to product catalogue";
+    }
+
+    // Keep the shared header language button and search UI in sync.
+    if (typeof window.setKisanLanguage === "function") {
+      window.setKisanLanguage(selectedLanguage);
+    } else {
+      document.documentElement.lang = selectedLanguage;
+      try {
+        localStorage.setItem("kisan-hardware-language", selectedLanguage);
+      } catch (_) {}
+      document.dispatchEvent(new CustomEvent("kisan:language-change", {
+        detail: { language: selectedLanguage }
+      }));
     }
   }
 
