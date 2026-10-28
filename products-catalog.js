@@ -6,7 +6,12 @@
   const grid = document.getElementById("cms-products-grid");
   const status = document.getElementById("catalog-status");
   const searchInput = document.getElementById("product-search");
-  const categorySelect = document.getElementById("product-category-filter");
+  const categoryPicker = document.getElementById("catalog-category-picker");
+  const categoryTrigger = document.getElementById("product-category-trigger");
+  const categoryLabel = document.getElementById("product-category-label");
+  const categoryMenu = document.getElementById("product-category-menu");
+
+let selectedCategory = "";
 
   if (!grid || !status) return;
 
@@ -102,8 +107,6 @@
     const query = String(searchInput?.value || "")
       .trim().toLocaleLowerCase();
 
-    const selectedCategory = String(categorySelect?.value || "");
-
     const filtered = products.filter(product => {
       if (!product || !product.name) return false;
       if (selectedCategory &&
@@ -133,27 +136,63 @@
       : text("No products match your search.",
              "आपकी खोज से कोई उत्पाद नहीं मिला।");
   }
+  
+function populateCategories() {
+  if (!categoryPicker || !categoryMenu || !categoryLabel) return;
 
-  function populateCategories() {
-    if (!categorySelect) return;
+  const categories = [...new Set(
+    products
+      .map(p => String(p?.category || "").trim())
+      .filter(Boolean)
+  )].sort((a, b) => a.localeCompare(b));
 
-    const categories = [...new Set(
-      products.map(p => String(p?.category || "").trim()).filter(Boolean)
-    )].sort((a, b) => a.localeCompare(b));
+  const allLabel = text("All categories", "सभी श्रेणियाँ");
 
-    categorySelect.innerHTML =
-      `<option value="">${text("All categories", "सभी श्रेणियाँ")}</option>` +
-      categories.map(category => {
-        const sample = products.find(p => p.category === category);
-        const label = isHindi()
-          ? sample?.category_hi || category : category;
+  const options = [
+    { value: "", label: allLabel },
+    ...categories.map(category => {
+      const sample = products.find(p => p.category === category);
+      return {
+        value: category,
+        label: isHindi()
+          ? sample?.category_hi || category
+          : category
+      };
+    })
+  ];
 
-        return `<option value="${escapeHtml(category)}">
-          ${escapeHtml(label)}
-        </option>`;
-      }).join("");
-  }
+  const current = options.find(
+    option => option.value === selectedCategory
+  );
 
+  if (!current) selectedCategory = "";
+
+  const selected = options.find(
+    option => option.value === selectedCategory
+  );
+
+  categoryLabel.textContent = selected?.label || allLabel;
+
+  categoryMenu.innerHTML = options.map(option => {
+    const active = option.value === selectedCategory;
+
+    return `
+      <button
+        type="button"
+        class="catalog-category-option${active ? " is-selected" : ""}"
+        role="option"
+        aria-selected="${active}"
+        data-category="${escapeHtml(option.value)}"
+      >
+        <span>${escapeHtml(option.label)}</span>
+        <span class="catalog-category-check" aria-hidden="true">
+          ${active ? "✓" : ""}
+        </span>
+      </button>
+    `;
+  }).join("");
+}
+  
   async function loadProducts() {
     status.textContent = text(
       "Loading products…", "उत्पाद लोड हो रहे हैं…"
@@ -182,9 +221,43 @@
       console.error("Product catalogue error:", error);
     }
   }
+  
+searchInput?.addEventListener("input", renderProducts);
 
-  searchInput?.addEventListener("input", renderProducts);
-  categorySelect?.addEventListener("change", renderProducts);
+categoryTrigger?.addEventListener("click", () => {
+  const isOpen = categoryTrigger.getAttribute("aria-expanded") === "true";
+
+  categoryTrigger.setAttribute("aria-expanded", String(!isOpen));
+  categoryMenu.hidden = isOpen;
+});
+
+categoryMenu?.addEventListener("click", event => {
+  const option = event.target.closest("[data-category]");
+  if (!option) return;
+
+  selectedCategory = option.dataset.category || "";
+
+  categoryTrigger.setAttribute("aria-expanded", "false");
+  categoryMenu.hidden = true;
+
+  populateCategories();
+  renderProducts();
+});
+
+document.addEventListener("click", event => {
+  if (categoryPicker && !categoryPicker.contains(event.target)) {
+    categoryMenu.hidden = true;
+    categoryTrigger?.setAttribute("aria-expanded", "false");
+  }
+});
+
+categoryPicker?.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    categoryMenu.hidden = true;
+    categoryTrigger?.setAttribute("aria-expanded", "false");
+    categoryTrigger?.focus();
+  }
+});
 
   document.getElementById("langBtn")?.addEventListener("click", () => {
     populateCategories();
