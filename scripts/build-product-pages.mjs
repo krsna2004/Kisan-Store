@@ -9,6 +9,32 @@ const OUTPUT_DIR = "products";
 const SITEMAP = "sitemap.xml";
 const WHATSAPP_NUMBER = "919667540112";
 
+const HOMEPAGE_HTML = "index.html";
+
+function getSiteLayout() {
+  if (!fs.existsSync(HOMEPAGE_HTML)) {
+    throw new Error("index.html is required to build product pages.");
+  }
+
+  const html = fs.readFileSync(HOMEPAGE_HTML, "utf8");
+
+  const header = html.match(/<header class="site-header">[\s\S]*?<\/header>/i);
+  const footer = html.match(/<footer class="site-footer">[\s\S]*?<\/footer>/i);
+
+  if (!header || !footer) {
+    throw new Error("Could not find the site header or footer in index.html.");
+  }
+
+  const rootLinks = markup => markup
+    .replace(/(href|src)="(?!https?:|\/\/|#|mailto:|tel:|\/)([^"]+)"/gi,
+      (match, attr, value) => `${attr}="/${value.replace(/^\.\//, "")}`);
+
+  return {
+    header: rootLinks(header[0]),
+    footer: rootLinks(footer[0])
+  };
+}
+
 function readJson(file) {
   if (!fs.existsSync(file)) {
     throw new Error(`Required file not found: ${file}`);
@@ -57,6 +83,7 @@ function absoluteAssetPath(value) {
 }
 
 function makeProductPage(product, slug) {
+  const siteLayout = getSiteLayout();
   const name = String(product.name || "Product").trim();
   const nameHi = String(product.name_hi || name).trim();
 
@@ -197,6 +224,8 @@ ${keywordsMarkup}
 
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" type="image/png" href="/favicon.png">
+<script src="/script.js" defer></script>
+<script src="/website-search.js" defer></script>
 
 <script type="application/ld+json">${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>
 
@@ -418,6 +447,8 @@ ${keywordsMarkup}
 </head>
 
 <body>
+${siteLayout.header}
+
 <main class="product-detail">
 
 <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -504,9 +535,7 @@ ${imageMarkup ? `<div class="product-image-wrap">${imageMarkup}</div>` : ""}
 </div>
 </main>
 
-<footer class="product-footer">
-  Kisan Hardware &amp; Sanitary Store · Astawan, Bharatpur, Rajasthan · Open daily, 7 AM–7 PM
-</footer>
+${siteLayout.footer}
 
 <script>
 (() => {
