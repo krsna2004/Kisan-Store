@@ -1,5 +1,5 @@
 
-name: Build Content Indexes
+name: Build Content Indexes and Sitemap
 
 on:
   push:
@@ -29,22 +29,23 @@ jobs:
         with:
           node-version: 20
 
-      - name: Generate content indexes
+      - name: Generate content indexes and sitemap
         run: node scripts/build-blog-index.mjs
 
-      - name: Commit updated indexes
+      - name: Commit updated indexes and sitemap
         run: |
           git add -f content/blog-index.json
           git add -f content/updates-index.json
           git add -f content/media-index.json
+          git add -f sitemap.xml
 
           if git diff --cached --quiet; then
-            echo "No index changes to commit."
+            echo "No generated changes to commit."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Update generated content indexes"
+          git commit -m "Update content indexes and sitemap"
           git push
           
