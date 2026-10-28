@@ -2774,3 +2774,78 @@ body.ks-search-open {
   }
 }
 
+/* Kisan Store — capsule-style product search */
+.catalog-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 22px;
+  width: 100%;
+}
+
+.catalog-controls input#product-search {
+  box-sizing: border-box;
+  flex: 0 1 300px;
+  width: 100%;
+  max-width: 300px;
+  min-width: 0;
+  height: 44px;
+  padding: 10px 16px 10px 42px;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  outline: none;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23b91c1c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 15px center;
+  background-size: 18px;
+  color: #171717;
+  font: inherit;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.catalog-controls input#product-search:focus {
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.09);
+}
+
+.catalog-controls select#product-category-filter {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 100%;
+  min-width: 145px;
+  height: 42px;
+  padding: 9px 30px 9px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  background: #fff;
+  color: #333;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.catalog-controls select#product-category-filter:focus {
+  outline: none;
+  border-color: #b91c1c;
+}
+
+@media (max-width: 600px) {
+  .catalog-controls {
+    gap: 8px;
+  }
+
+  .catalog-controls input#product-search {
+    flex: 1 1 200px;
+    max-width: 100%;
+    font-size: 13px;
+  }
+
+  .catalog-controls select#product-category-filter {
+    min-width: 135px;
+    font-size: 13px;
+  }
+}
