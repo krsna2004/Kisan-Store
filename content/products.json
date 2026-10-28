@@ -1,22 +1,12 @@
 [
   {
-    "name": "Test Tap",
+    "name": "Valve",
     "category": "Plumbing",
-    "price": 150,
-    "stock": 10,
-    "available": true,
-    "image": "assets/images/1000057271-1.jpg",
-    "description": "Bathroom tap for testing the product catalogue.",
-    "name_hi": "टेस्ट नल",
-    "category_hi": "प्लंबिंग",
-    "description_hi": "परीक्षण के लिए बाथरूम का नल"
-  },
-  {
-    "name": "valve",
-    "category": "Plumbing",
-    "stock": 10,
     "available": true,
     "image": "assets/images/1000088404.jpg",
-    "description": "Bathroom valve for testing the product catalogue."
+    "description": "High-quality bathroom plumbing valve designed for durability and reliable water flow control. Perfect for residential plumbing needs, ensuring a leak-free and long-lasting performance.",
+    "name_hi": "वाल्व",
+    "category_hi": "प्लंबिंग",
+    "description_hi": "टिकाऊ और विश्वसनीय पानी के प्रवाह नियंत्रण के लिए डिज़ाइन किया गया उच्च गुणवत्ता वाला बाथरूम प्लंबिंग वाल्व। यह आवासीय प्लंबिंग की जरूरतों के लिए एकदम सही है, जो रिसाव मुक्त और लंबे समय तक चलने वाला प्रदर्शन सुनिश्चित करता है।"
   }
 ]
