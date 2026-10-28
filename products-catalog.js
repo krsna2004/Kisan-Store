@@ -1,9 +1,12 @@
+
 (() => {
   "use strict";
 
-  const catalogueUrl = "content/products.json";
+  const catalogueUrl = "/content/products.json";
   const grid = document.getElementById("cms-products-grid");
   const status = document.getElementById("catalog-status");
+  const searchInput = document.getElementById("product-search");
+  const categorySelect = document.getElementById("product-category-filter");
 
   if (!grid || !status) return;
 
@@ -12,49 +15,80 @@
 
   const escapeHtml = (value) =>
     String(value ?? "").replace(/[&<>"']/g, char => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      "&": "&amp;", "<": "&lt;", ">": "&gt;",
+      '"': "&quot;", "'": "&#39;"
     })[char]);
+
+  const slugify = value => String(value || "")
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase().trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  const getSlug = product => {
+    const slug = String(product.slug || "").trim();
+    return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)
+      ? slug : slugify(product.name);
+  };
+
+  const isAvailable = product =>
+    product.available === true || product.available === "true";
 
   function makeCard(product) {
     const name = String(
       isHindi() ? product.name_hi || product.name : product.name
     ).trim();
+
     const category = String(
-      isHindi() ? product.category_hi || product.category || "हार्डवेयर"
-               : product.category || "Hardware"
-    ).trim();
-    const description = String(
-      isHindi() ? product.description_hi || product.description || ""
-               : product.description || ""
+      isHindi()
+        ? product.category_hi || product.category || "हार्डवेयर"
+        : product.category || "Hardware"
     ).trim();
 
-    const available = product.available === true || product.available === "true";
-    const availability = available
-      ? `<span class="stock-pill in-stock">${text("Available", "उपलब्ध")}</span>`
-      : `<span class="stock-pill out-stock">${text("Currently unavailable", "फिलहाल उपलब्ध नहीं")}</span>`;
-
+    const slug = getSlug(product);
+    const available = isAvailable(product);
     const rawImage = String(product.image || "").trim();
+
     const safeImage = rawImage &&
-  !/^(?:[a-z]+:|\/\/|\/)/i.test(rawImage) &&
-  !rawImage.split("/").includes("..");
+      !/^(?:[a-z]+:|\/\/|\/)/i.test(rawImage) &&
+      !rawImage.split("/").includes("..");
+
     const image = safeImage
-      ? `<img class="catalog-product-image" src="${escapeHtml(rawImage)}" alt="${escapeHtml(name)}" loading="lazy" onerror="this.hidden=true">`
+      ? `<img class="catalog-product-image"
+          src="/${escapeHtml(rawImage.replace(/^\.\//, ""))}"
+          alt="${escapeHtml(product.image_alt || name)}"
+          loading="lazy" onerror="this.hidden=true">`
       : `<div class="product-symbol symbol-red" aria-hidden="true">▦</div>`;
 
-    const whatsappMessage = isHindi()
-      ? `नमस्ते, कृपया ${name} की कीमत और जानकारी बताएं।`
-      : `Namaste, please share the price and details for ${name}.`;
-    const message = encodeURIComponent(whatsappMessage);
+    const message = encodeURIComponent(
+      isHindi()
+        ? `नमस्ते, कृपया ${name} की कीमत और जानकारी बताएं।`
+        : `Namaste, please share the price and details for ${name}.`
+    );
 
     return `
       <article class="product-card catalog-product-card">
-        <div class="catalog-image-wrap">${image}</div>
+        <a class="catalog-image-wrap"
+           href="/products/${escapeHtml(slug)}/"
+           aria-label="${escapeHtml(name)}">
+          ${image}
+        </a>
         <div class="product-content">
           <p class="product-kicker">${escapeHtml(category)}</p>
-          <h3>${escapeHtml(name)}</h3>
-          ${description ? `<p>${escapeHtml(description)}</p>` : ""}
-          ${availability}
-          <a class="inline-link" target="_blank" rel="noopener noreferrer"
+          <h3>
+            <a class="catalog-name-link"
+               href="/products/${escapeHtml(slug)}/">
+              ${escapeHtml(name)}
+            </a>
+          </h3>
+          <span class="stock-pill ${available ? "in-stock" : "out-stock"}">
+            ${available
+              ? text("Available", "उपलब्ध")
+              : text("Currently unavailable", "फिलहाल उपलब्ध नहीं")}
+          </span>
+          <a class="inline-link"
+             target="_blank" rel="noopener noreferrer"
              href="https://wa.me/919667540112?text=${message}">
             ${text("Ask for Price ↗", "कीमत पूछें ↗")}
           </a>
@@ -65,33 +99,80 @@
   let products = [];
 
   function renderProducts() {
-    const visibleProducts = products.filter(product =>
-      product && product.name &&
-      (product.available === true || product.available === "true")
-    );
-    grid.innerHTML = visibleProducts.map(makeCard).join("");
+    const query = String(searchInput?.value || "")
+      .trim().toLocaleLowerCase();
 
-    if (!visibleProducts.length) {
-      status.textContent = text(
-        "No available products yet. Add a product in Pages CMS.",
-        "अभी कोई उपलब्ध उत्पाद नहीं है। Pages CMS में उत्पाद जोड़ें।"
-      );
-    } else {
-      status.textContent = text(
-        `${visibleProducts.length} product(s) loaded.`,
-        `${visibleProducts.length} उत्पाद लोड हुए।`
-      );
-    }
+    const selectedCategory = String(categorySelect?.value || "");
+
+    const filtered = products.filter(product => {
+      if (!product || !product.name) return false;
+      if (selectedCategory &&
+          String(product.category || "") !== selectedCategory) {
+        return false;
+      }
+
+      const keywords = Array.isArray(product.search_keywords)
+        ? product.search_keywords.join(" ")
+        : String(product.search_keywords || "");
+
+      const searchable = [
+        product.name, product.name_hi,
+        product.category, product.category_hi,
+        product.description, product.description_hi,
+        keywords, product.brand, product.sku
+      ].filter(Boolean).join(" ").toLocaleLowerCase();
+
+      return !query || searchable.includes(query);
+    });
+
+    grid.innerHTML = filtered.map(makeCard).join("");
+
+    status.textContent = filtered.length
+      ? text(`${filtered.length} product(s) found.`,
+             `${filtered.length} उत्पाद मिले।`)
+      : text("No products match your search.",
+             "आपकी खोज से कोई उत्पाद नहीं मिला।");
+  }
+
+  function populateCategories() {
+    if (!categorySelect) return;
+
+    const categories = [...new Set(
+      products.map(p => String(p?.category || "").trim()).filter(Boolean)
+    )].sort((a, b) => a.localeCompare(b));
+
+    categorySelect.innerHTML =
+      `<option value="">${text("All categories", "सभी श्रेणियाँ")}</option>` +
+      categories.map(category => {
+        const sample = products.find(p => p.category === category);
+        const label = isHindi()
+          ? sample?.category_hi || category : category;
+
+        return `<option value="${escapeHtml(category)}">
+          ${escapeHtml(label)}
+        </option>`;
+      }).join("");
   }
 
   async function loadProducts() {
-    status.textContent = text("Loading products…", "उत्पाद लोड हो रहे हैं…");
+    status.textContent = text(
+      "Loading products…", "उत्पाद लोड हो रहे हैं…"
+    );
+
     try {
-      const response = await fetch(`${catalogueUrl}?v=${Date.now()}`);
-      if (!response.ok) throw new Error("Could not load product catalogue");
+      const response = await fetch(
+        `${catalogueUrl}?v=${Date.now()}`
+      );
+
+      if (!response.ok) throw new Error("Could not load products");
+
       const data = await response.json();
-      if (!Array.isArray(data)) throw new Error("Expected a JSON array");
+      if (!Array.isArray(data)) {
+        throw new Error("Expected a JSON array");
+      }
+
       products = data;
+      populateCategories();
       renderProducts();
     } catch (error) {
       status.textContent = text(
@@ -102,6 +183,14 @@
     }
   }
 
-  document.getElementById("langBtn")?.addEventListener("click", () => renderProducts());
+  searchInput?.addEventListener("input", renderProducts);
+  categorySelect?.addEventListener("change", renderProducts);
+
+  document.getElementById("langBtn")?.addEventListener("click", () => {
+    populateCategories();
+    renderProducts();
+  });
+
   loadProducts();
 })();
+      
