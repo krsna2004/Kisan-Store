@@ -22,6 +22,9 @@
   {
     "name": "Water Tank",
     "available": true,
-    "image": "assets/images/home-water-tank.jpg"
+    "image": "assets/images/home-water-tank.jpg",
+    "description": "Premium-quality, UV-stabilised plastic water tanks designed for durable, leak-proof, and safe domestic and commercial water storage.",
+    "name_hi": "वॉटर टैंक",
+    "description_hi": "उच्च गुणवत्ता और मजबूत प्लास्टिक वॉटर टैंक, जो टिकाऊ, लीक-प्रूफ और पानी को सुरक्षित रखने के लिए सही विकल्प हैं।"
   }
 ]
