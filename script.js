@@ -23,6 +23,10 @@
       languageButton.setAttribute("aria-pressed", String(currentLanguage === "hi"));
     }
     try { localStorage.setItem(storageKey, currentLanguage); } catch (_) { /* Storage may be unavailable. */ }
+    // Notify generated product pages so their main content follows the header switch.
+    document.dispatchEvent(new CustomEvent("kisan:language-change", {
+      detail: { language: currentLanguage }
+    }));
   }
 
   // Expose one shared language controller for generated product pages.
