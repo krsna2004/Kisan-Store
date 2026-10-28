@@ -2,6 +2,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
+const SITE_URL = "https://thekisanstore.in";
+
 function readCollection(directory, options = {}) {
   const {
     requirePublished = true,
@@ -19,7 +21,6 @@ function readCollection(directory, options = {}) {
     .map((file) => {
       const fullPath = path.join(directory, file);
       const item = JSON.parse(fs.readFileSync(fullPath, "utf8"));
-
       return { ...item, sourceFile: file };
     })
     .filter((item) => !requirePublished || item.status === "Published")
@@ -39,10 +40,53 @@ function writeIndex(file, data) {
   console.log(`Generated ${file}: ${data.length} entries`);
 }
 
-writeIndex(
-  "content/blog-index.json",
-  readCollection("content/blogs")
-);
+function escapeXML(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+function generateSitemap(blogs) {
+  const staticPages = [
+    "/",
+    "/products.html",
+    "/trade-partners.html",
+    "/blog.html",
+    "/media.html",
+    "/updates.html",
+    "/contact.html",
+  ];
+
+  const blogUrls = blogs
+    .filter((post) => post.slug)
+    .map((post) =>
+      `/blog-post.html?slug=${encodeURIComponent(post.slug)}`
+    );
+
+  const urls = [...staticPages, ...blogUrls];
+
+  const uniqueUrls = [...new Set(urls)];
+
+  const xml = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...uniqueUrls.map((url) =>
+      `  <url><loc>${escapeXML(SITE_URL + url)}</loc></url>`
+    ),
+    "</urlset>",
+    "",
+  ].join("\n");
+
+  fs.writeFileSync("sitemap.xml", xml, "utf8");
+  console.log(`Generated sitemap.xml: ${uniqueUrls.length} URLs`);
+}
+
+const blogs = readCollection("content/blogs");
+
+writeIndex("content/blog-index.json", blogs);
 
 writeIndex(
   "content/updates-index.json",
@@ -55,3 +99,5 @@ writeIndex(
   "content/media-index.json",
   readCollection("content/media")
 );
+
+generateSitemap(blogs);
