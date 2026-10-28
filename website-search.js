@@ -186,16 +186,16 @@ function itemToSearchEntry(item, type) {
     url = explicitUrl;
   } else if (type === "blog") {
     url = slug
-      ? `blog-post.html?slug=${encodeURIComponent(slug)}`
-      : "blog.html";
+      ? `/blog-post.html?slug=${encodeURIComponent(slug)}`
+      : "/blog.html";
   } else if (type === "updates") {
-    url = "updates.html";
+    url = "/updates.html";
   } else if (type === "media") {
-    url = "media.html";
+    url = "/media.html";
   } else if (type === "products") {
-    url = "products.html";
+    url = slug ? `/products/${encodeURIComponent(slug)}/` : "/products/";
   } else {
-    url = "index.html";
+    url = "/index.html";
   }
 
   const keywords = [
@@ -231,10 +231,10 @@ function itemToSearchEntry(item, type) {
     if (loadPromise) return loadPromise;
     loadPromise = (async () => {
       const pages = [
-        ["index.html", "pages"], ["products.html", "products"],
-        ["trade-partners.html", "pages"], ["blog.html", "blog"],
-        ["media.html", "media"], ["updates.html", "updates"],
-        ["contact.html", "pages"]
+        ["/index.html", "pages"], ["/products.html", "products"],
+        ["/trade-partners.html", "pages"], ["/blog.html", "blog"],
+        ["/media.html", "media"], ["/updates.html", "updates"],
+        ["/contact.html", "pages"]
       ];
 
       await Promise.all(pages.map(async ([url]) => {
@@ -247,17 +247,17 @@ function itemToSearchEntry(item, type) {
       
       const indexes = [
         // Actual product data from your CMS
-        ["content/products.json", "products"],
+        ["/content/products.json", "products"],
         
         // Optional product indexes for future compatibility
-        ["content/products-index.json", "products"],
-        ["content/product-index.json", "products"],
-        ["content/catalog-index.json", "products"],
+        ["/content/products-index.json", "products"],
+        ["/content/product-index.json", "products"],
+        ["/content/catalog-index.json", "products"],
         
         // Published content indexes
-        ["content/blog-index.json", "blog"],
-        ["content/updates-index.json", "updates"],
-        ["content/media-index.json", "media"]
+        ["/content/blog-index.json", "blog"],
+        ["/content/updates-index.json", "updates"],
+        ["/content/media-index.json", "media"]
       ];
 
 
@@ -412,6 +412,8 @@ function itemToSearchEntry(item, type) {
     desktopResults.hidden = true;
   }
 });
+
+  document.addEventListener("kisan:language-change", updateLanguageText);
 
   document.getElementById("langBtn")?.addEventListener("click", () => {
     window.setTimeout(updateLanguageText, 0);

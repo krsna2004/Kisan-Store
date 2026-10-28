@@ -5,7 +5,7 @@
   const nav = document.getElementById("navlinks");
   const year = document.getElementById("year");
   const storageKey = "kisan-hardware-language";
-  let currentLanguage = "en";
+  let currentLanguage = document.documentElement.lang === "hi" ? "hi" : "en";
 
   function applyLanguage(language) {
     currentLanguage = language === "hi" ? "hi" : "en";
@@ -24,6 +24,14 @@
     }
     try { localStorage.setItem(storageKey, currentLanguage); } catch (_) { /* Storage may be unavailable. */ }
   }
+
+  // Expose one shared language controller for generated product pages.
+  window.setKisanLanguage = applyLanguage;
+
+  document.addEventListener("kisan:language-change", (event) => {
+    const language = event.detail && event.detail.language;
+    if (language === "hi" || language === "en") applyLanguage(language);
+  });
 
   if (languageButton) {
     languageButton.addEventListener("click", () => {
