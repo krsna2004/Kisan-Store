@@ -3022,22 +3022,19 @@ body.ks-search-open {
 .brand-marquee {
   width: 100%;
   overflow: hidden;
-  pointer-events: none;
-
   -webkit-mask-image: linear-gradient(
     to right,
-    transparent 0%,
-    #000 8%,
-    #000 92%,
-    transparent 100%
+    transparent,
+    #000 5%,
+    #000 95%,
+    transparent
   );
-
   mask-image: linear-gradient(
     to right,
-    transparent 0%,
-    #000 8%,
-    #000 92%,
-    transparent 100%
+    transparent,
+    #000 5%,
+    #000 95%,
+    transparent
   );
 }
 
