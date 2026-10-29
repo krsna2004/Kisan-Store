@@ -28,5 +28,19 @@
     "name_hi": "वॉटर टैंक",
     "category_hi": "सैनिटरी",
     "description_hi": "उच्च गुणवत्ता और मजबूत प्लास्टिक वॉटर टैंक, जो टिकाऊ, लीक-प्रूफ और पानी को सुरक्षित रखने के लिए सही विकल्प हैं।"
+  },
+  {
+    "name": "Fasteners",
+    "category": "Hardware",
+    "available": true,
+    "image": "assets/images/home-hardware-fasteners.jpg",
+    "description": "Quality hardware fasteners, including nuts, bolts, screws, washers, and other  available in various sizes, types, and specifications to meet different fastening requirements. Suitable for construction work, furniture assembly, machinery installation, and general maintenance.",
+    "name_hi": "फास्टनर्स",
+    "category_hi": "हार्डवेयर",
+    "description_hi": "क्वालिटी हार्डवेयर फास्टनर्स, जिनमें नट, बोल्ट, स्क्रू, वॉशर और अन्य फिटिंग सामग्री शामिल हैं। विभिन्न प्रकार की जरूरतों के अनुसार अलग-अलग आकार, प्रकार और स्पेसिफिकेशन में उपलब्ध। निर्माण कार्य, फर्नीचर असेंबली, मशीनरी इंस्टॉलेशन और सामान्य मरम्मत एवं रखरखाव के लिए उपयुक्त।",
+    "slug": "fasteners",
+    "seo_title": "Hardware Fasteners – Nuts, Bolts & Screws | The Kisan Store",
+    "meta_description": "Quality hardware fasteners, including nuts, bolts, screws and washers for construction, furniture assembly, machinery installation and repairs at The Kisan Store.",
+    "image_alt": "Hardware fasteners including nuts, bolts, screws and washers at The Kisan Store"
   }
 ]
