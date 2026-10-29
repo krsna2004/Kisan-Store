@@ -2983,6 +2983,7 @@ body.ks-search-open {
 }
 
 
+
 /* ===== Top Brands: Single-Set Continuous Carousel ===== */
 
 .top-brands {
@@ -2995,8 +2996,9 @@ body.ks-search-open {
   margin: 0;
   text-align: center;
   color: #b91c1c;
-  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-size: clamp(1.7rem, 3vw, 2.1rem);
   font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
 .top-brands-subtitle {
@@ -3004,6 +3006,17 @@ body.ks-search-open {
   text-align: center;
   color: #6b7280;
   font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.top-brands-subtitle::before {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 3px;
+  margin: 0 auto 10px;
+  border-radius: 3px;
+  background: #b91c1c;
 }
 
 .brand-marquee {
