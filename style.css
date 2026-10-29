@@ -2982,70 +2982,54 @@ body.ks-search-open {
   }
 }
 
-/* ========================================
-   KISAN STORE — TOP BRANDS SHOWCASE
-   Continuous, non-interactive logo carousel
-   ======================================== */
+
+/* ===== Top Brands: Single-Set Continuous Carousel ===== */
 
 .top-brands {
-  padding: 48px 0;
-  background: #ffffff;
+  padding: 44px 0;
+  background: #fff;
   overflow: hidden;
 }
 
 .top-brands h2 {
   margin: 0;
-  color: #b91c1c;
   text-align: center;
+  color: #b91c1c;
   font-size: clamp(1.6rem, 3vw, 2.1rem);
   font-weight: 800;
 }
 
 .top-brands-subtitle {
   margin: 8px 0 28px;
-  color: #6b7280;
   text-align: center;
+  color: #6b7280;
   font-size: 0.95rem;
 }
 
 .brand-marquee {
   width: 100%;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent,
-    #000 5%,
-    #000 95%,
-    transparent
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    #000 5%,
-    #000 95%,
-    transparent
-  );
+  pointer-events: none;
 }
 
 .brand-track {
   display: flex;
   align-items: flex-start;
+  gap: 0;
   width: max-content;
-  animation: brand-marquee-scroll 32s linear infinite;
-  pointer-events: none;
-  user-select: none;
   will-change: transform;
+  user-select: none;
 }
 
 .brand-item {
   box-sizing: border-box;
   flex: 0 0 150px;
   width: 150px;
+  padding: 0 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  padding: 0 15px;
 }
 
 .brand-item img {
@@ -3057,7 +3041,7 @@ body.ks-search-open {
   object-fit: contain;
   border: 1px solid #e5e7eb;
   border-radius: 50%;
-  background: #ffffff;
+  background: #fff;
 }
 
 .brand-item span {
@@ -3068,25 +3052,9 @@ body.ks-search-open {
   white-space: nowrap;
 }
 
-/* Move one complete set of logos per animation cycle */
-@keyframes brand-marquee-scroll {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-/* Mobile layout */
 @media (max-width: 600px) {
   .top-brands {
-    padding: 36px 0;
-  }
-
-  .top-brands-subtitle {
-    margin-bottom: 24px;
+    padding: 34px 0;
   }
 
   .brand-item {
@@ -3104,8 +3072,5 @@ body.ks-search-open {
   .brand-item span {
     font-size: 0.82rem;
   }
-
-  .brand-track {
-    animation-duration: 28s;
-  }
 }
+
