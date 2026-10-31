@@ -26,11 +26,86 @@
     statusMessage.style.color = isError ? "#b91c1c" : "#267342";
   }
 
-  function resetCaptcha() {
-    if (window.turnstile) {
-      window.turnstile.reset();
-    }
+  
+// Custom homepage rating dropdown
+
+(function () {
+  const dropdown = document.getElementById("form-rating-dropdown");
+  const trigger = document.getElementById("review-rating-trigger");
+  const menu = document.getElementById("review-rating-options");
+  const valueInput = document.getElementById("review-rating");
+  const valueLabel = document.getElementById("review-rating-value");
+
+  if (!dropdown || !trigger || !menu || !valueInput || !valueLabel) {
+    return;
   }
+
+  const options = Array.from(
+    menu.querySelectorAll("button[data-value]")
+  );
+
+  function closeMenu(returnFocus) {
+    menu.hidden = true;
+    trigger.setAttribute("aria-expanded", "false");
+
+    if (returnFocus) trigger.focus();
+  }
+
+  trigger.addEventListener("click", function () {
+    const opening = menu.hidden;
+
+    menu.hidden = !opening;
+    trigger.setAttribute("aria-expanded", String(opening));
+  });
+
+  options.forEach(function (option) {
+    option.addEventListener("click", function () {
+      valueInput.value = option.dataset.value;
+
+      const label = option.querySelectorAll("span")[1];
+      valueLabel.textContent = option.querySelector("span:first-child").textContent
+        + " - " + (label ? label.textContent.trim() : "");
+
+      options.forEach(function (item) {
+        const selected = item === option;
+
+        item.classList.toggle("is-selected", selected);
+        item.setAttribute(
+          "aria-selected",
+          selected ? "true" : "false"
+        );
+      });
+
+      closeMenu(false);
+    });
+  });
+
+  document.addEventListener("click", function (event) {
+    if (!dropdown.contains(event.target)) {
+      closeMenu(false);
+    }
+  });
+
+  trigger.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closeMenu(true);
+    }
+  });
+
+  // Reset the custom dropdown when the form is reset.
+  form.addEventListener("reset", function () {
+    valueInput.value = "";
+    valueLabel.textContent = "Select your rating";
+
+    options.forEach(function (option) {
+      option.classList.remove("is-selected");
+      option.setAttribute("aria-selected", "false");
+    });
+
+    closeMenu(false);
+  });
+})();
+  
 
   function createReviewCard(review) {
     const card = document.createElement("article");
