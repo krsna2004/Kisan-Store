@@ -23,6 +23,7 @@
 <script src="customer-popup.js" defer></script>
 <script src="website-search.js" defer></script>
 <script src="supabase-config.js" defer></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
 <script src="reviews-page.js" defer></script>
 <style>
 .reviews-summary{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(260px,1.2fr);gap:22px;margin-bottom:28px}
@@ -48,6 +49,37 @@
 .reviews-page-grid .review-empty{grid-column:1/-1}
 @media(max-width:800px){.reviews-page-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:640px){.reviews-summary{grid-template-columns:1fr}.reviews-page-grid{grid-template-columns:1fr}.reviews-cta{align-items:stretch;flex-direction:column}.reviews-cta .button{width:100%}.reviews-toolbar{align-items:stretch;flex-direction:column}.reviews-toolbar select{width:100%}}
+
+/* Theme-matched rating dropdown */
+.review-filter-wrap{display:grid;gap:7px;min-width:205px}
+.custom-filter{position:relative;min-width:205px}
+.custom-filter-trigger{display:flex;align-items:center;justify-content:space-between;gap:18px;width:100%;min-height:44px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font:inherit;font-size:14px;font-weight:650;text-align:left;cursor:pointer;transition:border-color .18s,box-shadow .18s}
+.custom-filter-trigger:hover,.custom-filter-trigger[aria-expanded="true"]{border-color:var(--red);box-shadow:0 0 0 3px rgba(185,28,28,.08)}
+.custom-filter-chevron{color:var(--red);font-size:19px;line-height:1;transition:transform .18s}
+.custom-filter-trigger[aria-expanded="true"] .custom-filter-chevron{transform:rotate(180deg)}
+.custom-filter-menu{position:absolute;z-index:30;top:calc(100% + 7px);right:0;left:0;padding:6px;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 14px 35px rgba(30,25,20,.14);animation:filterDropIn .14s ease-out}
+.custom-filter-menu[hidden]{display:none}
+.custom-filter-option{display:flex;align-items:center;gap:10px;width:100%;padding:11px 12px;border:0;border-radius:8px;background:transparent;color:var(--ink);font:inherit;font-size:13px;text-align:left;cursor:pointer}
+.custom-filter-option span{color:var(--muted)}
+.custom-filter-option:hover,.custom-filter-option:focus-visible{outline:none;background:#fff3f2;color:var(--red)}
+.custom-filter-option.is-selected{background:#fff3f2;color:var(--red);font-weight:800}
+@keyframes filterDropIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+
+/* Review form section uses the same form structure and visual language as the homepage */
+.reviews-write-section{max-width:760px;margin:48px auto 0;padding:clamp(22px,4vw,34px);border:1px solid #f0e4c4;border-radius:18px;background:#fff9e9}
+.reviews-write-heading{text-align:center;max-width:590px;margin:0 auto 22px}
+.reviews-write-heading .eyebrow{margin:0 0 8px}
+.reviews-write-heading h2{margin:0 0 8px;font-size:clamp(25px,3vw,34px);letter-spacing:-.035em}
+.reviews-write-heading p:last-child{margin:0;color:#625d51;font-size:14px;line-height:1.6}
+.reviews-page-form-inner{max-width:620px;margin:0 auto;padding:24px;background:#fff;border:1px solid var(--line);border-radius:14px}
+.reviews-page-form-inner h3{margin:0 0 7px;font-size:21px}
+.reviews-page-form-inner>p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+.reviews-page-form-inner .review-form{margin-top:20px}
+.reviews-page-form-inner .cf-turnstile{min-height:65px}
+.reviews-page-form-inner .review-form-status{margin:0;min-height:18px}
+.reviews-page-form-inner button[type="submit"]{justify-self:start}
+@media(max-width:640px){.review-filter-wrap,.custom-filter{width:100%}.custom-filter-menu{right:0;left:0}.reviews-write-section{padding:18px}.reviews-page-form-inner{padding:18px}.reviews-page-form-inner button[type="submit"]{width:100%}}
+
 </style>
 </head>
 <body>
@@ -67,11 +99,64 @@
 <div class="reviews-breakdown-panel"><strong data-en="Rating breakdown" data-hi="रेटिंग का विवरण">Rating breakdown</strong><div class="rating-breakdown" id="rating-breakdown"><p class="reviews-muted">Loading rating summary…</p></div></div>
 </div>
 <div class="reviews-toolbar"><div><h2 style="margin:0 0 4px;font-size:clamp(23px,3vw,30px)" data-en="What customers say" data-hi="ग्राहक क्या कहते हैं">What customers say</h2><span class="reviews-muted" id="reviews-results-label">Latest approved reviews</span></div>
-<div><label for="reviews-filter" data-en="Filter reviews" data-hi="समीक्षाएँ फ़िल्टर करें">Filter reviews</label><select id="reviews-filter"><option value="all">All ratings</option><option value="5">★★★★★ 5 stars</option><option value="4">★★★★ 4 stars</option><option value="3">★★★ 3 stars</option><option value="2">★★ 2 stars</option><option value="1">★ 1 star</option></select></div></div>
+<div class="review-filter-wrap">
+<label id="reviews-filter-label" data-en="Filter reviews" data-hi="समीक्षाएँ फ़िल्टर करें">Filter reviews</label>
+<div class="custom-filter" id="reviews-filter">
+  <button class="custom-filter-trigger" id="reviews-filter-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="reviews-filter-label reviews-filter-value">
+    <span id="reviews-filter-value">All ratings</span><span class="custom-filter-chevron" aria-hidden="true">⌄</span>
+  </button>
+  <div class="custom-filter-menu" id="reviews-filter-menu" role="listbox" aria-labelledby="reviews-filter-label" hidden>
+    <button type="button" class="custom-filter-option is-selected" role="option" aria-selected="true" data-value="all">All ratings</button>
+    <button type="button" class="custom-filter-option" role="option" aria-selected="false" data-value="5">★★★★★ <span>5 stars</span></button>
+    <button type="button" class="custom-filter-option" role="option" aria-selected="false" data-value="4">★★★★ <span>4 stars</span></button>
+    <button type="button" class="custom-filter-option" role="option" aria-selected="false" data-value="3">★★★ <span>3 stars</span></button>
+    <button type="button" class="custom-filter-option" role="option" aria-selected="false" data-value="2">★★ <span>2 stars</span></button>
+    <button type="button" class="custom-filter-option" role="option" aria-selected="false" data-value="1">★ <span>1 star</span></button>
+  </div>
+</div>
+</div></div>
 <div class="reviews-page-grid" id="reviews-page-grid" aria-live="polite" aria-busy="true"><p class="review-empty">Loading customer reviews…</p></div>
 <p class="reviews-page-status" id="reviews-page-status" aria-live="polite"></p>
 <div class="reviews-load-wrap"><button class="button button-primary" id="reviews-load-more" type="button" hidden>Load more reviews</button></div>
-<div class="reviews-cta"><div><h2 data-en="Purchased from Kisan Store?" data-hi="किसान स्टोर से खरीदारी की है?">Purchased from Kisan Store?</h2><p data-en="Share your experience. Your review will appear after approval." data-hi="अपना अनुभव साझा करें। आपकी समीक्षा स्वीकृति के बाद दिखाई जाएगी।">Share your experience. Your review will appear after approval.</p></div><a class="button button-primary" href="index.html#customer-reviews" data-en="Write a Review" data-hi="समीक्षा लिखें">Write a Review <span aria-hidden="true">→</span></a></div>
+<section class="reviews-write-section" id="write-a-review" aria-labelledby="write-review-title">
+  <div class="reviews-write-heading">
+    <p class="eyebrow" data-en="YOUR FEEDBACK MATTERS" data-hi="आपकी राय हमारे लिए महत्वपूर्ण है">YOUR FEEDBACK MATTERS</p>
+    <h2 id="write-review-title" data-en="Write a Review" data-hi="समीक्षा लिखें">Write a Review</h2>
+    <p data-en="Purchased from Kisan Store? Share your experience with us. Your review will appear publicly after approval." data-hi="किसान स्टोर से खरीदारी की है? अपना अनुभव साझा करें। आपकी समीक्षा स्वीकृति के बाद सार्वजनिक रूप से दिखाई देगी।">Purchased from Kisan Store? Share your experience with us. Your review will appear publicly after approval.</p>
+  </div>
+  <div class="review-form-inner reviews-page-form-inner">
+    <h3 data-en="Share Your Experience" data-hi="अपना अनुभव साझा करें">Share Your Experience</h3>
+    <p data-en="Please provide your details below. Reviews are checked before publication." data-hi="कृपया नीचे अपनी जानकारी भरें। प्रकाशित करने से पहले समीक्षाओं की जाँच की जाती है।">Please provide your details below. Reviews are checked before publication.</p>
+    <form class="review-form" id="customer-review-form">
+      <div>
+        <label for="review-name" data-en="Your name" data-hi="आपका नाम">Your name</label>
+        <input id="review-name" name="customer_name" type="text" maxlength="80" minlength="2" required autocomplete="name" placeholder="Enter your name">
+      </div>
+      <div>
+        <label for="review-location" data-en="Village / City" data-hi="गाँव / शहर">Village / City</label>
+        <input id="review-location" name="location" type="text" maxlength="100" autocomplete="address-level2" placeholder="Enter your village or city">
+      </div>
+      <div>
+        <label for="review-rating" data-en="Your rating" data-hi="आपकी रेटिंग">Your rating</label>
+        <select id="review-rating" name="rating" required>
+          <option value="" data-en="Select rating" data-hi="रेटिंग चुनें">Select rating</option>
+          <option value="5" data-en="★★★★★ - Excellent" data-hi="★★★★★ - बहुत अच्छा">★★★★★ - Excellent</option>
+          <option value="4" data-en="★★★★ - Very Good" data-hi="★★★★ - अच्छा">★★★★ - Very Good</option>
+          <option value="3" data-en="★★★ - Good" data-hi="★★★ - ठीक">★★★ - Good</option>
+          <option value="2" data-en="★★ - Fair" data-hi="★★ - सामान्य">★★ - Fair</option>
+          <option value="1" data-en="★ - Poor" data-hi="★ - खराब">★ - Poor</option>
+        </select>
+      </div>
+      <div>
+        <label for="review-message" data-en="Your review" data-hi="आपकी समीक्षा">Your review</label>
+        <textarea id="review-message" name="review_text" minlength="10" maxlength="1000" required placeholder="Write about your experience..."></textarea>
+      </div>
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAAFtyJOPekEWNZXT0" data-theme="light"></div>
+      <button class="button button-primary" type="submit" data-en="Submit Review" data-hi="समीक्षा भेजें">Submit Review</button>
+      <p class="review-form-status" id="review-form-status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
 </div></section>
 </main>
 <footer class="site-footer"><div class="container footer-main">
