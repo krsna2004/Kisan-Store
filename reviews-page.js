@@ -152,6 +152,79 @@
     });
   }
 
+  // Custom rating dropdown for the review submission form.
+
+(function () {
+  const dropdown = document.getElementById("form-rating-dropdown");
+  const trigger = document.getElementById("review-rating-trigger");
+  const menu = document.getElementById("review-rating-options");
+  const valueInput = document.getElementById("review-rating");
+  const valueLabel = document.getElementById("review-rating-value");
+
+  if (!dropdown || !trigger || !menu || !valueInput) return;
+
+  const options = menu.querySelectorAll("button[data-value]");
+
+  function closeMenu() {
+    menu.hidden = true;
+    trigger.setAttribute("aria-expanded", "false");
+  }
+
+  trigger.addEventListener("click", function () {
+    const opening = menu.hidden;
+
+    menu.hidden = !opening;
+    trigger.setAttribute("aria-expanded", String(opening));
+  });
+
+  options.forEach(function (option) {
+    option.addEventListener("click", function () {
+      valueInput.value = option.dataset.value;
+
+      valueLabel.textContent = option.textContent.trim();
+
+      options.forEach(function (item) {
+        item.classList.remove("is-selected");
+        item.setAttribute("aria-selected", "false");
+      });
+
+      option.classList.add("is-selected");
+      option.setAttribute("aria-selected", "true");
+
+      closeMenu();
+    });
+  });
+
+  document.addEventListener("click", function (event) {
+    if (!dropdown.contains(event.target)) {
+      closeMenu();
+    }
+  });
+
+  trigger.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closeMenu();
+    }
+  });
+
+  // Reset the custom rating when the review form is reset.
+  const form = document.getElementById("customer-review-form");
+
+  if (form) {
+    form.addEventListener("reset", function () {
+      valueInput.value = "";
+      valueLabel.textContent = "Select your rating";
+
+      options.forEach(function (option) {
+        option.classList.remove("is-selected");
+        option.setAttribute("aria-selected", "false");
+      });
+
+      closeMenu();
+    });
+  }
+})();
+
   // Create customer review cards safely.
   function createReviewCard(review) {
     const card = document.createElement("article");
