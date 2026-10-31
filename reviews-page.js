@@ -1,3 +1,4 @@
+
 (function () {
   "use strict";
 
@@ -51,7 +52,7 @@
     }
   }
 
-  // Custom rating dropdown
+  // Custom rating dropdown for filtering reviews.
   function closeFilter(returnFocus) {
     if (!filterMenu || !filterTrigger) return;
 
@@ -80,10 +81,7 @@
       const active = item.dataset.value === value;
 
       item.classList.toggle("is-selected", active);
-      item.setAttribute(
-        "aria-selected",
-        active ? "true" : "false"
-      );
+      item.setAttribute("aria-selected", active ? "true" : "false");
     });
 
     closeFilter(false);
@@ -132,10 +130,7 @@
     });
 
     document.addEventListener("click", function (event) {
-      if (
-        filterWrap &&
-        !filterWrap.contains(event.target)
-      ) {
+      if (filterWrap && !filterWrap.contains(event.target)) {
         closeFilter(false);
       }
     });
@@ -152,80 +147,77 @@
     });
   }
 
-  // Custom rating dropdown for the review submission form.
+  // Custom rating dropdown for review submission.
+  (function () {
+    const dropdown = document.getElementById("form-rating-dropdown");
+    const trigger = document.getElementById("review-rating-trigger");
+    const menu = document.getElementById("review-rating-options");
+    const valueInput = document.getElementById("review-rating");
+    const valueLabel = document.getElementById("review-rating-value");
 
-(function () {
-  const dropdown = document.getElementById("form-rating-dropdown");
-  const trigger = document.getElementById("review-rating-trigger");
-  const menu = document.getElementById("review-rating-options");
-  const valueInput = document.getElementById("review-rating");
-  const valueLabel = document.getElementById("review-rating-value");
+    if (!dropdown || !trigger || !menu || !valueInput) return;
 
-  if (!dropdown || !trigger || !menu || !valueInput) return;
+    const options = menu.querySelectorAll("button[data-value]");
 
-  const options = menu.querySelectorAll("button[data-value]");
-
-  function closeMenu() {
-    menu.hidden = true;
-    trigger.setAttribute("aria-expanded", "false");
-  }
-
-  trigger.addEventListener("click", function () {
-    const opening = menu.hidden;
-
-    menu.hidden = !opening;
-    trigger.setAttribute("aria-expanded", String(opening));
-  });
-
-  options.forEach(function (option) {
-    option.addEventListener("click", function () {
-      valueInput.value = option.dataset.value;
-
-      valueLabel.textContent = option.textContent.trim();
-
-      options.forEach(function (item) {
-        item.classList.remove("is-selected");
-        item.setAttribute("aria-selected", "false");
-      });
-
-      option.classList.add("is-selected");
-      option.setAttribute("aria-selected", "true");
-
-      closeMenu();
-    });
-  });
-
-  document.addEventListener("click", function (event) {
-    if (!dropdown.contains(event.target)) {
-      closeMenu();
+    function closeMenu() {
+      menu.hidden = true;
+      trigger.setAttribute("aria-expanded", "false");
     }
-  });
 
-  trigger.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") {
-      closeMenu();
-    }
-  });
+    trigger.addEventListener("click", function () {
+      const opening = menu.hidden;
 
-  // Reset the custom rating when the review form is reset.
-  const form = document.getElementById("customer-review-form");
-
-  if (form) {
-    form.addEventListener("reset", function () {
-      valueInput.value = "";
-      valueLabel.textContent = "Select your rating";
-
-      options.forEach(function (option) {
-        option.classList.remove("is-selected");
-        option.setAttribute("aria-selected", "false");
-      });
-
-      closeMenu();
+      menu.hidden = !opening;
+      trigger.setAttribute("aria-expanded", String(opening));
     });
-  }
-})();
 
-  // Create customer review cards safely.
+    options.forEach(function (option) {
+      option.addEventListener("click", function () {
+        valueInput.value = option.dataset.value;
+        valueLabel.textContent = option.textContent.trim();
+
+        options.forEach(function (item) {
+          item.classList.remove("is-selected");
+          item.setAttribute("aria-selected", "false");
+        });
+
+        option.classList.add("is-selected");
+        option.setAttribute("aria-selected", "true");
+
+        closeMenu();
+      });
+    });
+
+    document.addEventListener("click", function (event) {
+      if (!dropdown.contains(event.target)) {
+        closeMenu();
+      }
+    });
+
+    trigger.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closeMenu();
+      }
+    });
+
+    const reviewForm = document.getElementById("customer-review-form");
+
+    if (reviewForm) {
+      reviewForm.addEventListener("reset", function () {
+        valueInput.value = "";
+        valueLabel.textContent = "Select your rating";
+
+        options.forEach(function (option) {
+          option.classList.remove("is-selected");
+          option.setAttribute("aria-selected", "false");
+        });
+
+        closeMenu();
+      });
+    }
+  })();
+
+  // Create clean, cream-coloured customer review cards.
   function createReviewCard(review) {
     const card = document.createElement("article");
     card.className = "review-card";
@@ -234,6 +226,26 @@
       1,
       Math.min(5, Number(review.rating) || 0)
     );
+
+    const header = document.createElement("div");
+    header.className = "review-card-header";
+
+    const identity = document.createElement("div");
+    identity.className = "review-card-identity";
+
+    const name = document.createElement("h3");
+    name.className = "review-card-name";
+    name.textContent = review.customer_name || "Customer";
+
+    identity.appendChild(name);
+
+    if (review.location && review.location.trim()) {
+      const location = document.createElement("div");
+      location.className = "review-location";
+      location.textContent = review.location.trim();
+
+      identity.appendChild(location);
+    }
 
     const stars = document.createElement("div");
     stars.className = "review-stars";
@@ -246,18 +258,13 @@
       rating + " out of 5 stars"
     );
 
-    const name = document.createElement("h3");
-    name.textContent = review.customer_name || "Customer";
-
-    const location = document.createElement("div");
-    location.className = "review-location";
-    location.textContent = review.location || "Customer";
+    header.append(identity, stars);
 
     const message = document.createElement("p");
     message.className = "review-message";
     message.textContent = review.review_text || "";
 
-    card.append(stars, name, location, message);
+    card.append(header, message);
 
     return card;
   }
@@ -298,9 +305,7 @@
       rows.forEach(function (row) {
         const rating = Number(row.rating);
 
-        if (
-          Object.prototype.hasOwnProperty.call(counts, rating)
-        ) {
+        if (Object.prototype.hasOwnProperty.call(counts, rating)) {
           counts[rating] += 1;
           total += 1;
         }
@@ -318,22 +323,17 @@
       0
     );
 
-    const average = total
-      ? weightedTotal / total
-      : 0;
+    const average = total ? weightedTotal / total : 0;
 
     if (averageEl) {
-      averageEl.textContent = total
-        ? average.toFixed(1)
-        : "—";
+      averageEl.textContent = total ? average.toFixed(1) : "—";
     }
 
     if (averageStarsEl) {
       const rounded = Math.round(average);
 
       averageStarsEl.textContent = total
-        ? "★".repeat(rounded) +
-          "☆".repeat(5 - rounded)
+        ? "★".repeat(rounded) + "☆".repeat(5 - rounded)
         : "☆☆☆☆☆";
     }
 
@@ -356,7 +356,6 @@
 
         const track = document.createElement("div");
         track.className = "rating-track";
-
         track.setAttribute("role", "img");
 
         track.setAttribute(
@@ -391,7 +390,6 @@
     if (reset) {
       offset = 0;
       finished = false;
-
       grid.replaceChildren();
 
       if (moreButton) {
@@ -400,7 +398,6 @@
     }
 
     loading = true;
-
     grid.setAttribute("aria-busy", "true");
 
     if (moreButton) {
@@ -438,7 +435,6 @@
 
       if (reset && reviews.length === 0) {
         const empty = document.createElement("p");
-
         empty.className = "review-empty";
 
         empty.textContent =
@@ -483,7 +479,6 @@
 
       if (reset) {
         const empty = document.createElement("p");
-
         empty.className = "review-empty";
 
         empty.textContent =
@@ -493,13 +488,11 @@
       }
 
       if (status) {
-        status.textContent =
-          "Unable to load reviews at the moment.";
+        status.textContent = "Unable to load reviews at the moment.";
       }
 
     } finally {
       loading = false;
-
       grid.setAttribute("aria-busy", "false");
 
       if (moreButton) {
@@ -516,8 +509,7 @@
     form.addEventListener("submit", async function (event) {
       event.preventDefault();
 
-      const submitButton =
-        form.querySelector('[type="submit"]');
+      const submitButton = form.querySelector('[type="submit"]');
 
       if (!submitButton || submitButton.disabled) {
         return;
@@ -569,10 +561,7 @@
 
       submitButton.disabled = true;
 
-      setFormMessage(
-        "Submitting your review...",
-        false
-      );
+      setFormMessage("Submitting your review...", false);
 
       try {
         const response = await fetch(WORKER_URL, {
@@ -589,11 +578,9 @@
           })
         });
 
-        const result = await response.json().catch(
-          function () {
-            return {};
-          }
-        );
+        const result = await response.json().catch(function () {
+          return {};
+        });
 
         if (!response.ok || !result.success) {
           throw new Error(
@@ -656,3 +643,4 @@
   loadReviews(true);
 
 })();
+          
