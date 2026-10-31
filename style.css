@@ -3100,3 +3100,60 @@ body.ks-search-open {
   }
 }
 
+/* Footer social media icons */
+.footer-social {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+  margin: 0 auto 24px;
+}
+
+.social-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+  flex: 0 0 48px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.social-icon svg {
+  width: 23px;
+  height: 23px;
+}
+
+.social-icon:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+}
+
+.social-icon:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+.social-icon.instagram {
+  background: radial-gradient(
+    circle at 30% 107%,
+    #fdf497 0%,
+    #fdf497 5%,
+    #fd5949 45%,
+    #d6249f 60%,
+    #285aeb 90%
+  );
+}
+
+.social-icon.youtube {
+  background: #ff0000;
+}
+
+.social-icon.email {
+  background: #454545;
+}
