@@ -77,6 +77,7 @@
   <script src="website-search.js" defer></script>
   <script src="supabase-config.js" defer></script>
   <script src="reviews.js" defer></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
 
   <!-- Homepage-only layout additions; existing site-wide stylesheet remains in use. -->
   <style>
@@ -624,6 +625,11 @@
                 maxlength="1000"
                 required
                 placeholder="Write about your experience..."></textarea>
+            </div>
+
+            <div class="cf-turnstile"
+              data-sitekey="0x4AAAAAAFtyJOPekEWNZXT0"
+              data-theme="light">
             </div>
 
             <button class="button button-primary" type="submit"
