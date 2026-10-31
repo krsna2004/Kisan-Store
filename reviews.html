@@ -191,7 +191,99 @@
     font-size: 14px !important;
   }
   }
-        
+
+  
+/* Custom rating dropdown inside review form */
+
+.form-rating-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.form-rating-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 50px;
+  padding: 12px 15px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.form-rating-trigger:hover,
+.form-rating-trigger[aria-expanded="true"] {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, .08);
+}
+
+.form-rating-arrow {
+  color: var(--red);
+  font-size: 21px;
+  transition: transform .2s;
+}
+
+.form-rating-trigger[aria-expanded="true"] .form-rating-arrow {
+  transform: rotate(180deg);
+}
+
+.form-rating-options {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 7px);
+  left: 0;
+  width: 100%;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .13);
+}
+
+.form-rating-options[hidden] {
+  display: none;
+}
+
+.form-rating-options button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 13px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.form-rating-options button span {
+  color: #d69b16;
+  font-size: 16px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.form-rating-options button:hover,
+.form-rating-options button:focus-visible,
+.form-rating-options button.is-selected {
+  outline: none;
+  background: #fff1f0;
+  color: var(--red);
+}
+
+.form-rating-options button.is-selected {
+  font-weight: 800;
+  }
 
 </style>
 </head>
@@ -242,32 +334,86 @@
     <h3 data-en="Share Your Experience" data-hi="अपना अनुभव साझा करें">Share Your Experience</h3>
     <p data-en="Please provide your details below. Reviews are checked before publication." data-hi="कृपया नीचे अपनी जानकारी भरें। प्रकाशित करने से पहले समीक्षाओं की जाँच की जाती है।">Please provide your details below. Reviews are checked before publication.</p>
     <form class="review-form" id="customer-review-form">
+      
       <div>
         <label for="review-name" data-en="Your name" data-hi="आपका नाम">Your name</label>
         <input id="review-name" name="customer_name" type="text" maxlength="80" minlength="2" required autocomplete="name" placeholder="Enter your name">
       </div>
+      
       <div>
         <label for="review-location" data-en="Village / City" data-hi="गाँव / शहर">Village / City</label>
         <input id="review-location" name="location" type="text" maxlength="100" autocomplete="address-level2" placeholder="Enter your village or city">
       </div>
-      <div>
-        <label for="review-rating" data-en="Your rating" data-hi="आपकी रेटिंग">Your rating</label>
-        <select id="review-rating" name="rating" required>
-          <option value="" data-en="Select rating" data-hi="रेटिंग चुनें">Select rating</option>
-          <option value="5" data-en="★★★★★ - Excellent" data-hi="★★★★★ - बहुत अच्छा">★★★★★ - Excellent</option>
-          <option value="4" data-en="★★★★ - Very Good" data-hi="★★★★ - अच्छा">★★★★ - Very Good</option>
-          <option value="3" data-en="★★★ - Good" data-hi="★★★ - ठीक">★★★ - Good</option>
-          <option value="2" data-en="★★ - Fair" data-hi="★★ - सामान्य">★★ - Fair</option>
-          <option value="1" data-en="★ - Poor" data-hi="★ - खराब">★ - Poor</option>
-        </select>
+      
+      <div class="review-rating-field">
+  <label for="review-rating-trigger"
+         data-en="Your rating"
+         data-hi="आपकी रेटिंग">
+    Your rating
+  </label>
+
+  <!-- Hidden value read by the existing submission JavaScript -->
+  <input
+    type="hidden"
+    id="review-rating"
+    name="rating"
+    value=""
+    required
+  >
+
+  <div class="form-rating-dropdown" id="form-rating-dropdown">
+
+    <button
+      type="button"
+      class="form-rating-trigger"
+      id="review-rating-trigger"
+      aria-expanded="false"
+      aria-haspopup="listbox">
+      <span id="review-rating-value">Select your rating</span>
+      <span class="form-rating-arrow">⌄</span>
+    </button>
+
+    <div
+      class="form-rating-options"
+      id="review-rating-options"
+      role="listbox"
+      hidden>
+
+      <button type="button" role="option" data-value="5">
+        <span>★★★★★</span> Excellent
+      </button>
+
+      <button type="button" role="option" data-value="4">
+        <span>★★★★☆</span> Very Good
+      </button>
+
+      <button type="button" role="option" data-value="3">
+        <span>★★★☆☆</span> Good
+      </button>
+
+      <button type="button" role="option" data-value="2">
+        <span>★★☆☆☆</span> Fair
+      </button>
+
+      <button type="button" role="option" data-value="1">
+        <span>★☆☆☆☆</span> Poor
+      </button>
+
+    </div>
+  </div>
       </div>
+      
       <div>
         <label for="review-message" data-en="Your review" data-hi="आपकी समीक्षा">Your review</label>
         <textarea id="review-message" name="review_text" minlength="10" maxlength="1000" required placeholder="Write about your experience..."></textarea>
       </div>
+      
       <div class="cf-turnstile" data-sitekey="0x4AAAAAAFtyJOPekEWNZXT0" data-theme="light"></div>
+      
       <button class="button button-primary" type="submit" data-en="Submit Review" data-hi="समीक्षा भेजें">Submit Review</button>
+      
       <p class="review-form-status" id="review-form-status" aria-live="polite"></p>
+      
     </form>
   </div>
 </section>
