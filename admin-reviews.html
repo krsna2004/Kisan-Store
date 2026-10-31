@@ -1,0 +1,555 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#b91c1c">
+  <title>Review Admin | The Kisan Store</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 25px 16px 50px;
+      background: #f8f8f8;
+      color: #242424;
+      font-family: Arial, sans-serif;
+    }
+
+    .admin-container {
+      width: 100%;
+      max-width: 850px;
+      margin: auto;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .admin-header h1 {
+      margin: 0;
+      font-size: 25px;
+    }
+
+    .admin-header p {
+      margin: 6px 0 0;
+      color: #777;
+      font-size: 13px;
+    }
+
+    .admin-box {
+      padding: 25px;
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+
+    .admin-box h2 {
+      margin: 0 0 17px;
+      font-size: 20px;
+    }
+
+    .admin-form {
+      display: grid;
+      gap: 13px;
+    }
+
+    .admin-form label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .admin-form input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 11px 17px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .primary-button {
+      background: #b91c1c;
+      color: white;
+    }
+
+    .secondary-button {
+      background: #eee;
+      color: #333;
+    }
+
+    .approve-button {
+      background: #e6f5eb;
+      color: #176b36;
+    }
+
+    .reject-button {
+      background: #fff0f0;
+      color: #b91c1c;
+    }
+
+    .admin-message {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #666;
+      overflow-wrap: anywhere;
+    }
+
+    .review-admin-card {
+      padding: 19px;
+      background: #fff;
+      border: 1px solid #e9e9e9;
+      border-radius: 13px;
+      margin-bottom: 13px;
+    }
+
+    .review-admin-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .review-admin-card h3 {
+      margin: 0 0 5px;
+      font-size: 16px;
+    }
+
+    .review-admin-card p {
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .review-admin-meta {
+      color: #777;
+      font-size: 12px;
+    }
+
+    .review-admin-stars {
+      color: #d69b16;
+      margin: 12px 0;
+      letter-spacing: 2px;
+    }
+
+    .review-admin-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 15px;
+    }
+
+    .status-label {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 20px;
+      background: #f1f1f1;
+      font-size: 11px;
+      text-transform: capitalize;
+    }
+
+    .status-pending { background: #fff3d9; color: #855900; }
+    .status-approved { background: #e6f5eb; color: #176b36; }
+    .status-rejected { background: #fff0f0; color: #b91c1c; }
+
+    .admin-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 17px;
+    }
+
+    .admin-tabs button.active {
+      background: #b91c1c;
+      color: white;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 550px) {
+      .admin-header { align-items: flex-start; }
+      .admin-header h1 { font-size: 20px; }
+      .admin-box { padding: 18px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="admin-container">
+
+    <header class="admin-header">
+      <div>
+        <h1>The Kisan Store</h1>
+        <p>Customer Review Administration</p>
+      </div>
+      <button id="logout-button"
+              class="secondary-button hidden"
+              type="button">
+        Sign out
+      </button>
+    </header>
+
+    <!-- Login -->
+    <section class="admin-box" id="login-section">
+      <h2>Administrator Login</h2>
+
+      <form class="admin-form" id="login-form">
+        <div>
+          <label for="admin-email">Email address</label>
+          <input id="admin-email"
+                 type="email"
+                 autocomplete="username"
+                 required>
+        </div>
+
+        <div>
+          <label for="admin-password">Password</label>
+          <input id="admin-password"
+                 type="password"
+                 autocomplete="current-password"
+                 required>
+        </div>
+
+        <button class="primary-button" type="submit">
+          Sign in
+        </button>
+      </form>
+
+      <p class="admin-message" id="login-message"
+         role="status" aria-live="polite"></p>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="dashboard-section" class="hidden">
+
+      <div class="admin-box">
+        <h2>Review Management</h2>
+        <p class="admin-message">
+          Approve genuine customer reviews to display them on your website.
+        </p>
+
+        <div class="admin-tabs">
+          <button type="button" class="secondary-button active"
+                  data-filter="all">All</button>
+          <button type="button" class="secondary-button"
+                  data-filter="pending">Pending</button>
+          <button type="button" class="secondary-button"
+                  data-filter="approved">Approved</button>
+          <button type="button" class="secondary-button"
+                  data-filter="rejected">Rejected</button>
+        </div>
+
+        <button type="button" class="secondary-button"
+                id="refresh-button">
+          Refresh reviews
+        </button>
+
+        <p class="admin-message" id="dashboard-message"
+           role="status" aria-live="polite"></p>
+      </div>
+
+      <div id="reviews-admin-list"></div>
+
+    </section>
+
+  </main>
+
+  <!-- Supabase library and public project configuration -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+
+  <script>
+  (function () {
+    "use strict";
+
+    const db = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
+
+    const loginSection = document.getElementById("login-section");
+    const dashboardSection = document.getElementById("dashboard-section");
+    const loginForm = document.getElementById("login-form");
+    const loginMessage = document.getElementById("login-message");
+    const dashboardMessage = document.getElementById("dashboard-message");
+    const reviewsList = document.getElementById("reviews-admin-list");
+    const logoutButton = document.getElementById("logout-button");
+
+    let allReviews = [];
+    let activeFilter = "all";
+
+    function showLogin(message) {
+      loginSection.classList.remove("hidden");
+      dashboardSection.classList.add("hidden");
+      logoutButton.classList.add("hidden");
+      if (message) loginMessage.textContent = message;
+    }
+
+    function showDashboard() {
+      loginSection.classList.add("hidden");
+      dashboardSection.classList.remove("hidden");
+      logoutButton.classList.remove("hidden");
+    }
+
+    function setDashboardMessage(message) {
+      dashboardMessage.textContent = message;
+    }
+
+    async function verifyAdmin() {
+      const { data: { session }, error } =
+        await db.auth.getSession();
+
+      if (error || !session) {
+        showLogin("Please sign in with your administrator account.");
+        return false;
+      }
+
+      const { data, error: adminError } =
+        await db.rpc("is_review_admin");
+
+      if (adminError || data !== true) {
+        await db.auth.signOut();
+        showLogin("This account does not have review administrator access.");
+        return false;
+      }
+
+      showDashboard();
+      return true;
+    }
+
+    async function loadReviews() {
+      setDashboardMessage("Loading reviews...");
+      reviewsList.replaceChildren();
+
+      const { data, error } = await db
+        .from("reviews")
+        .select("id, customer_name, location, rating, review_text, status, created_at")
+        .order("created_at", { ascending: false })
+        .limit(100);
+
+      if (error) {
+        setDashboardMessage("Could not load reviews: " + error.message);
+        return;
+      }
+
+      allReviews = data || [];
+      renderReviews();
+
+      setDashboardMessage(
+        allReviews.length + " reviews loaded."
+      );
+    }
+
+    function createElement(tag, className, text) {
+      const element = document.createElement(tag);
+      if (className) element.className = className;
+      if (text !== undefined) element.textContent = text;
+      return element;
+    }
+
+    function renderReviews() {
+      reviewsList.replaceChildren();
+
+      const filtered = allReviews.filter(function (review) {
+        return activeFilter === "all" ||
+          review.status === activeFilter;
+      });
+
+      if (!filtered.length) {
+        reviewsList.appendChild(
+          createElement(
+            "div",
+            "admin-box",
+            "No reviews found in this category."
+          )
+        );
+        return;
+      }
+
+      filtered.forEach(function (review) {
+        const card = createElement("article", "review-admin-card");
+
+        const top = createElement("div", "review-admin-top");
+        const details = document.createElement("div");
+
+        details.appendChild(
+          createElement("h3", "", review.customer_name)
+        );
+
+        details.appendChild(
+          createElement(
+            "div",
+            "review-admin-meta",
+            review.location || "Location not provided"
+          )
+        );
+
+        top.appendChild(details);
+
+        top.appendChild(
+          createElement(
+            "span",
+            "status-label status-" + review.status,
+            review.status
+          )
+        );
+
+        card.appendChild(top);
+
+        card.appendChild(
+          createElement(
+            "div",
+            "review-admin-stars",
+            "★".repeat(review.rating) +
+            "☆".repeat(5 - review.rating)
+          )
+        );
+
+        card.appendChild(
+          createElement("p", "", review.review_text)
+        );
+
+        card.appendChild(
+          createElement(
+            "div",
+            "review-admin-meta",
+            new Date(review.created_at).toLocaleString()
+          )
+        );
+
+        const actions = createElement(
+          "div",
+          "review-admin-actions"
+        );
+
+        if (review.status !== "approved") {
+          const approve = createElement(
+            "button",
+            "approve-button",
+            "Approve"
+          );
+          approve.type = "button";
+          approve.addEventListener("click", function () {
+            updateStatus(review.id, "approved");
+          });
+          actions.appendChild(approve);
+        }
+
+        if (review.status !== "rejected") {
+          const reject = createElement(
+            "button",
+            "reject-button",
+            "Reject"
+          );
+          reject.type = "button";
+          reject.addEventListener("click", function () {
+            updateStatus(review.id, "rejected");
+          });
+          actions.appendChild(reject);
+        }
+
+        card.appendChild(actions);
+        reviewsList.appendChild(card);
+      });
+    }
+
+    async function updateStatus(id, status) {
+      setDashboardMessage("Updating review...");
+
+      const { error } = await db
+        .from("reviews")
+        .update({ status: status })
+        .eq("id", id);
+
+      if (error) {
+        setDashboardMessage(
+          "Could not update review: " + error.message
+        );
+        return;
+      }
+
+      await loadReviews();
+    }
+
+    loginForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const button = loginForm.querySelector("button[type=submit]");
+      button.disabled = true;
+      loginMessage.textContent = "Signing in...";
+
+      const { error } = await db.auth.signInWithPassword({
+        email: document.getElementById("admin-email").value.trim(),
+        password: document.getElementById("admin-password").value
+      });
+
+      button.disabled = false;
+
+      if (error) {
+        loginMessage.textContent =
+          "Sign-in failed. Check your email and password.";
+        return;
+      }
+
+      if (await verifyAdmin()) {
+        await loadReviews();
+      }
+    });
+
+    logoutButton.addEventListener("click", async function () {
+      await db.auth.signOut();
+      showLogin("You have signed out.");
+    });
+
+    document.getElementById("refresh-button")
+      .addEventListener("click", loadReviews);
+
+    document.querySelectorAll("[data-filter]")
+      .forEach(function (button) {
+        button.addEventListener("click", function () {
+          activeFilter = button.dataset.filter;
+
+          document.querySelectorAll("[data-filter]")
+            .forEach(function (tab) {
+              tab.classList.toggle("active", tab === button);
+            });
+
+          renderReviews();
+        });
+      });
+
+    async function initialize() {
+      if (await verifyAdmin()) {
+        await loadReviews();
+      }
+    }
+
+    initialize();
+  })();
+  </script>
+</body>
+  </html>
+  
