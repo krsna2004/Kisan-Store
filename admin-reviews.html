@@ -520,28 +520,35 @@
     });
 
     
+
 logoutButton.addEventListener("click", async function () {
+  logoutButton.disabled = true;
+
   const { error } = await db.auth.signOut();
+
+  logoutButton.disabled = false;
 
   if (error) {
     alert("Sign out failed. Please try again.");
     return;
   }
 
-  // Clear saved login details from the form
   loginForm.reset();
+  loginMessage.textContent = "You have signed out.";
 
-  // Clear previous dashboard data
   allReviews = [];
   reviewsList.replaceChildren();
   dashboardMessage.textContent = "";
 
-  // Return to a clean login screen
-  showLogin("You have signed out.");
+  activeFilter = "all";
 
-  // Refresh the page to reset the admin session interface
-  window.location.reload();
+  document.querySelectorAll("[data-filter]").forEach(function (tab) {
+    tab.classList.toggle("active", tab.dataset.filter === "all");
+  });
+
+  showLogin("You have signed out.");
 });
+          
       
 
     document.getElementById("refresh-button")
