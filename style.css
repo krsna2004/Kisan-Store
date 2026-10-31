@@ -3101,6 +3101,8 @@ body.ks-search-open {
 }
 
 /* Footer social media icons */
+
+/* Footer social media spacing */
 .footer-social {
   display: flex;
   justify-content: center;
@@ -3108,7 +3110,14 @@ body.ks-search-open {
   flex-wrap: wrap;
   gap: 16px;
   width: 100%;
-  margin: 0 auto 24px;
+  margin: 18px auto 10px !important;
+  padding: 0;
+}
+
+/* Reduce excess space after social icons */
+.footer-social + * {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 .social-icon {
