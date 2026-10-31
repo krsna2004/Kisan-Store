@@ -519,10 +519,30 @@
       }
     });
 
-    logoutButton.addEventListener("click", async function () {
-      await db.auth.signOut();
-      showLogin("You have signed out.");
-    });
+    
+logoutButton.addEventListener("click", async function () {
+  const { error } = await db.auth.signOut();
+
+  if (error) {
+    alert("Sign out failed. Please try again.");
+    return;
+  }
+
+  // Clear saved login details from the form
+  loginForm.reset();
+
+  // Clear previous dashboard data
+  allReviews = [];
+  reviewsList.replaceChildren();
+  dashboardMessage.textContent = "";
+
+  // Return to a clean login screen
+  showLogin("You have signed out.");
+
+  // Refresh the page to reset the admin session interface
+  window.location.reload();
+});
+      
 
     document.getElementById("refresh-button")
       .addEventListener("click", loadReviews);
