@@ -5,6 +5,9 @@
   const url = SUPABASE_URL.replace(/\/$/, "");
   const key = SUPABASE_ANON_KEY;
 
+  // Replace this with your exact Cloudflare Worker URL.
+  const WORKER_URL = "https://kisan-store-review-api.krishnayadav422004.workers.dev/";
+
   const carousel = document.getElementById("reviews-carousel");
   const form = document.getElementById("customer-review-form");
   const statusMessage = document.getElementById("review-form-status");
@@ -23,15 +26,25 @@
     statusMessage.style.color = isError ? "#b91c1c" : "#267342";
   }
 
+  function resetCaptcha() {
+    if (window.turnstile) {
+      window.turnstile.reset();
+    }
+  }
+
   function createReviewCard(review) {
     const card = document.createElement("article");
     card.className = "review-card";
 
     const stars = document.createElement("div");
     stars.className = "review-stars";
-    stars.textContent = "★".repeat(review.rating) +
+    stars.textContent =
+      "★".repeat(review.rating) +
       "☆".repeat(5 - review.rating);
-    stars.setAttribute("aria-label", review.rating + " out of 5 stars");
+    stars.setAttribute(
+      "aria-label",
+      review.rating + " out of 5 stars"
+    );
 
     const name = document.createElement("h3");
     name.textContent = review.customer_name;
@@ -116,6 +129,13 @@
     const reviewText =
       form.elements.review_text.value.trim();
 
+    const captchaField =
+      form.querySelector('[name="cf-turnstile-response"]');
+
+    const turnstileToken = captchaField
+      ? captchaField.value
+      : "";
+
     if (
       customerName.length < 2 ||
       customerName.length > 80 ||
@@ -130,34 +150,44 @@
       return;
     }
 
+    if (!turnstileToken) {
+      setMessage("Please complete the security verification.", true);
+      return;
+    }
+
+    if (WORKER_URL === "PASTE_YOUR_WORKER_URL_HERE") {
+      setMessage("Review submission is not configured yet.", true);
+      return;
+    }
+
     submitButton.disabled = true;
     setMessage("Submitting your review...", false);
 
     try {
-      const response = await fetch(
-        url + "/rest/v1/reviews",
-        {
-          method: "POST",
-          headers: {
-            ...headers,
-            "Prefer": "return=minimal"
-          },
-          body: JSON.stringify({
-            customer_name: customerName,
-            location: location || null,
-            rating: rating,
-            review_text: reviewText,
-            status: "pending"
-          })
-        }
-      );
+      const response = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          customer_name: customerName,
+          location: location || null,
+          rating: rating,
+          review_text: reviewText,
+          turnstileToken: turnstileToken
+        })
+      });
 
-      if (!response.ok) {
-        const error = await response.json().catch(() => ({}));
-        throw new Error(error.message || "Review submission failed.");
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.error || "Review submission failed."
+        );
       }
 
       form.reset();
+      resetCaptcha();
 
       setMessage(
         "Thank you! Your review has been submitted and is awaiting approval.",
@@ -166,10 +196,13 @@
 
     } catch (error) {
       console.error("Review submission error:", error);
+
       setMessage(
-        "Sorry, your review could not be submitted. Please try again.",
+        error.message || "Sorry, your review could not be submitted. Please try again.",
         true
       );
+
+      resetCaptcha();
 
     } finally {
       submitButton.disabled = false;
@@ -178,3 +211,4 @@
 
   loadReviews();
 })();
+    
