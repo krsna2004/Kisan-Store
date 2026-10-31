@@ -26,6 +26,11 @@
     statusMessage.style.color = isError ? "#b91c1c" : "#267342";
   }
 
+  function resetCaptcha() {
+  if (window.turnstile) {
+    window.turnstile.reset();
+  }
+  }
   
 // Custom homepage rating dropdown
 
