@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#b91c1c">
+<title>Customer Reviews | The Kisan Store</title>
+<meta name="description" content="Read customer reviews and ratings for Kisan Hardware & Sanitary Store in Astawan, Kumher, Bharatpur, Rajasthan.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://thekisanstore.in/reviews.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Kisan Store">
+<meta property="og:title" content="Customer Reviews | The Kisan Store">
+<meta property="og:description" content="Read customer experiences and ratings for Kisan Hardware & Sanitary Store.">
+<meta property="og:url" content="https://thekisanstore.in/reviews.html">
+<meta property="og:image" content="https://thekisanstore.in/assets/images/share-home.jpg">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="owner-hero.css">
+<link rel="stylesheet" href="customer-popup.css">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
+<script src="script.js" defer></script>
+<script src="customer-popup.js" defer></script>
+<script src="website-search.js" defer></script>
+<script src="supabase-config.js" defer></script>
+<script src="reviews-page.js" defer></script>
+<style>
+.reviews-summary{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(260px,1.2fr);gap:22px;margin-bottom:28px}
+.reviews-rating-panel,.reviews-breakdown-panel{padding:25px;border:1px solid var(--line);border-radius:16px;background:#fff}
+.reviews-rating-panel{display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.reviews-big-rating{font-size:clamp(42px,6vw,58px);font-weight:900;line-height:1;letter-spacing:-.06em}
+.reviews-summary-stars{margin:9px 0 4px;color:#d69b16;font-size:21px;letter-spacing:3px}
+.reviews-muted{color:var(--muted);font-size:13px}
+.rating-breakdown{display:grid;gap:9px;margin-top:12px}
+.rating-row{display:grid;grid-template-columns:42px minmax(60px,1fr) 34px;align-items:center;gap:10px;font-size:12px;color:#555}
+.rating-track{height:9px;overflow:hidden;border-radius:99px;background:#eee}
+.rating-fill{height:100%;width:0;border-radius:99px;background:#d69b16}
+.reviews-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin:28px 0 18px}
+.reviews-toolbar label{font-size:13px;font-weight:750}
+.reviews-toolbar select{min-height:44px;min-width:180px;padding:9px 13px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+.reviews-page-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.reviews-page-grid .review-card{height:100%}
+.reviews-page-status{margin:18px 0;color:var(--muted);font-size:13px;text-align:center}
+.reviews-load-wrap{display:flex;justify-content:center;margin-top:24px}
+.reviews-cta{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-top:40px;padding:26px;border:1px solid #f0e4c4;border-radius:16px;background:#fff9e9}
+.reviews-cta h2{margin:0 0 5px;font-size:22px}
+.reviews-cta p{margin:0;color:#625d51;font-size:13px}
+.reviews-page-grid .review-empty{grid-column:1/-1}
+@media(max-width:800px){.reviews-page-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.reviews-summary{grid-template-columns:1fr}.reviews-page-grid{grid-template-columns:1fr}.reviews-cta{align-items:stretch;flex-direction:column}.reviews-cta .button{width:100%}.reviews-toolbar{align-items:stretch;flex-direction:column}.reviews-toolbar select{width:100%}}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a class="brand" href="index.html" aria-label="Kisan Hardware & Sanitary Store home"><span class="brand-mark" aria-hidden="true">KH</span><span class="brand-name">KISAN HARDWARE<span>&amp; SANITARY STORE</span></span></a>
+<button class="menu-toggle" id="menuBtn" type="button" aria-expanded="false" aria-controls="navlinks" aria-label="Open navigation"><span></span><span></span><span></span></button>
+<nav class="nav-links" id="navlinks" aria-label="Main navigation">
+<a href="index.html" data-en="Home" data-hi="होम">Home</a><a href="products.html" data-en="Products" data-hi="उत्पाद">Products</a><a href="trade-partners.html" data-en="Trade Partners" data-hi="ट्रेड पार्टनर्स">Trade Partners</a><a href="blog.html" data-en="Buying Guides" data-hi="खरीदारी गाइड">Buying Guides</a><a href="media.html" data-en="Gallery" data-hi="गैलरी">Gallery</a><a href="updates.html" data-en="Updates" data-hi="अपडेट">Updates</a><a class="active" href="reviews.html" aria-current="page" data-en="Reviews" data-hi="समीक्षाएँ">Reviews</a><a href="contact.html" data-en="Contact" data-hi="संपर्क">Contact</a>
+</nav>
+<div class="header-actions"><button class="language-toggle" id="langBtn" type="button" aria-label="Switch website to Hindi">हिन्दी</button><a class="button button-primary header-cta" href="contact.html" data-en="Contact us" data-hi="संपर्क करें">Contact us</a></div>
+</div></header>
+<main>
+<section class="page-hero"><div class="container"><p class="eyebrow" data-en="CUSTOMER FEEDBACK" data-hi="ग्राहकों की राय">CUSTOMER FEEDBACK</p><h1 data-en="Customer Reviews" data-hi="ग्राहक समीक्षाएँ">Customer Reviews</h1><p data-en="Read experiences shared by customers of Kisan Hardware & Sanitary Store in Astawan, Kumher. Reviews are displayed after they have been checked and approved." data-hi="अस्तावन, कुम्हेर स्थित किसान हार्डवेयर एंड सैनिटरी स्टोर के ग्राहकों के अनुभव पढ़ें। समीक्षाएँ जाँच और स्वीकृति के बाद दिखाई जाती हैं।">Read experiences shared by customers of Kisan Hardware &amp; Sanitary Store in Astawan, Kumher. Reviews are displayed after they have been checked and approved.</p></div></section>
+<section class="section"><div class="container">
+<div class="reviews-summary" aria-label="Customer review summary">
+<div class="reviews-rating-panel"><span class="reviews-muted" data-en="Overall customer rating" data-hi="ग्राहकों की औसत रेटिंग">Overall customer rating</span><strong class="reviews-big-rating" id="reviews-average">—</strong><div class="reviews-summary-stars" id="reviews-average-stars" aria-label="Average star rating">☆☆☆☆☆</div><span class="reviews-muted" id="reviews-total">Loading approved reviews…</span></div>
+<div class="reviews-breakdown-panel"><strong data-en="Rating breakdown" data-hi="रेटिंग का विवरण">Rating breakdown</strong><div class="rating-breakdown" id="rating-breakdown"><p class="reviews-muted">Loading rating summary…</p></div></div>
+</div>
+<div class="reviews-toolbar"><div><h2 style="margin:0 0 4px;font-size:clamp(23px,3vw,30px)" data-en="What customers say" data-hi="ग्राहक क्या कहते हैं">What customers say</h2><span class="reviews-muted" id="reviews-results-label">Latest approved reviews</span></div>
+<div><label for="reviews-filter" data-en="Filter reviews" data-hi="समीक्षाएँ फ़िल्टर करें">Filter reviews</label><select id="reviews-filter"><option value="all">All ratings</option><option value="5">★★★★★ 5 stars</option><option value="4">★★★★ 4 stars</option><option value="3">★★★ 3 stars</option><option value="2">★★ 2 stars</option><option value="1">★ 1 star</option></select></div></div>
+<div class="reviews-page-grid" id="reviews-page-grid" aria-live="polite" aria-busy="true"><p class="review-empty">Loading customer reviews…</p></div>
+<p class="reviews-page-status" id="reviews-page-status" aria-live="polite"></p>
+<div class="reviews-load-wrap"><button class="button button-primary" id="reviews-load-more" type="button" hidden>Load more reviews</button></div>
+<div class="reviews-cta"><div><h2 data-en="Purchased from Kisan Store?" data-hi="किसान स्टोर से खरीदारी की है?">Purchased from Kisan Store?</h2><p data-en="Share your experience. Your review will appear after approval." data-hi="अपना अनुभव साझा करें। आपकी समीक्षा स्वीकृति के बाद दिखाई जाएगी।">Share your experience. Your review will appear after approval.</p></div><a class="button button-primary" href="index.html#customer-reviews" data-en="Write a Review" data-hi="समीक्षा लिखें">Write a Review <span aria-hidden="true">→</span></a></div>
+</div></section>
+</main>
+<footer class="site-footer"><div class="container footer-main">
+<a class="brand footer-brand" href="index.html" aria-label="Kisan Hardware & Sanitary Store home"><span class="brand-mark" aria-hidden="true">KH</span><span class="brand-name">KISAN HARDWARE<span>&amp; SANITARY STORE</span></span></a>
+<p data-en="Hardware, plumbing and sanitary products in Astawan, Kumher, Bharatpur, Rajasthan 321201." data-hi="अस्तावन, कुम्हेर, भरतपुर, राजस्थान 321201 में हार्डवेयर, प्लंबिंग और सैनिटरी उत्पाद।">Hardware, plumbing and sanitary products in Astawan, Kumher, Bharatpur, Rajasthan 321201.</p>
+<div class="footer-links"><a href="products.html" data-en="Products" data-hi="उत्पाद">Products</a><a href="trade-partners.html" data-en="Trade Partners" data-hi="ट्रेड पार्टनर्स">Trade Partners</a><a href="blog.html" data-en="Buying Guides" data-hi="खरीदारी गाइड">Buying Guides</a><a href="media.html" data-en="Gallery" data-hi="गैलरी">Gallery</a><a href="updates.html" data-en="Updates" data-hi="अपडेट">Updates</a><a href="reviews.html" data-en="Reviews" data-hi="समीक्षाएँ">Reviews</a><a href="contact.html" data-en="Contact" data-hi="संपर्क">Contact</a></div>
+</div><div class="container footer-bottom"><span>© <span id="year"></span> Kisan Hardware &amp; Sanitary Store</span><span data-en="RJ SH 44 · Astawan · Bharatpur 321201" data-hi="RJ SH 44 · अस्तावन · भरतपुर 321201">RJ SH 44 · Astawan · Bharatpur 321201</span></div></footer>
+</body></html>
