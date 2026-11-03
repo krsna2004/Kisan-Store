@@ -3167,9 +3167,7 @@ body.ks-search-open {
   background: #454545;
 }
 
-
-/* The Kisan Store - Header Branding */
-
+/* The Kisan Store header branding */
 .brand-name {
   display: flex;
   flex-direction: column;
@@ -3180,24 +3178,26 @@ body.ks-search-open {
 .brand-name .brand-title {
   display: block;
   color: var(--ink);
-  font-size: 21px;
+  font-size: 20px;
   font-weight: 850;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.4px;
   text-transform: none;
   white-space: nowrap;
 }
 
 .brand-trademark {
-  font-size: 10px;
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
   vertical-align: super;
   margin-left: 2px;
-  font-weight: 700;
+  line-height: 0;
 }
 
 .brand-name .brand-tagline {
   display: block;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 750;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -3210,7 +3210,7 @@ body.ks-search-open {
   }
 
   .brand-name .brand-tagline {
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 1px;
   }
 }
