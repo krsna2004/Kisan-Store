@@ -73,6 +73,7 @@
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="apple-touch-icon" href="/favicon.png">
   <script src="script.js" defer></script>
+  <script src="homepage-carousel.js" defer></script>
   <script src="customer-popup.js" defer></script>
   <script src="website-search.js" defer></script>
   <script src="supabase-config.js" defer></script>
@@ -506,6 +507,12 @@
       </div>
     </div>
   </header>
+
+  <!-- CMS-managed homepage promotional carousel -->
+  <section class="homepage-promo" id="homepage-promo" aria-label="Store promotions" hidden>
+    <div class="homepage-promo-track" id="homepage-promo-track"></div>
+    <div class="homepage-promo-dots" id="homepage-promo-dots" aria-label="Choose a promotion" hidden></div>
+  </section>
 
   <main>
     <!-- Main SEO-focused hero with the owner's photo retained prominently. -->

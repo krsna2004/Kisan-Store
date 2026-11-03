@@ -3,6 +3,11 @@ media:
     label: Store Images
     input: assets/images
     output: assets/images
+  - name: homepage_promotions
+    label: Homepage Promotions
+    input: assets/homepage-promotions
+    output: /assets/homepage-promotions
+    categories: [image, video]
 
 content:
   - name: products
@@ -380,4 +385,62 @@ content:
       - name: hours
         label: Opening Hours
         type: string
-        
+
+  - name: homepage_promotions
+    label: Homepage Promotional Carousel
+    type: file
+    path: content/homepage-promotions.json
+    format: json
+    list: true
+    fields:
+      - name: title
+        label: Internal Title
+        type: string
+        required: true
+
+      - name: media_type
+        label: Media Type
+        type: select
+        required: true
+        options:
+          values:
+            - Image
+            - Video
+
+      - name: image
+        label: Promotional Image
+        type: image
+        options:
+          media: homepage_promotions
+          path: slides
+          extensions: [jpg, jpeg, png, webp, avif]
+
+      - name: video_file
+        label: Promotional Video File
+        type: file
+        options:
+          media: homepage_promotions
+          path: slides
+          categories: [video]
+          extensions: [mp4, webm]
+
+      - name: image_alt
+        label: Image Description (Alt Text)
+        type: string
+
+      - name: active
+        label: Show on Homepage
+        type: boolean
+
+      - name: order
+        label: Display Order (Lowest First)
+        type: number
+
+      - name: start_date
+        label: Start Date (Optional)
+        type: date
+
+      - name: end_date
+        label: End Date (Optional)
+        type: date
+
