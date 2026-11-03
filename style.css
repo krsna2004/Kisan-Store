@@ -3166,3 +3166,51 @@ body.ks-search-open {
 .social-icon.email {
   background: #454545;
 }
+
+
+/* The Kisan Store - Header Branding */
+
+.brand-name {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  line-height: 1.15;
+}
+
+.brand-name .brand-title {
+  display: block;
+  color: var(--ink);
+  font-size: 21px;
+  font-weight: 850;
+  letter-spacing: -0.5px;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.brand-trademark {
+  font-size: 10px;
+  vertical-align: super;
+  margin-left: 2px;
+  font-weight: 700;
+}
+
+.brand-name .brand-tagline {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@media (max-width: 400px) {
+  .brand-name .brand-title {
+    font-size: 18px;
+  }
+
+  .brand-name .brand-tagline {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+}
