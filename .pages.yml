@@ -55,8 +55,12 @@ content:
           path: products
 
       - name: description
-        label: Description
-        type: text
+        label: Description (English)
+        type: rich-text
+        options:
+          media: store_media
+          path: products
+          format: markdown
 
       - name: name_hi
         label: Product Name (Hindi)
@@ -77,7 +81,11 @@ content:
 
       - name: description_hi
         label: Description (Hindi)
-        type: text
+        type: rich-text
+        options:
+          media: store_media
+          path: products
+          format: markdown
       
       - name: slug
         label: Product URL Slug
