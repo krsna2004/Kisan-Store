@@ -158,6 +158,47 @@
   font-size: 1rem;
 }
 
+.product-description {
+  text-align: left;
+}
+
+.product-description h2,
+.product-description h3,
+.product-description h4,
+.product-description h5,
+.product-description h6 {
+  color: var(--ink, #1f2937);
+  line-height: 1.35;
+  margin: 1.35em 0 .55em;
+}
+
+.product-description h2 { font-size: 1.35rem; }
+.product-description h3 { font-size: 1.15rem; }
+.product-description h4,
+.product-description h5,
+.product-description h6 { font-size: 1.05rem; }
+
+.product-description p {
+  margin: 0 0 1em;
+}
+
+.product-description ul,
+.product-description ol {
+  margin: .5em 0 1.1em;
+  padding-left: 1.5em;
+}
+
+.product-description li {
+  margin: .35em 0;
+  padding-left: .15em;
+}
+
+.product-description a {
+  color: #b91c1c;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .product-actions {
   display: flex;
   align-items: center;
@@ -315,7 +356,7 @@
 
     
 
-    <p class="product-description">Upgrade your bathroom with our premium high-pressure rain shower head. Crafted from durable stainless steel for an luxurious spa-like experience at home.</p>
+    <div class="product-description"><p>Upgrade your bathroom with our premium high-pressure rain shower head. Crafted from durable stainless steel for an luxurious spa-like experience at home.</p></div>
 
     <div class="product-actions">
       <a
@@ -339,7 +380,7 @@
 
     
 
-    <p class="product-description">अपने बाथरूम को बेहतरीन हाई-प्रेशर रेन शावर हेड के साथ अपग्रेड करें। टिकाऊ स्टेनलेस स्टील से निर्मित, जो घर पर ही शानदार स्पा जैसा अनुभव देता है।</p>
+    <div class="product-description"><p>अपने बाथरूम को बेहतरीन हाई-प्रेशर रेन शावर हेड के साथ अपग्रेड करें। टिकाऊ स्टेनलेस स्टील से निर्मित, जो घर पर ही शानदार स्पा जैसा अनुभव देता है।</p></div>
 
     <div class="product-actions">
       <a
@@ -468,9 +509,11 @@
         window.setKisanLanguage(selectedLanguage);
       } else {
         document.documentElement.lang = selectedLanguage;
+
         try {
           localStorage.setItem("kisan-hardware-language", selectedLanguage);
         } catch (_) {}
+
         document.dispatchEvent(new CustomEvent("kisan:language-change", {
           detail: { language: selectedLanguage }
         }));
@@ -480,11 +523,15 @@
 
   document.addEventListener("kisan:language-change", event => {
     const language = event.detail && event.detail.language;
-    if (language === "hi" || language === "en") setLanguage(language, false);
+
+    if (language === "hi" || language === "en") {
+      setLanguage(language, false);
+    }
   });
 
   // Start with the language already selected by the shared site script.
   const initialLanguage = document.documentElement.lang === "hi" ? "hi" : "en";
+
   setLanguage(initialLanguage, false);
 
   buttons.forEach(button => {

@@ -23,7 +23,7 @@
 <script src="/script.js" defer></script>
 <script src="/website-search.js" defer></script>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Fasteners","description":"Quality hardware fasteners, including nuts, bolts, screws, washers, and other  available in various sizes, types, and specifications to meet different fastening requirements. Suitable for construction work, furniture assembly, machinery installation, and general maintenance.","url":"https://thekisanstore.in/products/fasteners/","image":["https://thekisanstore.in/assets/images/home-hardware-fasteners.jpg"],"category":"Hardware","sku":"fasteners","offers":{"@type":"Offer","url":"https://thekisanstore.in/products/fasteners/","priceCurrency":"INR","availability":"https://schema.org/InStock","seller":{"@type":"LocalBusiness","name":"Kisan Hardware & Sanitary Store","url":"https://thekisanstore.in"}}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Fasteners","description":"Quality hardware fasteners, including nuts, bolts, screws, washers, and other available in various sizes, types, and specifications to meet different fastening requirements. Suitable for construction work, furniture assembly, machinery installation, and general maintenance.","url":"https://thekisanstore.in/products/fasteners/","image":["https://thekisanstore.in/assets/images/home-hardware-fasteners.jpg"],"category":"Hardware","sku":"fasteners","offers":{"@type":"Offer","url":"https://thekisanstore.in/products/fasteners/","priceCurrency":"INR","availability":"https://schema.org/InStock","seller":{"@type":"LocalBusiness","name":"Kisan Hardware & Sanitary Store","url":"https://thekisanstore.in"}}}</script>
 
 <style>
 .product-detail {
@@ -156,6 +156,47 @@
   color: #4b5563;
   line-height: 1.8;
   font-size: 1rem;
+}
+
+.product-description {
+  text-align: left;
+}
+
+.product-description h2,
+.product-description h3,
+.product-description h4,
+.product-description h5,
+.product-description h6 {
+  color: var(--ink, #1f2937);
+  line-height: 1.35;
+  margin: 1.35em 0 .55em;
+}
+
+.product-description h2 { font-size: 1.35rem; }
+.product-description h3 { font-size: 1.15rem; }
+.product-description h4,
+.product-description h5,
+.product-description h6 { font-size: 1.05rem; }
+
+.product-description p {
+  margin: 0 0 1em;
+}
+
+.product-description ul,
+.product-description ol {
+  margin: .5em 0 1.1em;
+  padding-left: 1.5em;
+}
+
+.product-description li {
+  margin: .35em 0;
+  padding-left: .15em;
+}
+
+.product-description a {
+  color: #b91c1c;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .product-actions {
@@ -315,7 +356,7 @@
 
     
 
-    <p class="product-description">Quality hardware fasteners, including nuts, bolts, screws, washers, and other  available in various sizes, types, and specifications to meet different fastening requirements. Suitable for construction work, furniture assembly, machinery installation, and general maintenance.</p>
+    <div class="product-description"><p>Quality hardware fasteners, including nuts, bolts, screws, washers, and other  available in various sizes, types, and specifications to meet different fastening requirements. Suitable for construction work, furniture assembly, machinery installation, and general maintenance.</p></div>
 
     <div class="product-actions">
       <a
@@ -339,7 +380,7 @@
 
     
 
-    <p class="product-description">क्वालिटी हार्डवेयर फास्टनर्स, जिनमें नट, बोल्ट, स्क्रू, वॉशर और अन्य फिटिंग सामग्री शामिल हैं। विभिन्न प्रकार की जरूरतों के अनुसार अलग-अलग आकार, प्रकार और स्पेसिफिकेशन में उपलब्ध। निर्माण कार्य, फर्नीचर असेंबली, मशीनरी इंस्टॉलेशन और सामान्य मरम्मत एवं रखरखाव के लिए उपयुक्त।</p>
+    <div class="product-description"><p>क्वालिटी हार्डवेयर फास्टनर्स, जिनमें नट, बोल्ट, स्क्रू, वॉशर और अन्य फिटिंग सामग्री शामिल हैं। विभिन्न प्रकार की जरूरतों के अनुसार अलग-अलग आकार, प्रकार और स्पेसिफिकेशन में उपलब्ध। निर्माण कार्य, फर्नीचर असेंबली, मशीनरी इंस्टॉलेशन और सामान्य मरम्मत एवं रखरखाव के लिए उपयुक्त।</p></div>
 
     <div class="product-actions">
       <a
@@ -468,9 +509,11 @@
         window.setKisanLanguage(selectedLanguage);
       } else {
         document.documentElement.lang = selectedLanguage;
+
         try {
           localStorage.setItem("kisan-hardware-language", selectedLanguage);
         } catch (_) {}
+
         document.dispatchEvent(new CustomEvent("kisan:language-change", {
           detail: { language: selectedLanguage }
         }));
@@ -480,11 +523,15 @@
 
   document.addEventListener("kisan:language-change", event => {
     const language = event.detail && event.detail.language;
-    if (language === "hi" || language === "en") setLanguage(language, false);
+
+    if (language === "hi" || language === "en") {
+      setLanguage(language, false);
+    }
   });
 
   // Start with the language already selected by the shared site script.
   const initialLanguage = document.documentElement.lang === "hi" ? "hi" : "en";
+
   setLanguage(initialLanguage, false);
 
   buttons.forEach(button => {
