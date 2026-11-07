@@ -1,4 +1,3 @@
-
 import fs from "node:fs";
 import path from "node:path";
 
@@ -62,6 +61,7 @@ function readJson(file) {
   return JSON.parse(fs.readFileSync(file, "utf8"));
 }
 
+
 function escapeHtml(value = "") {
   return String(value).replace(/[&<>"']/g, char => ({
     "&": "&amp;",
@@ -71,6 +71,125 @@ function escapeHtml(value = "") {
     "'": "&#39;"
   })[char]);
 }
+
+
+// Convert Markdown product descriptions into safe HTML.
+// Raw HTML is escaped; only the supported Markdown syntax is rendered.
+function markdownInline(value = "") {
+  let html = escapeHtml(value);
+
+  // Markdown links. Only allow safe web, email, telephone and local URLs.
+  html = html.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, rawUrl) => {
+    const url = rawUrl.trim();
+    const safe = /^(https?:\/\/|mailto:|tel:|\/|\.\/|\.\.\/)/i.test(url)
+      && !/^javascript:/i.test(url);
+
+    return safe
+      ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${label}</a>`
+      : label;
+  });
+
+  html = html
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/__(.+?)__/g, "<strong>$1</strong>")
+    .replace(/\*(.+?)\*/g, "<em>$1</em>")
+    .replace(/_(.+?)_/g, "<em>$1</em>");
+
+  return html;
+}
+
+
+function markdownToHtml(markdown = "") {
+  const lines = String(markdown).replace(/\r\n?/g, "\n").split("\n");
+  const output = [];
+  let paragraph = [];
+  let listType = "";
+
+  const flushParagraph = () => {
+    if (!paragraph.length) return;
+
+    output.push(`<p>${markdownInline(paragraph.join(" "))}</p>`);
+    paragraph = [];
+  };
+
+  const closeList = () => {
+    if (!listType) return;
+
+    output.push(`</${listType}>`);
+    listType = "";
+  };
+
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
+
+    if (!line) {
+      flushParagraph();
+      closeList();
+      continue;
+    }
+
+    const heading = line.match(/^(#{1,6})\s+(.+)$/);
+
+    if (heading) {
+      flushParagraph();
+      closeList();
+
+      // The product name is already the page's H1, so description
+      // headings begin at H2 to preserve a sensible document outline.
+      const level = Math.min(6, heading[1].length + 1);
+
+      output.push(
+        `<h${level}>${markdownInline(heading[2])}</h${level}>`
+      );
+
+      continue;
+    }
+
+    const unordered = line.match(/^[-*+]\s+(.+)$/);
+    const ordered = line.match(/^\d+[.)]\s+(.+)$/);
+
+    if (unordered || ordered) {
+      flushParagraph();
+
+      const nextType = unordered ? "ul" : "ol";
+
+      if (listType !== nextType) {
+        closeList();
+        output.push(`<${nextType}>`);
+        listType = nextType;
+      }
+
+      output.push(
+        `<li>${markdownInline((unordered || ordered)[1])}</li>`
+      );
+
+      continue;
+    }
+
+    closeList();
+    paragraph.push(line);
+  }
+
+  flushParagraph();
+  closeList();
+
+  return output.join("\n");
+}
+
+
+function markdownToPlainText(markdown = "") {
+  return String(markdown)
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/^\s*[-*+]\s+/gm, "")
+    .replace(/^\s*\d+[.)]\s+/gm, "")
+    .replace(/[*_`]/g, "")
+    .replace(/<[^>]*>/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 
 function slugify(value) {
   return String(value || "")
@@ -82,6 +201,7 @@ function slugify(value) {
     .replace(/^-+|-+$/g, "");
 }
 
+
 function safeSlug(product) {
   const candidate = String(product.slug || "").trim();
 
@@ -89,6 +209,7 @@ function safeSlug(product) {
     ? candidate
     : slugify(product.name);
 }
+
 
 function absoluteAssetPath(value) {
   const raw = String(value || "").trim();
@@ -102,8 +223,10 @@ function absoluteAssetPath(value) {
   return "/" + raw.replace(/^\.?\//, "").replace(/^\/+/, "");
 }
 
+
 function makeProductPage(product, slug) {
   const siteLayout = getSiteLayout();
+
   const name = String(product.name || "Product").trim();
   const nameHi = String(product.name_hi || name).trim();
 
@@ -123,8 +246,11 @@ function makeProductPage(product, slug) {
     product.seo_title || `${name} | Kisan Hardware & Sanitary Store`
   ).trim();
 
+  const plainDescription = markdownToPlainText(description);
+  const plainDescriptionHi = markdownToPlainText(descriptionHi);
+
   const metaDescription = String(
-    product.meta_description || description
+    product.meta_description || plainDescription
   ).trim().slice(0, 300);
 
   const image = absoluteAssetPath(product.image);
@@ -163,7 +289,7 @@ function makeProductPage(product, slug) {
     "@context": "https://schema.org",
     "@type": "Product",
     name,
-    description,
+    description: plainDescription,
     url: canonical,
     image: image
       ? [`${SITE_URL}${image.startsWith("/") ? image : "/" + image}`]
@@ -206,7 +332,6 @@ function makeProductPage(product, slug) {
     : "";
 
   const stockLabel = available ? "Available" : "Unavailable";
-
   const stockLabelHi = available ? "उपलब्ध है" : "उपलब्ध नहीं है";
 
   const visiblePrice = validPrice
@@ -382,6 +507,47 @@ ${keywordsMarkup}
   font-size: 1rem;
 }
 
+.product-description {
+  text-align: left;
+}
+
+.product-description h2,
+.product-description h3,
+.product-description h4,
+.product-description h5,
+.product-description h6 {
+  color: var(--ink, #1f2937);
+  line-height: 1.35;
+  margin: 1.35em 0 .55em;
+}
+
+.product-description h2 { font-size: 1.35rem; }
+.product-description h3 { font-size: 1.15rem; }
+.product-description h4,
+.product-description h5,
+.product-description h6 { font-size: 1.05rem; }
+
+.product-description p {
+  margin: 0 0 1em;
+}
+
+.product-description ul,
+.product-description ol {
+  margin: .5em 0 1.1em;
+  padding-left: 1.5em;
+}
+
+.product-description li {
+  margin: .35em 0;
+  padding-left: .15em;
+}
+
+.product-description a {
+  color: #b91c1c;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .product-actions {
   display: flex;
   align-items: center;
@@ -509,7 +675,7 @@ ${imageMarkup ? `<div class="product-image-wrap">${imageMarkup}</div>` : ""}
 
     ${visiblePrice}
 
-    <p class="product-description">${escapeHtml(description)}</p>
+    <div class="product-description">${markdownToHtml(description)}</div>
 
     <div class="product-actions">
       <a
@@ -533,7 +699,7 @@ ${imageMarkup ? `<div class="product-image-wrap">${imageMarkup}</div>` : ""}
 
     ${visiblePrice}
 
-    <p class="product-description">${escapeHtml(descriptionHi)}</p>
+    <div class="product-description">${markdownToHtml(descriptionHi)}</div>
 
     <div class="product-actions">
       <a
@@ -590,9 +756,11 @@ ${siteLayout.footer}
         window.setKisanLanguage(selectedLanguage);
       } else {
         document.documentElement.lang = selectedLanguage;
+
         try {
           localStorage.setItem("kisan-hardware-language", selectedLanguage);
         } catch (_) {}
+
         document.dispatchEvent(new CustomEvent("kisan:language-change", {
           detail: { language: selectedLanguage }
         }));
@@ -602,11 +770,15 @@ ${siteLayout.footer}
 
   document.addEventListener("kisan:language-change", event => {
     const language = event.detail && event.detail.language;
-    if (language === "hi" || language === "en") setLanguage(language, false);
+
+    if (language === "hi" || language === "en") {
+      setLanguage(language, false);
+    }
   });
 
   // Start with the language already selected by the shared site script.
   const initialLanguage = document.documentElement.lang === "hi" ? "hi" : "en";
+
   setLanguage(initialLanguage, false);
 
   buttons.forEach(button => {
@@ -621,6 +793,7 @@ ${siteLayout.footer}
 </html>
 `;
 }
+
 
 function makeCatalogueIndex(sourceHtml) {
   let html = sourceHtml;
@@ -641,6 +814,7 @@ function makeCatalogueIndex(sourceHtml) {
   return html;
 }
 
+
 function updateSitemap(slugs) {
   let urls = [];
 
@@ -659,7 +833,9 @@ function updateSitemap(slugs) {
   for (const slug of slugs) {
     const url = `${SITE_URL}/products/${slug}/`;
 
-    if (!urls.includes(url)) urls.push(url);
+    if (!urls.includes(url)) {
+      urls.push(url);
+    }
   }
 
   const xmlEscape = value =>
@@ -685,6 +861,7 @@ function updateSitemap(slugs) {
   console.log(`Updated sitemap.xml with ${slugs.length} product URLs.`);
 }
 
+
 function main() {
   const products = readJson(PRODUCT_DATA);
 
@@ -699,42 +876,6 @@ function main() {
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
   fs.writeFileSync(
-    path.join(OUTPUT_DIR, "index.html"),
-    makeCatalogueIndex(fs.readFileSync(CATALOGUE_HTML, "utf8")),
-    "utf8"
-  );
-
-  const used = new Set();
-  const slugs = [];
-
-  for (const product of products) {
-    if (!product || !String(product.name || "").trim()) {
-      console.warn("Skipping a product without a name.");
-      continue;
-    }
-
-    const slug = safeSlug(product);
-
-    if (!slug) {
-      throw new Error(
-        `Could not create a URL slug for product: ${product.name}`
-      );
-    }
-
-    if (used.has(slug)) {
-      throw new Error(
-        `Duplicate product slug "${slug}". Give each product a unique URL Slug in Pages CMS.`
-      );
-    }
-
-    used.add(slug);
-    slugs.push(slug);
-
-    const dir = path.join(OUTPUT_DIR, slug);
-
-    fs.mkdirSync(dir, { recursive: true });
-
-    fs.writeFileSync(
       path.join(dir, "index.html"),
       makeProductPage(product, slug),
       "utf8"
@@ -746,5 +887,5 @@ function main() {
   console.log(`Generated ${slugs.length} product pages in /${OUTPUT_DIR}/.`);
 }
 
+
 main();
-                                               
