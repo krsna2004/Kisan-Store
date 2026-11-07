@@ -875,7 +875,47 @@ function main() {
 
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
+  // Generate the product catalogue index.
   fs.writeFileSync(
+    path.join(OUTPUT_DIR, "index.html"),
+    makeCatalogueIndex(
+      fs.readFileSync(CATALOGUE_HTML, "utf8")
+    ),
+    "utf8"
+  );
+
+  const used = new Set();
+  const slugs = [];
+
+  // Generate an individual page for every product.
+  for (const product of products) {
+    if (!product || !String(product.name || "").trim()) {
+      console.warn("Skipping a product without a name.");
+      continue;
+    }
+
+    const slug = safeSlug(product);
+
+    if (!slug) {
+      throw new Error(
+        `Could not create a URL slug for product: ${product.name}`
+      );
+    }
+
+    if (used.has(slug)) {
+      throw new Error(
+        `Duplicate product slug "${slug}". Give each product a unique URL Slug in Pages CMS.`
+      );
+    }
+
+    used.add(slug);
+    slugs.push(slug);
+
+    const dir = path.join(OUTPUT_DIR, slug);
+
+    fs.mkdirSync(dir, { recursive: true });
+
+    fs.writeFileSync(
       path.join(dir, "index.html"),
       makeProductPage(product, slug),
       "utf8"
@@ -884,8 +924,9 @@ function main() {
 
   updateSitemap(slugs);
 
-  console.log(`Generated ${slugs.length} product pages in /${OUTPUT_DIR}/.`);
+  console.log(
+    `Generated ${slugs.length} product pages in /${OUTPUT_DIR}/.`
+  );
 }
-
 
 main();
