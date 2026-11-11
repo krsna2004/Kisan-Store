@@ -233,6 +233,112 @@ content:
           format: markdown
           
   
+
+  - name: astawan_articles
+    label: Astawan Local Articles
+    type: collection
+    path: content/astawan
+    format: json
+    filename: "{primary}.json"
+    view:
+      primary: title
+      fields: [title, date, category, status, featured]
+      sort: [date, title]
+      order: desc
+    fields:
+      - name: title
+        label: Article Title
+        type: string
+        required: true
+      - name: slug
+        label: URL Slug
+        type: string
+        required: true
+        description: "Lowercase words separated by hyphens. Keep stable after publishing."
+        pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      - name: description
+        label: Short Description
+        type: text
+        required: true
+      - name: date
+        label: Publication Date
+        type: date
+        required: true
+      - name: updated_date
+        label: Last Updated Date
+        type: date
+      - name: author
+        label: Author
+        type: string
+      - name: category
+        label: Astawan Topic
+        type: select
+        options:
+          values:
+            - Local News & Updates
+            - Weather & Climate
+            - Businesses & Shops
+            - Development & Infrastructure
+            - Education & Opportunities
+            - Events & Community
+            - Agriculture & Farming
+            - History & Places
+      - name: tags
+        label: Search Tags (comma-separated)
+        type: string
+      - name: image
+        label: Cover Image
+        type: image
+        options:
+          media: store_media
+          path: astawan
+      - name: image_alt
+        label: Cover Image Alt Text
+        type: string
+      - name: content
+        label: Article Content
+        type: rich-text
+        options:
+          media: store_media
+          path: astawan
+          format: markdown
+      - name: source_name
+        label: Information Source Name
+        type: string
+      - name: source_url
+        label: Source URL
+        type: string
+      - name: seo_title
+        label: SEO Title
+        type: string
+      - name: meta_description
+        label: SEO Meta Description
+        type: text
+      - name: featured
+        label: Featured Article
+        type: boolean
+      - name: status
+        label: Publication Status
+        type: select
+        required: true
+        options:
+          values:
+            - Draft
+            - Published
+      - name: title_hi
+        label: Article Title (Hindi)
+        type: string
+      - name: description_hi
+        label: Short Description (Hindi)
+        type: text
+      - name: content_hi
+        label: Article Content (Hindi)
+        type: rich-text
+        options:
+          media: store_media
+          path: astawan
+          format: markdown
+
   - name: updates
     label: News & Updates
     type: collection
