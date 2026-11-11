@@ -36,7 +36,8 @@ function readCollection(directory, options = {}) {
 
 function writeIndex(file, data) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
-  fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", "utf8");
+  fs.writeFileSync(file, JSON.stringify(data, null, 2) + "
+", "utf8");
   console.log(`Generated ${file}: ${data.length} entries`);
 }
 
@@ -54,7 +55,8 @@ function generateSitemap(blogs) {
     "/",
     "/products.html",
     "/trade-partners.html",
-    "/blog.html",\n    "/astawan/",
+    "/blog.html",
+    "/astawan/",
     "/media.html",
     "/updates.html",
     "/contact.html",
@@ -66,7 +68,11 @@ function generateSitemap(blogs) {
       `/blog-post.html?slug=${encodeURIComponent(post.slug)}`
     );
 
-  const astawanUrls = readCollection("content/astawan")\n    .filter((post) => post.slug)\n    .map((post) => `/astawan/${post.slug}/`);\n\n  const urls = [...staticPages, ...blogUrls, ...astawanUrls];
+  const astawanUrls = readCollection("content/astawan")
+    .filter((post) => post.slug)
+    .map((post) => `/astawan/${post.slug}/`);
+
+  const urls = [...staticPages, ...blogUrls, ...astawanUrls];
 
   const uniqueUrls = [...new Set(urls)];
 
@@ -78,7 +84,8 @@ function generateSitemap(blogs) {
     ),
     "</urlset>",
     "",
-  ].join("\n");
+  ].join("
+");
 
   fs.writeFileSync("sitemap.xml", xml, "utf8");
   console.log(`Generated sitemap.xml: ${uniqueUrls.length} URLs`);
