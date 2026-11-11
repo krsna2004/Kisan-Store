@@ -5,7 +5,12 @@ on:
     branches:
       - main
     paths:
-      - "content/blogs/**"\n      - "content/astawan/**"\n      - "astawan.html"\n      - "astawan.js"\n      - "astawan.css"\n      - "scripts/build-astawan-pages.mjs"
+      - "content/blogs/**"
+      - "content/astawan/**"
+      - "astawan.html"
+      - "astawan.js"
+      - "astawan.css"
+      - "scripts/build-astawan-pages.mjs"
       - "content/updates/**"
       - "content/media/**"
       - "content/products.json"
@@ -45,12 +50,17 @@ jobs:
       - name: Generate product pages and update sitemap
         run: node scripts/build-product-pages.mjs
 
+      - name: Generate Astawan local pages
+        run: node scripts/build-astawan-pages.mjs
+
       - name: Generate brand index
         run: node scripts/build-brands-index.mjs
 
       - name: Commit generated files
         run: |
-          git add -f content/astawan-index.json\n          git add -f astawan/\n          git add -f content/blog-index.json
+          git add -f content/astawan-index.json
+          git add -f astawan/
+          git add -f content/blog-index.json
           git add -f content/updates-index.json
           git add -f content/media-index.json
           git add -f content/products-index.json
