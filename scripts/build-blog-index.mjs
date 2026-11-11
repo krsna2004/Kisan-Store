@@ -36,8 +36,7 @@ function readCollection(directory, options = {}) {
 
 function writeIndex(file, data) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
-  fs.writeFileSync(file, JSON.stringify(data, null, 2) + "
-", "utf8");
+  fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", "utf8");
   console.log(`Generated ${file}: ${data.length} entries`);
 }
 
