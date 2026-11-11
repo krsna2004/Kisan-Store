@@ -54,7 +54,7 @@ function generateSitemap(blogs) {
     "/",
     "/products.html",
     "/trade-partners.html",
-    "/blog.html",
+    "/blog.html",\n    "/astawan/",
     "/media.html",
     "/updates.html",
     "/contact.html",
@@ -66,7 +66,7 @@ function generateSitemap(blogs) {
       `/blog-post.html?slug=${encodeURIComponent(post.slug)}`
     );
 
-  const urls = [...staticPages, ...blogUrls];
+  const astawanUrls = readCollection("content/astawan")\n    .filter((post) => post.slug)\n    .map((post) => `/astawan/${post.slug}/`);\n\n  const urls = [...staticPages, ...blogUrls, ...astawanUrls];
 
   const uniqueUrls = [...new Set(urls)];
 
