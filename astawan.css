@@ -1,0 +1,68 @@
+/* Astawan Local Hub — independent styles, using the main site's design tokens. */
+.astawan-hero{background:linear-gradient(120deg,#fff5e7 0%,#fff 72%);border-bottom:1px solid #f1e8dc}
+.astawan-hero-inner{padding-block:clamp(52px,8vw,94px)}
+.astawan-hero h1{max-width:850px;margin:0 0 16px;font-size:clamp(38px,6vw,68px);line-height:1.04;letter-spacing:-.055em}
+.astawan-hero-intro{max-width:690px;color:#555660;font-size:clamp(16px,2vw,19px);line-height:1.7}
+.astawan-hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.astawan-hero-meta span{padding:7px 12px;border:1px solid #eadfcf;border-radius:999px;background:#fff;color:#665c4e;font-size:12px;font-weight:650}
+.astawan-intro-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:28px;align-items:center;margin-bottom:34px}
+.astawan-intro-grid h2,.astawan-business-panel h2{margin:0 0 12px;font-size:clamp(25px,3vw,36px);line-height:1.15;letter-spacing:-.035em}
+.astawan-intro-grid p,.astawan-business-panel p{color:#626262;line-height:1.75}
+.astawan-local-note{padding:24px;border:1px solid #f0e4c4;border-radius:17px;background:#fff9e9}
+.astawan-local-note strong{font-size:17px}
+.astawan-local-note p{font-size:13px;margin:8px 0 12px}
+.astawan-category-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:28px 0 54px}
+.astawan-category-grid a{display:flex;min-height:135px;flex-direction:column;align-items:flex-start;justify-content:flex-start;padding:18px;border:1px solid #eee5db;border-radius:15px;background:#fff;text-decoration:none;transition:transform .2s,border-color .2s}
+.astawan-category-grid a:hover{transform:translateY(-3px);border-color:#d8b7a8}
+.astawan-category-grid a span{margin-bottom:15px;color:#b91c1c;font-size:11px;font-weight:800;letter-spacing:.12em}
+.astawan-category-grid a strong{color:#242424;font-size:15px;line-height:1.35}
+.astawan-category-grid a small{margin-top:6px;color:#777;font-size:12px;line-height:1.45}
+.astawan-list-heading{display:flex;align-items:end;justify-content:space-between;margin-bottom:17px}
+.astawan-list-heading h2{margin:0 0 7px;font-size:clamp(25px,3vw,34px);letter-spacing:-.035em}
+.astawan-list-heading p:last-child{margin:0;color:#666;font-size:14px}
+.astawan-toolbar{display:flex;gap:10px;margin:20px 0 24px}
+.astawan-toolbar input,.astawan-toolbar select{min-height:46px;padding:11px 15px;border:1px solid #dedede;border-radius:11px;background:#fff;color:#242424;font:inherit}
+.astawan-toolbar input{flex:1;min-width:0}
+.astawan-toolbar select{min-width:210px}
+.astawan-article-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.astawan-article-card{overflow:hidden;border:1px solid #eee5db;border-radius:16px;background:#fff;box-shadow:0 5px 18px rgba(55,35,15,.035)}
+.astawan-article-card img{display:block;width:100%;height:190px;object-fit:cover;background:#f7f1e7}
+.astawan-article-copy{padding:18px}
+.astawan-article-category{margin:0 0 9px;color:#b91c1c;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+.astawan-article-copy h3{margin:0 0 9px;font-size:19px;line-height:1.35}
+.astawan-article-copy h3 a{color:inherit;text-decoration:none}
+.astawan-article-copy h3 a:hover{color:#b91c1c}
+.astawan-article-copy p{color:#666;font-size:13px;line-height:1.65}
+.astawan-article-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:13px;color:#858585;font-size:11px}
+.astawan-featured{display:grid;grid-template-columns:1fr 1fr;overflow:hidden;margin:0 0 22px;border:1px solid #eee1d4;border-radius:18px;background:#fff}
+.astawan-featured img{width:100%;height:100%;min-height:250px;object-fit:cover}
+.astawan-featured-copy{padding:clamp(20px,4vw,34px);align-self:center}
+.astawan-featured-copy h3{margin:0 0 10px;font-size:clamp(22px,3vw,30px);line-height:1.2}
+.astawan-featured-copy p{color:#666;line-height:1.7}
+.astawan-featured-copy a{color:#b91c1c;font-weight:700;text-decoration:none}
+.astawan-status{margin-top:15px;color:#666;font-size:13px}
+.astawan-empty{grid-column:1/-1;padding:28px;border:1px dashed #ddd;border-radius:14px;color:#666;text-align:center}
+.astawan-business-panel{display:grid;grid-template-columns:1.3fr .7fr;gap:28px;align-items:center;margin-top:58px;padding:clamp(24px,4vw,40px);border:1px solid #f0e4c4;border-radius:20px;background:#fff9e9}
+.astawan-business-panel h2{max-width:650px}
+.astawan-business-panel p{font-size:14px}
+.astawan-business-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.astawan-business-details{display:grid;gap:9px;padding:22px;border:1px solid #eadfcf;border-radius:15px;background:#fff;font-size:13px;line-height:1.5}
+.astawan-business-details strong{font-size:18px}
+.astawan-business-details a{color:#b91c1c;font-weight:650;text-decoration:none}
+.astawan-editorial-note{margin:18px 0 0;color:#777;font-size:11px;line-height:1.6}
+.astawan-post{max-width:850px;margin:0 auto;padding:30px 20px 65px}
+.astawan-breadcrumb{margin-bottom:20px;color:#777;font-size:13px}
+.astawan-breadcrumb a{color:#b91c1c;text-decoration:none}
+.astawan-post h1{margin:12px 0;font-size:clamp(32px,5vw,52px);line-height:1.1;letter-spacing:-.045em}
+.astawan-post-description{color:#626262;font-size:18px;line-height:1.7}
+.astawan-post-meta{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0;color:#777;font-size:12px}
+.astawan-post-cover{display:block;width:100%;max-height:480px;object-fit:cover;border-radius:17px;margin:25px 0}
+.astawan-post-content{font-size:16px;line-height:1.85;color:#343434}
+.astawan-post-content h2,.astawan-post-content h3{margin:1.6em 0 .55em;line-height:1.25;color:#222}
+.astawan-post-content p{margin:0 0 1.1em}
+.astawan-post-content ul,.astawan-post-content ol{padding-left:1.5em;margin:0 0 1.2em}
+.astawan-post-content a{color:#b91c1c;text-decoration:underline}
+.astawan-post-content blockquote{margin:1.3em 0;padding:12px 18px;border-left:3px solid #b91c1c;background:#fff8ef;color:#555}
+.astawan-related{margin-top:45px;padding-top:25px;border-top:1px solid #eee}
+@media(max-width:850px){.astawan-category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.astawan-article-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.astawan-intro-grid,.astawan-business-panel{grid-template-columns:1fr}}
+@media(max-width:600px){.astawan-hero-inner{padding-block:43px 55px}.astawan-category-grid{gap:9px}.astawan-category-grid a{min-height:125px;padding:14px}.astawan-category-grid a strong{font-size:13px}.astawan-toolbar{flex-direction:column}.astawan-toolbar select{width:100%;min-width:0}.astawan-article-grid{grid-template-columns:1fr}.astawan-featured{grid-template-columns:1fr}.astawan-featured img{min-height:190px;max-height:240px}.astawan-post{padding:22px 16px 45px}}
