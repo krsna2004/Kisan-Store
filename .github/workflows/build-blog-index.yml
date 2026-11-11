@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "content/blogs/**"
+      - "content/blogs/**"\n      - "content/astawan/**"\n      - "astawan.html"\n      - "astawan.js"\n      - "astawan.css"\n      - "scripts/build-astawan-pages.mjs"
       - "content/updates/**"
       - "content/media/**"
       - "content/products.json"
@@ -50,7 +50,7 @@ jobs:
 
       - name: Commit generated files
         run: |
-          git add -f content/blog-index.json
+          git add -f content/astawan-index.json\n          git add -f astawan/\n          git add -f content/blog-index.json
           git add -f content/updates-index.json
           git add -f content/media-index.json
           git add -f content/products-index.json
