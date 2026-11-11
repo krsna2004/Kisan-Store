@@ -84,8 +84,7 @@ function generateSitemap(blogs) {
     ),
     "</urlset>",
     "",
-  ].join("
-");
+  ].join("\n");
 
   fs.writeFileSync("sitemap.xml", xml, "utf8");
   console.log(`Generated sitemap.xml: ${uniqueUrls.length} URLs`);
