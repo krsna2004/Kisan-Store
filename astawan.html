@@ -55,7 +55,19 @@
         <a href="#astawanArticles" data-category-link="History & Places"><span>08</span><strong>History & Places</strong><small>Local heritage and places</small></a>
       </div>
       <div class="astawan-list-heading" id="astawanArticles"><div><p class="eyebrow">FROM AROUND THE VILLAGE</p><h2>Latest Astawan articles</h2><p>Browse published local information and updates.</p></div></div>
-      <div class="astawan-toolbar"><label class="visually-hidden" for="astawanSearch">Search Astawan articles</label><input id="astawanSearch" type="search" placeholder="Search Astawan articles..." autocomplete="off"><label class="visually-hidden" for="astawanCategory">Filter by category</label><select id="astawanCategory"><option value="">All categories</option></select></div>
+      <div class="astawan-toolbar">
+        <label class="visually-hidden" for="astawanSearch">Search Astawan articles</label>
+        <input id="astawanSearch" type="search" placeholder="Search Astawan articles..." autocomplete="off">
+        <div class="catalog-category-picker astawan-category-picker" id="astawanCategoryPicker">
+          <button type="button" class="catalog-category-trigger" id="astawanCategoryTrigger" aria-haspopup="listbox" aria-expanded="false" aria-controls="astawanCategoryMenu">
+            <span id="astawanCategoryLabel">All categories</span>
+            <span class="catalog-category-arrow" aria-hidden="true"></span>
+          </button>
+          <div class="catalog-category-menu" id="astawanCategoryMenu" role="listbox" aria-label="Filter by category" hidden>
+            <button type="button" class="catalog-category-option is-selected" role="option" aria-selected="true" data-category="">All categories<span class="catalog-category-check">✓</span></button>
+          </div>
+        </div>
+      </div>
       <div id="astawanFeatured"></div>
       <div id="astawanList" class="astawan-article-grid" aria-live="polite"><p>Loading Astawan articles...</p></div>
       <p id="astawanStatus" class="astawan-status" role="status"></p>
