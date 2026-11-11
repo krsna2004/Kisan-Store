@@ -66,3 +66,27 @@
 .astawan-related{margin-top:45px;padding-top:25px;border-top:1px solid #eee}
 @media(max-width:850px){.astawan-category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.astawan-article-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.astawan-intro-grid,.astawan-business-panel{grid-template-columns:1fr}}
 @media(max-width:600px){.astawan-hero-inner{padding-block:43px 55px}.astawan-category-grid{gap:9px}.astawan-category-grid a{min-height:125px;padding:14px}.astawan-category-grid a strong{font-size:13px}.astawan-toolbar{flex-direction:column}.astawan-toolbar select{width:100%;min-width:0}.astawan-article-grid{grid-template-columns:1fr}.astawan-featured{grid-template-columns:1fr}.astawan-featured img{min-height:190px;max-height:240px}.astawan-post{padding:22px 16px 45px}}
+
+
+/* Astawan category filter uses the same custom dropdown as the product catalogue. */
+.astawan-category-picker {
+  width: 280px;
+  flex: 0 0 280px;
+}
+.astawan-toolbar .catalog-category-trigger {
+  min-height: 56px;
+  border-radius: 14px;
+  font-size: 16px;
+}
+.astawan-toolbar .catalog-category-menu {
+  max-height: 280px;
+}
+.astawan-toolbar .catalog-category-option {
+  min-height: 48px;
+}
+@media (max-width: 600px) {
+  .astawan-category-picker {
+    width: 100%;
+    flex: 1 1 auto;
+  }
+}
