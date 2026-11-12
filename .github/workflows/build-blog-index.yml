@@ -11,6 +11,7 @@ on:
       - "astawan.js"
       - "astawan.css"
       - "scripts/build-astawan-pages.mjs"
+      - "script.js"
       - "content/updates/**"
       - "content/media/**"
       - "content/products.json"
