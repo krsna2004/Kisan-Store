@@ -36,10 +36,8 @@
   // Expose one shared language controller for generated product pages.
   window.setKisanLanguage = applyLanguage;
 
-  document.addEventListener("kisan:language-change", (event) => {
-    const language = event.detail && event.detail.language;
-    if (language === "hi" || language === "en") applyLanguage(language);
-  });
+  // Other page scripts can listen for this event; do not re-apply the
+  // language here, because applyLanguage itself dispatches the event.
 
   if (languageButton) {
     languageButton.addEventListener("click", () => {
