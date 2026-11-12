@@ -50,7 +50,10 @@ function buildArticlePage(post, header, footer) {
   const canonical = SITE_URL + "/astawan/" + slug + "/";
   const title = String(post.seo_title || (post.title + " | Astawan Local Information"));
   const description = String(post.meta_description || post.description || post.title).slice(0,300);
-  const body = markdownToHtml(post.content || "");
+  const bodyEn = markdownToHtml(post.content || "");
+  const bodyHi = markdownToHtml(post.content_hi || post.content || "");
+  const titleHi = post.title_hi || post.title;
+  const descriptionHi = post.description_hi || post.description || "";
   const image = post.image ? '<img class="astawan-post-cover" src="/' + escapeHtml(String(post.image).replace(/^\//,"")) + '" alt="' + escapeHtml(post.image_alt || post.title) + '" loading="eager">' : "";
   const tags = Array.isArray(post.tags) ? post.tags : String(post.tags || "").split(",").map(x=>x.trim()).filter(Boolean);
   const schema = {"@context":"https://schema.org","@type":"Article","headline":post.title,"description":description,"datePublished":post.date || undefined,"dateModified":post.updated_date || post.date || undefined,"author":{"@type":"Person","name":post.author || "The Kisan Store"},"publisher":{"@type":"Organization","name":"The Kisan Store","url":SITE_URL},"mainEntityOfPage":canonical,"image":post.image ? [SITE_URL + "/" + String(post.image).replace(/^\//,"")] : undefined,"keywords":tags.join(", ")};
@@ -63,10 +66,10 @@ function buildArticlePage(post, header, footer) {
 <link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/astawan.css"><link rel="icon" href="/favicon.png"><script src="/script.js" defer></script><script src="/website-search.js" defer></script>
 <script type="application/ld+json">${JSON.stringify(schema).replace(/</g,"\\\\u003c")}</script></head><body>
 ${header}
-<main class="astawan-post"><nav class="astawan-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/astawan/">Astawan</a> / <span>${escapeHtml(post.title)}</span></nav>
-<p class="eyebrow">${escapeHtml(post.category || "Astawan")}</p><h1>${escapeHtml(post.title)}</h1><p class="astawan-post-description">${escapeHtml(post.description || "")}</p>
+<main class="astawan-post"><nav class="astawan-breadcrumb" aria-label="Breadcrumb"><a href="/" data-en="Home" data-hi="होम">Home</a> / <a href="/astawan/" data-en="Astawan" data-hi="अस्तावन">Astawan</a> / <span><span data-language-content="en">${escapeHtml(post.title)}</span><span data-language-content="hi" hidden>${escapeHtml(titleHi)}</span></span></nav>
+<p class="eyebrow"><span data-language-content="en">${escapeHtml(post.category || "Astawan")}</span><span data-language-content="hi" hidden>${escapeHtml(post.category_hi || post.category || "अस्तावन")}</span></p><h1><span data-language-content="en">${escapeHtml(post.title)}</span><span data-language-content="hi" hidden>${escapeHtml(titleHi)}</span></h1><p class="astawan-post-description"><span data-language-content="en">${escapeHtml(post.description || "")}</span><span data-language-content="hi" hidden>${escapeHtml(descriptionHi)}</span></p>
 <div class="astawan-post-meta"><span>${escapeHtml(post.date || "")}</span>${post.author ? '<span>By '+escapeHtml(post.author)+'</span>' : ''}${post.source_name ? '<span>Source: '+escapeHtml(post.source_name)+'</span>' : ''}</div>
-${image}<article class="astawan-post-content">${body || "<p>Article content will be added soon.</p>"}</article>
+${image}<article class="astawan-post-content"><div data-language-content="en">${bodyEn || "<p>Article content will be added soon.</p>"}</div><div data-language-content="hi" hidden>${bodyHi || "<p>लेख की सामग्री जल्द जोड़ी जाएगी।</p>"}</div></article>
 ${post.source_url ? '<p class="astawan-editorial-note">Reference: <a href="'+escapeHtml(post.source_url)+'" rel="noopener noreferrer">'+escapeHtml(post.source_name || "Original source")+'</a></p>' : ""}
 <section class="astawan-related"><h2>Explore more about Astawan</h2><p>Discover local information, community updates and businesses.</p><a class="button button-primary" href="/astawan/">Back to Astawan Local Hub</a></section>
 </main>${footer}</body></html>`;
