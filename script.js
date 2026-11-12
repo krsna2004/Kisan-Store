@@ -14,6 +14,10 @@
       const translated = element.getAttribute(`data-${currentLanguage}`);
       if (translated !== null) element.textContent = translated;
     });
+    // Show the CMS-authored article content for the selected language.
+    document.querySelectorAll("[data-language-content]").forEach((element) => {
+      element.hidden = element.getAttribute("data-language-content") !== currentLanguage;
+    });
     if (languageButton) {
       languageButton.textContent = currentLanguage === "en" ? "हिन्दी" : "English";
       languageButton.setAttribute(
